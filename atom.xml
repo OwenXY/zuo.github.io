@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zuolinlin.github.io/zuo.github.io/</id>
     <title>zuolinlin</title>
-    <updated>2022-03-23T14:33:22.118Z</updated>
+    <updated>2022-03-27T11:51:43.228Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zuolinlin.github.io/zuo.github.io/"/>
     <link rel="self" href="https://zuolinlin.github.io/zuo.github.io/atom.xml"/>
@@ -11,12 +11,74 @@
     <icon>https://zuolinlin.github.io/zuo.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, zuolinlin</rights>
     <entry>
+        <title type="html"><![CDATA[UML]]></title>
+        <id>https://zuolinlin.github.io/zuo.github.io/post/uml/</id>
+        <link href="https://zuolinlin.github.io/zuo.github.io/post/uml/">
+        </link>
+        <updated>2022-03-27T11:32:04.000Z</updated>
+        <content type="html"><![CDATA[<p>统一建模语言(Unified Modeling Language，UML)是一种为面向对象系统的产品进行说明、可视化和编制文档的一种标准语言，是非专利的第三代建模和规约语言。UML是面向对象设计的建模工具，独立于任何具体程序设计语言。</p>
+<p>UML系统开发中有三个主要的模型： [3]<br>
+功能模型：从用户的角度展示系统的功能，包括用例图。 [3]<br>
+对象模型：采用对象，属性，操作，关联等概念展示系统的结构和基础，包括类别图、对象图。 [3]<br>
+动态模型：展现系统的内部行为。包括序列图，活动图，状态图。 [3]</p>
+<p>序列图（也叫左时序图，顺序图）</p>
+<p>为什么要绘制时序图？<br>
+我们编码的时候，知道有的用例的业务逻辑按照比较确定的时间先后顺序进行展开。这时候，我们就需要知道我们设计的系统中的不同类之间传递消息（可以认为是不同对象函数间的调用）要按照怎么样的顺序、传递什么消息、返回什么消息。这时候用时序图是最好不过的了</p>
+<p>时序图的定义：</p>
+<p>时序图是描述消息时间顺序的交互图。在图形上，时序图是一张表，其中显示的对象沿横轴排列，从左到右分布在图的顶部；而消息则沿纵轴按时间顺序排序。创建时序图时，以能够使图尽量简洁为依据布局。</p>
+<p>时序图创建步骤</p>
+<p>1、确定交互过程的上下文；</p>
+<p>2、识别参与过程的交互对象；</p>
+<p>3、为每个对象设置生命线；</p>
+<p>4、从初始消息开始，依次画出随后消息；</p>
+<p>5、考虑消息的嵌套，标示消息发生时的时间点，则采用FOC（focus of control）；</p>
+<p>6、说明时间约束的地点。</p>
+<p>时序图的元素<br>
+我们在画时序图时会涉及7种元素：角色(Actor)、对象(Object)、生命线(LifeLine)、控制焦点(Activation)、消息(Message)、自关联消息、组合片段。其中前6种是比较常用和重要的元素，剩余的一种组合片段元素不是很常用，但是比较复杂。我们先介绍前6种元素，在单独介绍组合片段元素。</p>
+<p>角色(Actor)<br>
+系统角色，可以是人或者其他系统，子系统。以一个小人图标表示。<br>
+对象(Object)<br>
+对象位于时序图的顶部,以一个矩形表示。对象的命名方式一般有三种：<br>
+1 对象名和类名。例如：华为手机:手机、loginServiceObject:LoginService。<br>
+2 只显示类名，不显示对象，即为一个匿名类。例如：:手机、:LoginSservice。<br>
+3 只显示对象名，不显示类名。例如：华为手机:、loginServiceObject:。<br>
+生命线(LifeLine)<br>
+时序图中每个对象和底部中心都有一条垂直的虚线，这就是对象的生命线(对象的时间线)。以一条垂直的虚线表。<br>
+控制焦点(Activation)<br>
+控制焦点代表时序图中在对象时间线上某段时期执行的操作。以一个很窄的矩形表示。<br>
+消息(Message)<br>
+表现代表对象之间发送的信息。消息分为三种类型。<br>
+同步消息(Synchronous Message)<br>
+消息的发送者把控制传递给消息的接收者，然后停止活动，等待消息的接收者放弃或者返回控制。用来表示同步的意义。以一条实线+实心箭头表示。<br>
+异步消息(Asynchronous Message)<br>
+消息发送者通过消息把信号传递给消息的接收者，然后继续自己的活动，不等待接受者返回消息或者控制。异步消息的接收者和发送者是并发工作的。以一条实线+大于号表示。<br>
+返回消息(Return Message)<br>
+返回消息表示从过程调用返回。以小于号+虚线表示。<br>
+自关联消息<br>
+表示方法的自身调用或者一个对象内的一个方法调用另外一个方法。以一个半闭合的长方形+下方实心剪头表示。</p>
+<p>组合片段<br>
+组合片段用来解决交互执行的条件和方式，它允许在序列图中直接表示逻辑组件，用于通过指定条件或子进程的应用区域，为任何生命线的任何部分定义特殊条件和子进程。组合片段共有13种，名称及含义如下：</p>
+<p><img src="https://zuolinlin.github.io/zuo.github.io//post-images/1648381778972.png" alt="" loading="lazy"><br>
+<img src="https://zuolinlin.github.io/zuo.github.io//post-images/1648381787741.png" alt="" loading="lazy"></p>
+<p>常用组合片段举例</p>
+<p>抉择（Alt）<br>
+抉择在任何场合下只发生一个序列。 可以在每个片段中设置一个临界来指示该片段可以运行的条件。else 的临界指示其他任何临界都不为 True 时应运行的片段。如果所有临界都为 False 并且没有 else，则不执行任何片段。Alt片段组合可以理解为if..else if...else条件语句</p>
+<p>选项（Opt）<br>
+包含一个可能发生或不发生的序列。Opt相当于if..语句。</p>
+<p>循环（Loop）<br>
+片段重复一定次数，可以在临界中指示片段重复的条件。Loop相当于for语句。</p>
+<p>并行（Par）<br>
+并行处理，片段中的事件可以并行交错。Par相当于多线程。</p>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[函数式编程]]></title>
         <id>https://zuolinlin.github.io/zuo.github.io/post/han-shu-shi-bian-cheng/</id>
         <link href="https://zuolinlin.github.io/zuo.github.io/post/han-shu-shi-bian-cheng/">
         </link>
         <updated>2022-03-23T14:32:53.000Z</updated>
-        <content type="html"><![CDATA[<p>关于函数式编程的感悟</p>
+        <content type="html"><![CDATA[<!-- more -->
+<p>关于函数式编程的感悟</p>
 ]]></content>
     </entry>
     <entry>
