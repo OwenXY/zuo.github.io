@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zuolinlin.github.io/zuo.github.io/</id>
     <title>zuolinlin</title>
-    <updated>2022-04-05T13:57:42.023Z</updated>
+    <updated>2022-04-05T14:00:22.382Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zuolinlin.github.io/zuo.github.io/"/>
     <link rel="self" href="https://zuolinlin.github.io/zuo.github.io/atom.xml"/>
@@ -10,6 +10,22 @@
     <logo>https://zuolinlin.github.io/zuo.github.io/images/avatar.png</logo>
     <icon>https://zuolinlin.github.io/zuo.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, zuolinlin</rights>
+    <entry>
+        <title type="html"><![CDATA[函数式编程]]></title>
+        <id>https://zuolinlin.github.io/zuo.github.io/post/han-shu-shi-bian-cheng/</id>
+        <link href="https://zuolinlin.github.io/zuo.github.io/post/han-shu-shi-bian-cheng/">
+        </link>
+        <updated>2022-04-05T13:58:04.000Z</updated>
+        <content type="html"><![CDATA[<pre><code>行为参数化就是让一个方法接受多种不同的行为作为参数，并且在内部使用他们，完成不同行为的能力。
+行为参数化可以让代码更好的适应不断变化的要求，减轻未来的工作量。
+</code></pre>
+<pre><code class="language-java">
+
+</code></pre>
+<p>-传递代码就是将新行为作为参数传递给方法。<br>
+但是在Java8之前实现起来很啰嗦，在java8之前可以适应匿名内部类来减少，1.8可以使用lambda表达式来</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[随笔]]></title>
         <id>https://zuolinlin.github.io/zuo.github.io/post/sui-bi/</id>
