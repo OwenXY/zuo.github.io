@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zuolinlin.github.io/zuo.github.io/</id>
     <title>zuolinlin</title>
-    <updated>2022-04-05T08:04:03.764Z</updated>
+    <updated>2022-04-05T13:52:18.886Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zuolinlin.github.io/zuo.github.io/"/>
     <link rel="self" href="https://zuolinlin.github.io/zuo.github.io/atom.xml"/>
@@ -102,13 +102,51 @@
         <link href="https://zuolinlin.github.io/zuo.github.io/post/han-shu-shi-bian-cheng/">
         </link>
         <updated>2022-03-23T14:32:53.000Z</updated>
-        <summary type="html"><![CDATA[<p>行为参数化就是让一个方法接受多种不同的行为作为参数，并且在内部使用他们，完成不同行为的能力。<br>
+        <summary type="html"><![CDATA[<ul>
+<li>snoarline</li>
+<li>lombok</li>
+<li>restfultool</li>
+<li>translation</li>
+<li>codata</li>
+<li>FindBugs</li>
+<li>Alibaba Java Coding Guidelines</li>
+<li>CodeGlance</li>
+<li>MyBatisCodeHelperPro</li>
+<li>Free-idea-mybatis</li>
+<li>github copilot</li>
+</ul>
+<p>JetBrains</p>
+<pre><code>账号: linlinzuo    Kupcu4-davqiq-hosdaf  邮箱：zuoxiyue@outlook.com
+账号：qiaosiye     xiyuezuo1993@         邮箱：878522146@qq.com
+账号：yuezuo     Kupcu4-davqiq-hosdaf         邮箱：zuoxiyue2022@163.com
+账号：xizuo      Kupcu4-davqiq-hosdaf   邮箱：zuoxiyue202204@163.com Ymqctx2022
+</code></pre>
+<p>行为参数化就是让一个方法接受多种不同的行为作为参数，并且在内部使用他们，完成不同行为的能力。<br>
 行为参数化可以让代码更好的适应不断变化的要求，减轻未来的工作量。</p>
 <p>method（FunctionInterface fun）{<br>
 xxx.xxx<br>
 }</p>
 ]]></summary>
-        <content type="html"><![CDATA[<p>行为参数化就是让一个方法接受多种不同的行为作为参数，并且在内部使用他们，完成不同行为的能力。<br>
+        <content type="html"><![CDATA[<ul>
+<li>snoarline</li>
+<li>lombok</li>
+<li>restfultool</li>
+<li>translation</li>
+<li>codata</li>
+<li>FindBugs</li>
+<li>Alibaba Java Coding Guidelines</li>
+<li>CodeGlance</li>
+<li>MyBatisCodeHelperPro</li>
+<li>Free-idea-mybatis</li>
+<li>github copilot</li>
+</ul>
+<p>JetBrains</p>
+<pre><code>账号: linlinzuo    Kupcu4-davqiq-hosdaf  邮箱：zuoxiyue@outlook.com
+账号：qiaosiye     xiyuezuo1993@         邮箱：878522146@qq.com
+账号：yuezuo     Kupcu4-davqiq-hosdaf         邮箱：zuoxiyue2022@163.com
+账号：xizuo      Kupcu4-davqiq-hosdaf   邮箱：zuoxiyue202204@163.com Ymqctx2022
+</code></pre>
+<p>行为参数化就是让一个方法接受多种不同的行为作为参数，并且在内部使用他们，完成不同行为的能力。<br>
 行为参数化可以让代码更好的适应不断变化的要求，减轻未来的工作量。</p>
 <p>method（FunctionInterface fun）{<br>
 xxx.xxx<br>
@@ -138,7 +176,7 @@ xxx.xxx<br>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[idea必装插件]]></title>
+        <title type="html"><![CDATA[idea]]></title>
         <id>https://zuolinlin.github.io/zuo.github.io/post/wo-er-ti-yu/</id>
         <link href="https://zuolinlin.github.io/zuo.github.io/post/wo-er-ti-yu/">
         </link>
@@ -156,6 +194,12 @@ xxx.xxx<br>
 <li>Free-idea-mybatis</li>
 <li>github copilot</li>
 </ul>
+<p>JetBrains</p>
+<pre><code>账号: linlinzuo    Kupcu4-davqiq-hosdaf  邮箱：zuoxiyue@outlook.com
+账号：qiaosiye     xiyuezuo1993@         邮箱：878522146@qq.com
+账号：yuezuo     Kupcu4-davqiq-hosdaf         邮箱：zuoxiyue2022@163.com
+账号：xizuo      Kupcu4-davqiq-hosdaf   邮箱：zuoxiyue202204@163.com Ymqctx2022
+</code></pre>
 ]]></content>
     </entry>
     <entry>
