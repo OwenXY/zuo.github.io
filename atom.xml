@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zuolinlin.github.io/zuo.github.io/</id>
     <title>zuolinlin</title>
-    <updated>2022-04-08T14:15:28.520Z</updated>
+    <updated>2022-04-08T14:58:40.950Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zuolinlin.github.io/zuo.github.io/"/>
     <link rel="self" href="https://zuolinlin.github.io/zuo.github.io/atom.xml"/>
@@ -685,7 +685,7 @@ address: zookeeper://127.0.0.1:2181
 </li>
 <li><a href="#SpringBoot2%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD">SpringBoot2核心技术-核心功能</a>
 <ul>
-<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">配置文件？</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">配置文件</a></li>
 <li><a href="#Web%E5%BC%80%E5%8F%91">Web开发</a></li>
 <li><a href="#Web%E5%BC%80%E5%8F%91">Web开发</a></li>
 <li><a href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">单元测试</a></li>
@@ -694,6 +694,453 @@ address: zookeeper://127.0.0.1:2181
 </ul>
 </li>
 <li><a href="#SpringBoot2%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E5%9C%BA%E6%99%AF%E6%95%B4%E5%90%88">SpringBoot2核心技术-场景整合</a></li>
+</ul>
+<h1 id="目录-2">目录</h1>
+<h2 id="springboot2核心技术-基础入门">SpringBoot2核心技术-基础入门</h2>
+<h3 id="自动配置原理">自动配置原理</h3>
+<h4 id="依赖管理">依赖管理</h4>
+<p>父项目做依赖管理</p>
+<pre><code class="language-xml">&lt;!--依赖管理 --&gt;
+&lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;2.3.4.RELEASE&lt;/version&gt;
+&lt;/parent&gt;
+
+        &lt;!--他的父项目 --&gt;
+&lt;parent&gt;
+&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+&lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;
+&lt;version&gt;2.3.4.RELEASE&lt;/version&gt;
+&lt;/parent&gt;
+
+        &lt;!--几乎声明了所有开发中常用的依赖的版本号,自动版本仲裁机制 --&gt;
+
+</code></pre>
+<p>开发导入starter场景启动器</p>
+<pre><code class="language-xml">&lt;!--
+1、见到很多 spring-boot-starter-* ： *就某种场景
+2、只要引入starter，这个场景的所有常规需要的依赖我们都自动引入
+3、SpringBoot所有支持的场景
+https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-starter
+4、见到的  *-spring-boot-starter： 第三方为我们提供的简化开发的场景启动器。
+5、所有场景启动器最底层的依赖
+--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+    &lt;version&gt;2.3.4.RELEASE&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>无需关注版本号，自动版本仲裁</p>
+<pre><code> 1、引入依赖默认都可以不写版本
+ 2、引入非版本仲裁的jar，要写版本号。
+</code></pre>
+<p>可以修改默认版本号</p>
+<pre><code class="language-xml">&lt;!--
+1、查看spring-boot-dependencies里面规定当前依赖的版本 用的 key。
+2、在当前项目里面重写配置
+--&gt;
+&lt;properties&gt;
+    &lt;mysql.version&gt;5.1.43&lt;/mysql.version&gt;
+&lt;/properties&gt;
+</code></pre>
+<h4 id="自动配置">自动配置</h4>
+<p>● 自动配好Tomcat<br>
+○ 引入Tomcat依赖。<br>
+○ 配置Tomcat</p>
+<pre><code class="language-xml">
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+    &lt;version&gt;2.3.4.RELEASE&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>● 自动配好SpringMVC</p>
+<ul>
+<li>
+<p>引入SpringMVC全套组件</p>
+</li>
+<li>
+<p>自动配好SpringMVC常用组件（功能）</p>
+</li>
+</ul>
+<p>● 自动配好Web常见功能，如：字符编码问题</p>
+<ul>
+<li>SpringBoot帮我们配置好了所有web开发的常见场景</li>
+</ul>
+<p>● 默认的包结构</p>
+<ul>
+<li>主程序所在包及其下面的所有子包里面的组件都会被默认扫描进来</li>
+<li>无需以前的包扫描配置</li>
+<li>想要改变扫描路径，@SpringBootApplication(scanBasePackages=&quot;com.atguigu&quot;)</li>
+</ul>
+<p>■ 或者@ComponentScan 指定扫描路径</p>
+<pre><code>@SpringBootApplication
+等同于
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan(&quot;com.atguigu.boot&quot;)
+</code></pre>
+<p>● 各种配置拥有默认值</p>
+<ul>
+<li>默认配置最终都是映射到某个类上，如：MultipartProperties</li>
+<li>配置文件的值最终会绑定每个类上，这个类会在容器中创建对象</li>
+</ul>
+<p>● 按需加载所有自动配置项</p>
+<ul>
+<li>非常多的starter</li>
+<li>引入了哪些场景这个场景的自动配置才会开启</li>
+<li>SpringBoot所有的自动配置功能都在 spring-boot-autoconfigure 包里面</li>
+</ul>
+<p>● ......</p>
+<h4 id="容器功能">容器功能</h4>
+<h5 id="组件添加">组件添加</h5>
+<h6 id="configuration">@Configuration</h6>
+<p>● 基本使用<br>
+● Full模式与Lite模式</p>
+<ul>
+<li>示例</li>
+<li>最佳实战</li>
+</ul>
+<p>■ 配置 类组件之间无依赖关系用Lite模式加速容器启动过程，减少判断</p>
+<p>■ 配置类组件之间有依赖关系，方法会被调用得到之前单实例组件，用Full模式</p>
+<pre><code class="language-java">#############################Configuration使用示例######################################################
+
+/**
+ * 1、配置类里面使用@Bean标注在方法上给容器注册组件，默认也是单实例的
+ * 2、配置类本身也是组件
+ * 3、proxyBeanMethods：代理bean的方法
+ *      Full(proxyBeanMethods = true)、【保证每个@Bean方法被调用多少次返回的组件都是单实例的】
+ *      Lite(proxyBeanMethods = false)【每个@Bean方法被调用多少次返回的组件都是新创建的】
+ *      组件依赖必须使用Full模式默认。其他默认是否Lite模式
+ *
+ *
+ *
+ */
+@Configuration(proxyBeanMethods = false) //告诉SpringBoot这是一个配置类 == 配置文件
+public class MyConfig {
+
+    /**
+     * Full:外部无论对配置类中的这个组件注册方法调用多少次获取的都是之前注册容器中的单实例对象
+     * @return
+     */
+    @Bean //给容器中添加组件。以方法名作为组件的id。返回类型就是组件类型。返回的值，就是组件在容器中的实例
+    public User user01() {
+        User zhangsan = new User(&quot;zhangsan&quot;, 18);
+        //user组件依赖了Pet组件
+        zhangsan.setPet(tomcatPet());
+        return zhangsan;
+    }
+
+    @Bean(&quot;tom&quot;)
+    public Pet tomcatPet() {
+        return new Pet(&quot;tomcat&quot;);
+    }
+}
+
+
+################################@Configuration测试代码如下########################################
+
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan(&quot;com.atguigu.boot&quot;)
+public class MainApplication {
+
+    public static void main(String[] args) {
+        //1、返回我们IOC容器
+        ConfigurableApplicationContext run = SpringApplication.run(MainApplication.class, args);
+
+        //2、查看容器里面的组件
+        String[] names = run.getBeanDefinitionNames();
+        for (String name : names) {
+            System.out.println(name);
+        }
+
+        //3、从容器中获取组件
+
+        Pet tom01 = run.getBean(&quot;tom&quot;, Pet.class);
+
+        Pet tom02 = run.getBean(&quot;tom&quot;, Pet.class);
+
+        System.out.println(&quot;组件：&quot; + (tom01 == tom02));
+
+
+        //4、com.atguigu.boot.config.MyConfig$$EnhancerBySpringCGLIB$$51f1e1ca@1654a892
+        MyConfig bean = run.getBean(MyConfig.class);
+        System.out.println(bean);
+
+        //如果@Configuration(proxyBeanMethods = true)代理对象调用方法。SpringBoot总会检查这个组件是否在容器中有。
+        //保持组件单实例
+        User user = bean.user01();
+        User user1 = bean.user01();
+        System.out.println(user == user1);
+
+
+        User user01 = run.getBean(&quot;user01&quot;, User.class);
+        Pet tom = run.getBean(&quot;tom&quot;, Pet.class);
+
+        System.out.println(&quot;用户的宠物：&quot; + (user01.getPet() == tom));
+
+
+    }
+}
+
+
+</code></pre>
+<h6 id="bean-component-controller-service-repository">@Bean、@Component、@Controller、@Service、@Repository</h6>
+<h5 id="componentscan-import">@ComponentScan、@Import</h5>
+<pre><code class="language-java">/*
+ * 4、@Import({User.class, DBHelper.class})
+ *      给容器中自动创建出这两个类型的组件、默认组件的名字就是全类名
+ *
+ *
+ *
+ */
+
+@Import({User.class, DBHelper.class})
+@Configuration(proxyBeanMethods = false) //告诉SpringBoot这是一个配置类 == 配置文件
+public class MyConfig {
+}
+</code></pre>
+<p>[@Import 高级用法：](@Import 高级用法： https://www.bilibili.com/video/BV1gW411W7wy?p=8)</p>
+<h6 id="conditional">@Conditional</h6>
+<p>条件装配：满足Conditional指定的条件，则进行组件注入<br>
+<img src="img_1.png" alt="img_1.png" loading="lazy"></p>
+<pre><code class="language-java">=====================测试条件装配==========================
+
+@Configuration(proxyBeanMethods = false) //告诉SpringBoot这是一个配置类 == 配置文件
+//@ConditionalOnBean(name = &quot;tom&quot;)
+@ConditionalOnMissingBean(name = &quot;tom&quot;)
+public class MyConfig {
+
+
+    /**
+     * Full:外部无论对配置类中的这个组件注册方法调用多少次获取的都是之前注册容器中的单实例对象
+     * @return
+     */
+
+    @Bean //给容器中添加组件。以方法名作为组件的id。返回类型就是组件类型。返回的值，就是组件在容器中的实例
+    public User user01() {
+        User zhangsan = new User(&quot;zhangsan&quot;, 18);
+        //user组件依赖了Pet组件
+        zhangsan.setPet(tomcatPet());
+        return zhangsan;
+    }
+
+    @Bean(&quot;tom22&quot;)
+    public Pet tomcatPet() {
+        return new Pet(&quot;tomcat&quot;);
+    }
+}
+
+    public static void main(String[] args) {
+        //1、返回我们IOC容器
+        ConfigurableApplicationContext run = SpringApplication.run(MainApplication.class, args);
+
+        //2、查看容器里面的组件
+        String[] names = run.getBeanDefinitionNames();
+        for (String name : names) {
+            System.out.println(name);
+        }
+
+        boolean tom = run.containsBean(&quot;tom&quot;);
+        System.out.println(&quot;容器中Tom组件：&quot; + tom);
+
+        boolean user01 = run.containsBean(&quot;user01&quot;);
+        System.out.println(&quot;容器中user01组件：&quot; + user01);
+
+        boolean tom22 = run.containsBean(&quot;tom22&quot;);
+        System.out.println(&quot;容器中tom22组件：&quot; + tom22);
+
+
+    }
+</code></pre>
+<h5 id="原生配置文件引入">原生配置文件引入</h5>
+<h6 id="importresource">@ImportResource</h6>
+<pre><code class="language-xml">======================beans.xml=========================
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+
+    &lt;bean id=&quot;haha&quot; class=&quot;com.atguigu.boot.bean.User&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;zhangsan&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;age&quot; value=&quot;18&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;hehe&quot; class=&quot;com.atguigu.boot.bean.Pet&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;tomcat&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<pre><code class="language-java">@ImportResource(&quot;classpath:beans.xml&quot;)
+public class MyConfig {}
+
+======================测试=================
+        boolean haha = run.containsBean(&quot;haha&quot;);
+        boolean hehe = run.containsBean(&quot;hehe&quot;);
+        System.out.println(&quot;haha：&quot;+haha);//true
+        System.out.println(&quot;hehe：&quot;+hehe);//true
+</code></pre>
+<h6 id="配置绑定">配置绑定</h6>
+<p>如何使用Java读取到properties文件中的内容，并且把它封装到JavaBean中，以供随时使用；</p>
+<pre><code class="language-java">
+public class getProperties {
+     public static void main(String[] args) throws FileNotFoundException, IOException {
+         Properties pps = new Properties();
+         pps.load(new FileInputStream(&quot;a.properties&quot;));
+         Enumeration enum1 = pps.propertyNames();//得到配置文件的名字
+         while(enum1.hasMoreElements()) {
+             String strKey = (String) enum1.nextElement();
+             String strValue = pps.getProperty(strKey);
+             System.out.println(strKey + &quot;=&quot; + strValue);
+             //封装到JavaBean。
+         }
+     }
+ }
+</code></pre>
+<h6 id="configurationproperties">@ConfigurationProperties</h6>
+<pre><code class="language-java">/**
+ * 只有在容器中的组件，才会拥有SpringBoot提供的强大功能
+ */
+@Component
+@ConfigurationProperties(prefix = &quot;mycar&quot;)
+public class Car {
+
+    private String brand;
+    private Integer price;
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;Car{&quot; +
+                &quot;brand='&quot; + brand + '\'' +
+                &quot;, price=&quot; + price +
+                '}';
+    }
+}
+</code></pre>
+<h6 id="enableconfigurationproperties-configurationproperties">@EnableConfigurationProperties + @ConfigurationProperties</h6>
+<h6 id="component-configurationproperties">@Component + @ConfigurationProperties</h6>
+<pre><code class="language-java">@EnableConfigurationProperties(Car.class)
+//1、开启Car配置绑定功能
+//2、把这个Car这个组件自动注册到容器中
+public class MyConfig {
+}
+</code></pre>
+<h5 id="自动配置原理入门">自动配置原理入门</h5>
+<p>引导加载自动配置类</p>
+<pre><code class="language-java">@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+public @interface SpringBootApplication{}
+
+
+======================
+    
+</code></pre>
+<h6 id="springbootconfiguration">@SpringBootConfiguration</h6>
+<pre><code>@Configuration。代表当前是一个配置类
+</code></pre>
+<h6 id="componentscan">@ComponentScan</h6>
+<pre><code>指定扫描哪些，Spring注解；
+</code></pre>
+<h6 id="enableautoconfiguration">@EnableAutoConfiguration</h6>
+<pre><code class="language-java">@AutoConfigurationPackage
+@Import(AutoConfigurationImportSelector.class)
+public @interface EnableAutoConfiguration {}
+</code></pre>
+<h6 id="autoconfigurationpackage">@AutoConfigurationPackage</h6>
+<pre><code>自动配置包？指定了默认的包规则
+</code></pre>
+<pre><code class="language-java">@Import(AutoConfigurationPackages.Registrar.class)  //给容器中导入一个组件
+public @interface AutoConfigurationPackage {}
+
+//利用Registrar给容器中导入一系列组件
+//将指定的一个包下的所有组件导入进来？MainApplication 所在包下。
+
+</code></pre>
+<h6 id="importautoconfigurationimportselectorclass">@Import(AutoConfigurationImportSelector.class)</h6>
+<pre><code>1、利用getAutoConfigurationEntry(annotationMetadata);给容器中批量导入一些组件
+2、调用List&lt;String&gt; configurations = getCandidateConfigurations(annotationMetadata, attributes)获取到所有需要导入到容器中的配置类
+3、利用工厂加载 Map&lt;String, List&lt;String&gt;&gt; loadSpringFactories(@Nullable ClassLoader classLoader)；得到所有的组件
+4、从META-INF/spring.factories位置来加载一个文件。
+默认扫描我们当前系统里面所有META-INF/spring.factories位置的文件
+spring-boot-autoconfigure-2.3.4.RELEASE.jar包里面也有META-INF/spring.factories
+</code></pre>
+<h6 id="按需开启自动配置项">按需开启自动配置项</h6>
+<pre><code>虽然我们127个场景的所有自动配置启动的时候默认全部加载。xxxxAutoConfiguration
+按照条件装配规则（@Conditional），最终会按需配置。
+</code></pre>
+<h6 id="修改默认配置">修改默认配置</h6>
+<pre><code class="language-java">        @Bean
+		@ConditionalOnBean(MultipartResolver.class)  //容器中有这个类型组件
+		@ConditionalOnMissingBean(name = DispatcherServlet.MULTIPART_RESOLVER_BEAN_NAME) //容器中没有这个名字 multipartResolver 的组件
+		public MultipartResolver multipartResolver(MultipartResolver resolver) {
+            //给@Bean标注的方法传入了对象参数，这个参数的值就会从容器中找。
+            //SpringMVC multipartResolver。防止有些用户配置的文件上传解析器不符合规范
+			// Detect if the user has created a MultipartResolver but named it incorrectly
+			return resolver;
+		}
+给容器中加入了文件上传解析器；
+
+</code></pre>
+<h6 id="springboot默认会在底层配好所有的组件-但是如果用户自己配置了以用户的优先">SpringBoot默认会在底层配好所有的组件。但是如果用户自己配置了以用户的优先</h6>
+<pre><code class="language-java">@Bean
+	@ConditionalOnMissingBean
+	public CharacterEncodingFilter characterEncodingFilter() {
+    }
+
+</code></pre>
+<p>总结：<br>
+● SpringBoot先加载所有的自动配置类  xxxxxAutoConfiguration<br>
+● 每个自动配置类按照条件进行生效，默认都会绑定配置文件指定的值。xxxxProperties里面拿。xxxProperties和配置文件进行了绑定<br>
+● 生效的配置类就会给容器中装配很多组件<br>
+● 只要容器中有这些组件，相当于这些功能就有了<br>
+● 定制化配置<br>
+○ 用户直接自己@Bean替换底层的组件<br>
+○ 用户去看这个组件是获取的配置文件什么值就去修改。<br>
+xxxxxAutoConfiguration ---&gt; 组件  ---&gt; xxxxProperties里面拿值  ----&gt; application.properties</p>
+<h6 id="最佳实践">最佳实践</h6>
+<p>● 引入场景依赖</p>
+<pre><code>○ https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-starter
+</code></pre>
+<p>● 查看自动配置了哪些（选做）</p>
+<ul>
+<li>自己分析，引入场景对应的自动配置一般都生效了</li>
+<li>配置文件中debug=true开启自动配置报告。Negative（不生效）\Positive（生效）</li>
+</ul>
+<p>● 是否需要修改</p>
+<ul>
+<li>参照文档修改配置项</li>
+<li>https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties</li>
+</ul>
+<p>■ 自己分析。xxxxProperties绑定了配置文件的哪些。</p>
+<ul>
+<li>自定义加入或者替换组件<br>
+■ @Bean、@Component。。。</li>
+<li></li>
+<li>自定义器  XXXXXCustomizer</li>
 </ul>
 ]]></content>
     </entry>
