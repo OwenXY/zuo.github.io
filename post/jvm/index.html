@@ -1,0 +1,806 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JVM | zuolinlin</title>
+<link rel="shortcut icon" href="https://zuolinlin.github.io/zuo.github.io//favicon.ico?v=1649425513816">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zuolinlin.github.io/zuo.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="JVM | zuolinlin - Atom Feed" href="https://zuolinlin.github.io/zuo.github.io//atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="JVM从0到实战
+目录
+
+jvm运行原理
+
+jvm核心运行流程
+JVM类加载机制
+JVM中内存区域
+
+
+JVM垃圾回收机制
+
+JVM的垃圾回收机制是用来干嘛的？为什么要垃圾回收？
+JVM分代模型
+JVM垃圾回收算法
+
+
+JVM垃圾回收器
+
+..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zuolinlin.github.io/zuo.github.io/">
+  <img class="avatar" src="https://zuolinlin.github.io/zuo.github.io//images/avatar.png?v=1649425513816" alt="">
+  </a>
+  <h1 class="site-title">
+    zuolinlin
+  </h1>
+  <p class="site-description">
+    你要问我如何去二仙桥，我会告诉你走成华大道，可你要问人生，我也说不清。
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              JVM
+            </h2>
+            <div class="post-info">
+              <span>
+                2022-04-08
+              </span>
+              <span>
+                37 min read
+              </span>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.zhimg.com%2Fv2-aeab772d4ab328126eca47292f7c654a_1440w.jpg%3Fsource%3D172ae18b&amp;refer=http%3A%2F%2Fpic1.zhimg.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1652017498&amp;t=578b481bf5210bbc6ba420bc298567fd" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="jvm从0到实战">JVM从0到实战</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#JVM%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86">jvm运行原理</a>
+<ul>
+<li><a href="#JVM%E6%A0%B8%E5%BF%83%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B">jvm核心运行流程</a></li>
+<li><a href="#JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6">JVM类加载机制</a></li>
+<li><a href="#JVM%E4%B8%AD%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F">JVM中内存区域</a></li>
+</ul>
+</li>
+<li><a href="#JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6">JVM垃圾回收机制</a>
+<ul>
+<li><a href="#JVM%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E6%98%AF%E7%94%A8%E6%9D%A5%E5%B9%B2%E5%98%9B%E7%9A%84%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%EF%BC%9F">JVM的垃圾回收机制是用来干嘛的？为什么要垃圾回收？</a></li>
+<li><a href="#JVM%E5%88%86%E4%BB%A3%E6%A8%A1%E5%9E%8B">JVM分代模型</a></li>
+<li><a href="#JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95">JVM垃圾回收算法</a></li>
+</ul>
+</li>
+<li><a href="#JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8">JVM垃圾回收器</a>
+<ul>
+<li><a href="#parNew%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8">parNew垃圾回收器</a></li>
+<li><a href="#CMS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8">CMS垃圾回收器</a></li>
+<li><a href="#G1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8">G1垃圾回收器</a></li>
+</ul>
+</li>
+<li><a href="#JVM%E5%AE%9E%E6%88%98">JVM实战</a>
+<ul>
+<li>[自己动手模拟出频繁Young GC的场景体验一下！](#自己动手模拟出频繁Young GC的场景体验一下！)</li>
+<li><a href="#%E4%BD%BF%E7%94%A8jstat%E6%91%B8%E6%B8%85%E7%BA%BF%E4%B8%8A%E7%B3%BB%E7%BB%9F%E7%9A%84JVM%E8%BF%90%E8%A1%8C%E7%8A%B6%E5%86%B5">使用jstat摸清线上系统的JVM运行状况</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8jmap%E5%92%8Cjhat%E6%91%B8%E6%B8%85%E7%BA%BF%E4%B8%8A%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%88%86%E5%B8%83">使用jmap和jhat摸清线上系统的对象分布</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="大纲">大纲</h2>
+<h2 id="jvm运行原理">JVM运行原理</h2>
+<h3 id="jvm核心运行流程">JVM核心运行流程</h3>
+<figure data-type="image" tabindex="1"><img src="images/jvm-process.png" alt="我们编写的java文件被执行的过程" loading="lazy"></figure>
+<pre><code>JVM要运行这些字节码文件，首先得把这些.class文件加载进来
+此时会采用类加载器将这些字节码文件加载搭配JVM，供后续的代码运行使用
+最后一步，JVM会基于自己的**字节码执行引擎**，来执行加载到内存里我们写好的那些类了。
+</code></pre>
+<p>下一步讨论</p>
+<h3 id="jvm类加载机制">JVM类加载机制</h3>
+<p>一个类从加载到使用一般经历一下几个过程</p>
+<figure data-type="image" tabindex="2"><img src="images/class_loader_process.png" alt="JVM的类加载器亲子层级" loading="lazy"></figure>
+<p><strong>加载</strong>--<strong>验证</strong>--<strong>准备</strong>--<strong>解析</strong>--<strong>初始化</strong>--<strong>使用</strong>--<strong>卸载</strong></p>
+<p>加载阶段：<br>
+代码在使用这个类的时候，.class 文件会加载进内存</p>
+<p>验证阶段：<br>
+根据java虚拟机规范，来验证你加载进来的.class 文件的内容是否符合规范</p>
+<p>准备阶段：<br>
+给类遍历分配内存空间，来一个默认的初始值</p>
+<p>解析阶段：<br>
+把符号引用替换为直接引用</p>
+<p>初始化：<br>
+new Object() 初始化一个对象，在准备阶段知识只是分配了内存空间，给了默认值，真正的赋值是在初始化阶段完成的<br>
+此外这里有个非常重要的规则，就是初始化一个类的时候，发现它的父类还没有初始化，那么必须先初始化它的父类。</p>
+<h3 id="类加载器和双亲委派机制">类加载器和双亲委派机制</h3>
+<pre><code> 从加载到初始化实际上是有类加载器来完成的
+</code></pre>
+<p><strong>java中有哪些类加载器呢？简单来说有下面几种</strong></p>
+<pre><code>- 启动类加载器
+    Bootstrap classLoader ，它主要是负债加载我们机器安装的java目录下的核心类的
+    相信大家都知道，如果你要在机器上运用一个自己写好的Java系统，无论是Windows笔记本，还是linux服务器，是不是都得装一下JDK，
+    那么你在安装目录下就有一个**lib**文件
+    所以一旦你的JVM启动，那么首先就会依托启动类加载器，去加载你的JAVA 安装目录下的**lib**目录
+
+- 扩展类加载器
+    Extension ClassLoader，这个类加载器也是类似的，就是在你JAVA安装目录下，有个**lib\ext**目录，
+    这里有一些类，就是需要使用这个类加载器来加载的，支撑你的系统的运行。
+    那么你的JVM一旦启动，是不是也得从java安装目录下，加载这个**lib\ext**目录中的类
+
+- 应用类加载器
+    Application ClassLoader，这类加载器就去加载**classpath**环境变量所指定的路径中的类加载器
+    其实大致就理解为去加载你写好的Java代码吧，这类加载器主要负责加载你写好的那些类到内存里。
+
+- 自定义类加载器
+    除了上面那几种情况外，还可以自定义类加载器，去根据你的需求加载你的类。
+</code></pre>
+<p>jvm的类加载器是有亲子层级机构的，就是启动类加载器子啊最上层，拓展类加载器在第二层，第三层是应用程序类加载器，最下面一层是自定义加载器</p>
+<figure data-type="image" tabindex="3"><img src="images/classloder-qinzichengji.png" alt="JVM的类加载器亲子层级" loading="lazy"></figure>
+<p>基于这个亲子层级关系，就有一个<strong>双亲委派机制</strong></p>
+<p>双亲委派机制：先由父类加载，不行的话在由儿子来加载。</p>
+<figure data-type="image" tabindex="4"><img src="images/class_loader_shuangqinweipai.png" alt="JVM的类加载器亲子层级" loading="lazy"></figure>
+<p>首先类加载器由JVM提供，类加载器逻辑的第一个阶段解释加载阶段，后面的由JVM完成。</p>
+<h3 id="jvm中内存区域">JVM中内存区域</h3>
+<ul>
+<li>
+<p>元空间</p>
+<p>jvm在运行我们写好的代码，他必须使用多块内存空间的，不同的内存空间用来存放不同的数据，然后配合我们写的代码流程才能让我们系统运行起来。<br>
+我们现在知道了JVM会加载类到内存里供后续运行使用，所以JVM里必须有一块内存空间，用来存放我们写的那些类。<br>
+方法区是在JDK1.8以前版本里，代表JVM的一块区域。</p>
+<p>主要是存放.class文件中加载进来的类，还会有一些类似常亮池的东西放在这个区域里。<br>
+但是JDK1.8之后，这块区域的名字变了，叫&quot;metespace&quot; ，可以认为&quot;元数据空间&quot;的意思，主要还是存放我们写的各种类的相关信息。<br>
+'.calss' 后缀的字节码文件里，存放的就是你写出来的代码编译好的字节码了，对应着各种字节码指令。</p>
+</li>
+<li>
+<p>程序计数器</p>
+<p>现在当JVM加载类信息到内存之后，实际上就是使用自己的字节码执行引擎，去执行我们写的代码编译出来的代码指令</p>
+<figure data-type="image" tabindex="5"><img src="images/zijiemazhixingyinqing.png" alt="jvm是有字节码执行引擎去执行.call文件里面的指令" loading="lazy"></figure>
+<p>那么在执行字节码的时候，就需要一块特殊的指令区域:<strong>程序计数器</strong></p>
+<p>这个程序计数器就是来记录，当前<strong>字节码指令执行位置的</strong></p>
+<p><strong>每个线程都有一个自己的程序指令器</strong></p>
+</li>
+</ul>
+<figure data-type="image" tabindex="6"><img src="images/chengxujishuqi.png" alt="每个线程都有一个自己的程序指令器" loading="lazy"></figure>
+<ul>
+<li>
+<p>java虚拟机栈</p>
+<p>java代码在执行的时候一定是一个线程来执行某个方法中的代码，<br>
+但是在方法里，我们会定义一些方法内的局部变量，<br>
+因此，JVM必须有一块区域来保存方法内的<strong>局部变量</strong>等数据，这个区域就是<strong>java虚拟机栈</strong></p>
+<p><strong>每个线程都有自己的java虚拟机栈，</strong></p>
+<p>如果一个线程执行一个方法，<strong>就会对这个方法调用创建一个栈帧</strong></p>
+<p>栈帧里就会有这个方法的局部变量表，操作数栈，动态链表，方法出口等</p>
+<p>在执行方法的时候会创建栈桢，压入到java虚拟机栈中，当方法执行完成时们，就会把对应方法的栈桢，从java虚拟机中出栈</p>
+</li>
+</ul>
+<figure data-type="image" tabindex="7"><img src="images/javaxunijizhan.png" alt="img.png" loading="lazy"></figure>
+<ul>
+<li>java堆内存<br>
+主要存放我们创建的对象</li>
+</ul>
+<p>核心内存区域的全流程串讲<br>
+<img src="images/jvm_allprocess.png" alt="img.png" loading="lazy"></p>
+<pre><code class="language-java">    class kafka{
+    public static void main(String[] args){
+        Magage manage = new Magage();
+    }
+    public class Manage{
+        int i ;
+        public int excute(){
+            i ++;
+            return i;
+        }
+    }
+}
+</code></pre>
+<p>首先你的JVM进程会启动，加载你的Kafka类到内存⾥。</p>
+<p>然后有⼀个main线程，开始执⾏你的Kafka中的main()⽅法。</p>
+<p>main线程是关联了⼀个程序计数器的，那么他执⾏到哪⼀⾏指令，就会记录在这⾥<br>
+⼤家结合上图中的程序计数器来理解⼀下。</p>
+<p>其次，就是main线程在执⾏main()⽅法的时候，会在main线程关联的Java虚拟机栈⾥，压⼊⼀个main()⽅法的栈帧。</p>
+<p>接着会发现需要创建⼀个ReplicaManager类的实例对象，此时会加载ReplicaManager类到内存⾥来。</p>
+<p>然后会创建⼀个ReplicaManager的对象实例分配在Java堆内存⾥，并且在main()⽅法的栈帧⾥的局部变量表引⼊⼀个<br>
+“replicaManager”变量，让他引⽤ReplicaManager对象在Java堆内存中的地址。</p>
+<h2 id="jvm垃圾回收机制">JVM垃圾回收机制</h2>
+<h3 id="jvm的垃圾回收机制是用来干嘛的为什么要垃圾回收">JVM的垃圾回收机制是用来干嘛的？为什么要垃圾回收？</h3>
+<p>一旦方法执行完毕，压入栈桢中的方法就会出栈，栈桢里的局部变量也就没有了<br>
+也就是说没有一个变量指向java堆内存中的实例变量了<br>
+<img src="images/jvm_lajihuishou.png" alt="img.png" loading="lazy"></p>
+<p>核心的知识点来了，java堆内存中的实例对象已经没有人引用它了。这个对象实际上已经没用了</p>
+<p>内存资源是有限的。</p>
+<p>我们在java堆内存里创建的对象都是占用内存资源的，而且内存资源有限。</p>
+<p>对于不用的对象，我们应该怎么处理呢？</p>
+<p>答案呼之欲出：<strong>JVM垃圾回收机制</strong></p>
+<p>JVM本身就有垃圾回收机制的，它是一个<strong>后台自动运行的线程。</strong></p>
+<p>你只要启动一个JVM进程，他就会自动携带一个垃圾回收的后台线程。</p>
+<p>这个线程会在后台不断检测jvm堆内存中的各个实力对象。</p>
+<p>那些不在被人引用的实例对象，即jvm中的<strong>垃圾</strong>，就会定期的被后台垃圾回收线程清理掉</p>
+<figure data-type="image" tabindex="8"><img src="images/jvm_lajihuishouxianchen.png" alt="img.png" loading="lazy"></figure>
+<p>思考题：加载到方法区的内会被回收吗，什么时候回收？为什么？</p>
+<ol>
+<li>该类的实例对象不存在时</li>
+<li>该类的classLoader 不在被使用时</li>
+<li>该类的class对象不再被使用时</li>
+</ol>
+<h3 id="jvm分代模型">JVM分代模型</h3>
+<p>java将堆内存划分为新生代代  老年代</p>
+<p>咱们平时创建出来的对象，一般情况就是两种</p>
+<ol>
+<li>一种是短期存活的对象，分配在堆内存后，迅速被垃圾回收</li>
+<li>一种是长期存活的对象，需要一直活在堆内存里，供程序后续使用</li>
+</ol>
+<p>对象什么情况下进入年新生代什么情况下进入老年代</p>
+<p><strong>大部分对象都优先在新生代分配内存</strong></p>
+<pre><code class="language-java">        
+   public KafKa{
+    public static Manage manage = new Manage();
+            
+}
+
+</code></pre>
+<p>类manage的静态变量的对象 new manage() 会长期存活在堆内存中<br>
+哪怕是这样，你开始创建 new manage() 对象的时候，他也是分配到新生代里</p>
+<p>JVM 有一条规定<br>
+如果一个对象在新生代中，在15次垃圾回收之后，还没有被回收掉，说明它已经15岁了<br>
+这是对象的年龄，每次垃圾回收，如果对象没有被回收掉，那么它的年龄就会—加1<br>
+达到一定的年龄限制后，会被认为是长期存活的对象。</p>
+<p>然后会被转移到Java 堆内存中的老年代。</p>
+<p><strong>思考题</strong><br>
+老年代会进行垃圾回收吗？<br>
+答案是肯定的，只要是不被引用的对象就会被回收。</p>
+<p><strong>跟JVM内存相关的介个核心参数图解</strong><br>
+在JVM内存分配中，几个核心参数比较重要</p>
+<pre><code>    1. -Xms java堆内存的大小
+    2. -Xmx java堆内存的最大大小
+    3. -Xmn java堆内存中新生代大小，扣除新生代剩下的就是老年代的内存了
+    4. -XX:PermSize 永久代大小 java1.8之后替换为 -XX:MetaSpaceSize 
+    5. -XX:MaxPermSize 永久代的最大大小 java1.8之后替换为  -XX:MaxMetaSpaceSize
+    6. -Xss:每个线程的栈内存大小
+</code></pre>
+<figure data-type="image" tabindex="9"><img src="images/jvm_params.png" alt="img.png" loading="lazy"></figure>
+<p><strong>如何启动JVM参数</strong></p>
+<p><strong>如何设置堆内存大小</strong></p>
+<pre><code>根据对象创建的速度和对象的大小（每个属性的占用的字节数） 去估算
+</code></pre>
+<p><strong>如何设置永久代大小</strong></p>
+<pre><code>一般设置个几百兆
+</code></pre>
+<p><strong>如何设置栈内存大小</strong></p>
+<pre><code> 默认512kb -1M
+</code></pre>
+<p><strong>什么时候会触发垃圾回收</strong><br>
+生代核心的垃圾回收触发时机</p>
+<pre><code>新生代快满的时候就会触发垃圾回收
+</code></pre>
+<p>几个触发老年代GC的时机**</p>
+<pre><code>1.第一是老年代的可用内存大小小于新生代的全部对象，如果没有开启空间担保参数，就只直接触发FullGC，所以一般空间担保参数都会打开
+2.第二是老年代可用的内存大小，小于历次新生代GC后进入老年代的平均大小，此时会提前触发FullGC；
+3.第三是新生代MinorGC后存活对象大于Survivor，那么就会进入老年代，此时老年代内存不足
+4.-XX:CMSInitialingOccparencyFaction
+</code></pre>
+<p><strong>被哪些变量引用的对象是不能被回收的</strong></p>
+<pre><code>  新生代快满时，进行垃圾回收的时候，到底哪些对能能够被回收，哪些对象不能被回收
+  JVM运用了**可达性分析算法**，来判断哪些对象是可以被回收的，哪些对象是不能被回收的。
+  这个算法的意思就是，**每个对象都分析一下，有谁在引用它，然后一层层向上判断，看看是否又一个GCROOT**
+  一句话总结：**就是只要你的对象被方法的局部变量或者类的静态变量引用，就不会回收它**
+</code></pre>
+<p><strong>java中对象的不同引用类型</strong></p>
+<pre><code>关于引用与垃圾回收的关系，就是java里，有不同的引用类型
+强引用，软引用，弱引用，虚引用
+强引用：一个变量引用一个对象，只要是强引用的对象，垃圾回收机制都不会去回收它
+软引用：对象里面包裹着的那个对象，正常情况下，垃圾回收机制是不会回收软引用的对象的，但是发现内存还是不够存放新的对象时，
+       内存都快溢出了，这是会把软引用的对象给回收掉，哪怕它被变量引用者，但是因为它是软引用还是要被回收掉
+弱引用：很好理解，就是没有引用，如果发生垃圾回收，就会把这个垃圾回收掉
+虚引用：
+</code></pre>
+<p><strong>finalize()方法的作用</strong></p>
+<h3 id="jvm垃圾回收算法">JVM垃圾回收算法</h3>
+<ol>
+<li>
+<p>复制算法（新生代的垃圾回收算法）</p>
+<pre><code> 所谓的复制算法就是把新生代分为两块，使用其中一块，待那块区域快满的时候，把存活的对象放到另一块区域
+ 保证没有内存碎片，接着一次性回收，原来那块内存区域的垃圾对象，再次空出来一块内存区域。
+ **两块内存区域都这么重复循环使用着**
+</code></pre>
+</li>
+</ol>
+<p><strong>复制算法的缺点</strong><br>
+如果分配了1G的新生代内存，那么只有512M可以使用，有一半的内存是浪费的<br>
+至始至终只有一半的内存可以用，对内存的使用效率太低了。</p>
+<p><strong>复制算法的优化</strong>Eden和Survivor<br>
+真正的复制算法会做如下优化<br>
+把新生代的内存分成3块，<br>
+一个Eden区两个Survivor区，Eden占80%的内存空间，每一个Survivor各占10%<br>
+<img src="images/jvm_copy_suanfa.png" alt="img_1.png" loading="lazy"></p>
+<pre><code>1.刚开始对象分配在eden区，如果eden的内存快满了就会触发垃圾回收。
+2.此时就会把eden区存活的对象一次性转移到一块空的survivor区，接着eden区被清空
+3.接着再分配对象到eden区，这时eden区和一块survivor是有对象的，其中survivor区存放的是上一次minor GC 存活下来的对象 
+4.如果下次eden区满，再次触发minorGC，就会把Eden区和放着上一次minorGC存活对的survivor区内的存活对象转移到另一块survivor区
+</code></pre>
+<p>因为之前分析了每次垃圾回收，存活下来的对象1%，这样的设计就用100M的空间来存放每次垃圾回收之后存活下来的对象<br>
+始终保存一块survivor区是空着的<br>
+最大的好处就是只有10% 的空间是空闲的。90%的内存都用上了。<br>
+无论是垃圾回收的性能，还是内存碎片的控制，都非常好</p>
+<p><strong>对象如何进入老年代</strong></p>
+<p>1.15岁规则</p>
+<pre><code>默认设置下，当对象的年龄达到15岁的时候，也就是躲过15次GC的时候，他就会转移到老年代里去。
+这个具体是多少岁进入老年代，可以通过JVM参数 **-XX:MAXTenuringThreshold**来设置，默认是15岁
+</code></pre>
+<p>2.动态对象年龄判断:这个规则也会让新生代对象进入老年代</p>
+<pre><code>规则逻辑：年龄1+年龄2+年龄3+...+年龄N，对象的总和超过了Survivor区的50%，
+此时就会把年龄n以上的对象都放在老年代。
+</code></pre>
+<p>3.大对象直接进入老年代</p>
+<pre><code>有一个JVM参数，就是 -XX:PretenureSizeThreshold可以把它的值设置为字节数，比如 1048576，就是1M。
+它的意思就是，如果你要创建一个大于这个大小的对象，比如一个超大的数组，或者别的啥东西，就直接把这个对象放到老年代里去，压根不会经过新生代
+之所以这么做，就是要避免新生代里出现那种大对象，然后屡次躲过GC，还得把它在两个survivor来回复制多次才能进入老年代，这么大的一个对象在内存中来回复制不是很耗时吗
+</code></pre>
+<p><strong>Minor GC 后的对象太多无法存入Survivor区怎么办</strong></p>
+<p>这个时候必须要把这些对象发在老年代区中<br>
+<img src="images/jvm_kongjiandanbao.png" alt="img.png" loading="lazy"></p>
+<p><strong>老年代空间分配担保规则</strong><br>
+如果新生代有大量对象存活，确实是自己的Survivor区放不下了，必须转移到老年代中区？、，<br>
+那么老年代的空间也不够存放这些对象，那怎么办</p>
+<pre><code>首先在执行任何一次minorGC之前，JVM会先检查一下老年代可用的可用空间内存。
+为啥要检查呢？如果所有的对象都存活下来，那不是新生代的全部对象都要进入老年代？
+
+如果老年代的内存大小大于新生代的所有对象，此时就可以放心大胆的对新生代发起一起minorGC了，即使minorGC之后，所有的对象都存活下来了，Survivor区放不下，也可以转移到老年代去。
+但是假如执行MinorGC之前，发现老年代的可用内存已经小于新生代的全部对象大小了，就会看一个 **-XX:HandlePromotionFailure**的参数是否设置了
+    如果有这个参数的设置，就是看看老年代的内存大小，是否大于之前每一次MonirGC之后进入老年代的对象平均大小，就会执行MinorGC
+        此时执行minorGC 有三种情况
+            1.第一种可能，minorGC 过后，剩余的存活对象的大小，是小于Survivor区的大小的，那么此时存活的对象进入Survivor区即可。
+            2.第二种可能， minorGC过后，剩余存活对象的大小，是大于SUrvivor区域的大小，但是小于老年代可能的内存大小的，此时直接进入老年代即可。
+            3.第三种可能，很不幸，minorGC过后，剩余存活对象的大小，是大于Survivor区域的大小，也大于老年代可用内存的大小，
+                此时老年代都存放不下这些存活的对象，就会发生**HandlePromotionFailure**的情况，这个时候就会触发一次FullGC
+               
+    如果上诉判断失败了，或者**-XX:HandlePromotionFailure**参数没有设置，就会直接触发一次**Fully GC**,就是对老年代对象进行回收，尽量腾出一些内存来，然后执行 MinorGC
+
+    如果 Full GC 过后，老年代没有足够的空间存放monir GC过后剩余的存活对象，那么此时就会导致所谓的oom，内存溢出了
+</code></pre>
+<p>Full GC就是对老年代进行垃圾回收，同时也一般会对新生代进行垃圾回收。</p>
+<p>2.标记整理算法(老年代的垃圾回收算法)</p>
+<pre><code>老年代采用的算法是标记整理算法
+</code></pre>
+<p>标记存活的对象，把他们尽量的移动到一块，避免垃圾回收有过多的垃圾内存碎片，再一次性把垃圾对象回收掉<br>
+值得注意的是，老年代的垃圾回收算法，比新生代的垃圾回收算法慢十倍，如果系统频繁的出现老年代的垃圾回收fullGc，会导致系统性能严重影响甚至出现卡顿。</p>
+<p>彻底理解了jvm运行原理就会知道，<strong>所谓jvm优化，就是尽可能的让对象在新生代里分配和回收，尽量避免太多的对象频繁进入老年代，避免频繁对老年代进行垃圾回收，<br>
+同时给系统足够的内存大小，避免频繁的对新生代的对象进行垃圾回收。</strong></p>
+<h3 id="jvm垃圾回收器">JVM垃圾回收器</h3>
+<p><strong>JVM的痛点： stop the world</strong><br>
+因为在垃圾回收的时候，尽可能的让垃圾回收器专心致志的工作，不能让我们写的java系统继续创建对象，所以此时jvm后台会进入 stop the world 的状态<br>
+也就是说他会直接停止掉我们写的系统的所有工作线程，让我们的代码不在运行，然后让垃圾回收线程专心致志的做垃圾回收的工作。</p>
+<figure data-type="image" tabindex="10"><img src="images/stop_the_world.png" alt="img.png" loading="lazy"></figure>
+<p>接着一旦垃圾回收完毕，就可以恢复我们java系统工作线程运行了</p>
+<p><strong>stop the world 造成的系统停顿</strong></p>
+<pre><code>无论是新生代还是老年代，都尽量避免频率过高，也避免持续时间过长，避免影响系统正常运行，这是使用jvm运行过程中最需要优化的一个地方，也是最大的一个痛点。
+</code></pre>
+<p><strong>不同的垃圾回收器不同的影响</strong></p>
+<p>新生代</p>
+<pre><code>serial垃圾回收器:就是利用一个线程进行垃圾回收，然后此时停止工作线程，所以我们在服务程序中很少用这种
+
+parNew：平时常用的新生代垃圾回收器，它针对服务器都是多核cpu做了优化，它支持多线程垃圾回收，大幅度提升了回收的性能，缩短回收时间
+</code></pre>
+<p>老年代</p>
+<pre><code>        G1
+</code></pre>
+<h4 id="parnew垃圾回收器">parNew垃圾回收器</h4>
+<p><strong>parNew大致原理图如下</strong></p>
+<figure data-type="image" tabindex="11"><img src="images/parNew.png" alt="img.png" loading="lazy"></figure>
+<p><strong>如何为线上系统指定使用parNew垃圾收集器</strong></p>
+<pre><code>在启动系统里使用参数 -XX:+UseParNewGC
+</code></pre>
+<p><strong>parNew垃圾回收器默认情况下的线程数量</strong></p>
+<pre><code>默认给自己设置的垃圾回收线程的数量就是跟cpu的核数一致
+但是你一定要调节parNew垃圾回收器回收线程数量也是可以的，使用 **-XX:ParallelGCThread** 设置参数即可设置它的线程数量，但是建议一般不要随便动这个参数
+</code></pre>
+<h4 id="cms垃圾回收器">CMS垃圾回收器</h4>
+<p><strong>CMS垃圾回收的基本原理</strong></p>
+<pre><code>采用的是标记-清理算法
+将垃圾对象标记出来，然后清理
+这样存在一个问题，就是造成很多垃圾碎片，浪费内存。
+</code></pre>
+<p>CMS垃圾回收器采用的是垃圾回收线程和工作线程尽可能的同时执行的模式来处理。</p>
+<p><strong>CMS如何实现系统一边工作的同时进行垃圾回收</strong></p>
+<pre><code>cms在执行垃圾回收的过程一共分为四个阶段：
+1.初使标记
+2.并发标记
+3.重新标记
+4.并发清理
+</code></pre>
+<p>1.首先CMS进行垃圾回收时，会先执行<strong>初始标记阶段</strong>，这个阶段会<strong>让系统全部停止工作</strong>，进入 stop the world 的状态</p>
+<p><img src="images/cms_chushibiaoji.png" alt="img.png" loading="lazy"><br>
+但其实影响并不大，因为它的速度很快，仅仅是标记GC Root直接引用的对象</p>
+<p>2.进入第二阶段，并发标记阶段，这个阶段会让工作线程随意创建各种对象，继续运行<br>
+第二阶段就是对老年代所有对象进行GC ROOT 追踪，其实是最耗时的，<br>
+它需要追踪所有对象是否从根源上被GC ROOT 引用了，但是这个阶段是最耗时的，是跟系统程序并发进行的，所以这恶搞阶段不行对系统运行造成影响。<br>
+3.接着会进入第三阶段，重新标记阶段，<br>
+再次进入stop the world 的状态，<br>
+这个重新标记阶段速度是很快的，他其实就是对第二阶段中被系统程序运行变动的少数对象进行标记，所以速度是很快的。<br>
+4.接着重新恢复系统运行，进入第四阶段：<strong>并发清理</strong><br>
+这个阶段让系统随意运行，然后他来清理之前标记的垃圾对象即可。<br>
+这个阶段其实很耗时的，因为需要进行垃圾对象的清理，但是它是跟着系统并发进行的，所以其实也不影响系统程序的执行。</p>
+<p><strong>对CMS垃圾回收机制进行性能分析</strong><br>
+因为最耗时的，其实就是对老年代全部对象进行GC ROOR 跟踪，标记出来到底哪些可以回收，然后就是对各种垃圾对象从内存中清理掉，这是最耗时的。<br>
+但是它的第二阶段和第四阶段，都是和系统程序并发执行的，所以基本这两个最耗时的阶段对性能影响不大。<br>
+只有第一阶段和第三阶段需要 stop the world 的，但是这两个阶段都是简单的标记，速递非常快，所以基本上对系统的影响也不大。</p>
+<p><strong>CMS垃圾回收期间的一些细节问题</strong><br>
+并发回收导致CPU资源紧张<br>
+CMS垃圾回收器有一个最大的问题，虽然能在垃圾回收的同时让系统工作，但是大家有没有发现，在并发标记和并发清理两个最耗时的阶段，<br>
+垃圾回收线程和系统工作线程同时工作，会导致CPU资源被垃圾回收线程占了一部分。</p>
+<pre><code>并发标记的时候需要对GC ROOT 进行深度追踪看所有对象里面到底有多少是存活的对象
+
+但是因为老年代里存活的对象比较多，这个过程会追踪大量的对象，所以比较耗时，
+
+并发清理，有需要把垃圾对象从各种随机内存位置清理掉，也是比较耗时的。
+
+所以这两个阶段，CMS的垃圾回收线程比较消耗cpu资源的，CMS默认启动的垃圾回收线程数量是（CPU核数+3）/4 垃圾回收线程
+</code></pre>
+<p>所以其实CMS这个并发回收机制，第一个问题就是<strong>会消耗CPU资源</strong></p>
+<p>Concurrent Mode Failure问题</p>
+<pre><code>在并发清理阶段CMS 只不过是回收之前标记好的垃圾对象
+
+但是这个阶段系统一直在运行，可能会随着系统运行让一些对象进入老年代，同时还变成垃圾对象，这种垃圾对象就是 浮动垃圾
+因为他虽然成了垃圾，但是CMS只能回收之前标记出来的垃圾对象，不会回收他们，需要等到下一次GC的时候回收他们
+</code></pre>
+<p>CMS垃圾回收的触发时机，其中一个就是老年代占用内存达到一定比例，就自动执GC</p>
+<p><strong>-XX:CMSInitialingOccparencyFaction</strong> 参数可以用来设置老年代占用多少比例的时候触发CMS垃圾回收。<br>
+<strong>JDK1.6里面的默认值是92%</strong><br>
+也就是说，老年代占用92%空间了，就会自动进行CMS垃圾回收，预留8%的空间给并发回收期间，系统会把一些新对象放入老年代中。</p>
+<p>那么如果CMS垃圾回收期间，系统程序要放入老年代的对象大于可用空间对象，此时会如何？</p>
+<p>这个时候，会发生 Concurrent Mode Failure</p>
+<p>此时，就是直接强行把系统程序 stop the world，重新进行 GC ROOTS 追踪，标记出来全部垃圾对象，不允许新的对象产生</p>
+<p>然后把垃圾对象全部回收掉，完事了在恢复系统程序。</p>
+<p>所以在生产实践中，这个自动触发CMS垃圾回收的比例需要合理优化一下，避免 Concurrent Mode Failure 问题</p>
+<p><strong>内存碎片的问题</strong><br>
+CMS不是完全仅仅用<strong>标记-清理</strong>算法，因为太对的内存碎片，实际上会导致更加频繁的fullGC</p>
+<p>CMS有一个参数是 <strong>-XX:+UseCMSCompactAtFullCollection</strong> 默认就打开的</p>
+<p>它的意思就是在FullGC之后，再次进行 stop the world，停止工作线程，然后进行碎片整理，把存活的对象挪到一起，<br>
+空出来大片的连续的内存空间，避免内存碎片。</p>
+<p>还有一个参数是 -XX:CMSFullGCsBeforeCompaction ,这个意思是执行多少次FullGC之后，再进行一次内存碎片的整理工作，<br>
+默认值是0 ，意思是每一次FullGC之后，都会进行一次内存整理</p>
+<p><strong>几个触发老年代GC的时机</strong></p>
+<pre><code>1.第一是老年代的可用内存大小小于新生代的全部对象，如果没有开启空间担保参数，就只直接触发FullGC，所以一般空间担保参数都会打开
+2.第二是老年代可用的内存大小，小于历次新生代GC后进入老年代的平均大小，此时会提前触发FullGC；
+3.第三是新生代MinorGC后存活对象大于Survivor，那么就会进入老年代，此时老年代内存不足
+4.-XX:CMSInitialingOccparencyFaction
+</code></pre>
+<h4 id="g1垃圾回收器">G1垃圾回收器</h4>
+<p><strong>parNew+CMS 组合让我们有哪些痛点</strong><br>
+stop the world 这是最痛的一个痛点</p>
+<p>G1垃圾回收器可以同时回收新生代和老年代的对象，不需要两个两个垃圾回收器配合运作。</p>
+<p>他一个人就能搞定所有的垃圾回收。</p>
+<p>他最大的特点就是把java堆内存拆分成多个大小相等的Region，</p>
+<p>然后G1 也有新生代和老年的概念，只不过是逻辑上概念，也就是说新生代包含了某些region，老年代包含了某些region</p>
+<p>而且G1最大的一个特点，就是可以让我们<strong>设置一个垃圾回收的预期停顿时间</strong><br>
+在一个时间内，垃圾回收导致的系统停顿时间不能超过多久，G1全权给你负责，保证达到这个目标。</p>
+<p><strong>G1是如何做到对垃圾回收导致系统停顿是可控的</strong></p>
+<pre><code>其实G1如果要做到这一点，他就必须要追踪每个region里的回收价值，
+他必须搞清楚每个region里有多少是垃圾对象，如果对这个region进行垃圾回收，需要消耗多长时间，可以回收掉多少垃圾
+最后在垃圾回收的时候，尽量把垃圾回收对系统造成影响控制在你指定的时间范围内，同时在有限的时间内，尽量回收可能更多的垃圾对象。
+这就是G1核心设计思路。
+</code></pre>
+<p><strong>如何设定G1对应的内存大小</strong></p>
+<pre><code>我们都知道G1对应的是⼀⼤堆的Region内存区域，每个Region的⼤⼩是⼀致的。
+其实这个默认情况下⾃动计算和设置的，我们可以给整个堆内存设置⼀个⼤⼩，⽐如说⽤“-Xms”和“-Xmx”来设置堆内存的⼤⼩。
+然后JVM启动的时候⼀旦发现你使⽤的是G1垃圾回收器，可以使⽤“-XX:+UseG1GC”来指定使⽤G1垃圾回收器，此时会⾃动⽤堆⼤⼩
+除以2048
+因为JVM最多可以有2048个Region，然后Region的⼤⼩必须是2的倍数，⽐如说1MB、2MB、4MB之类的。
+
+⽐如说堆⼤⼩是4G，那么就是4096MB，此时除以2048个Region，每个Region的⼤⼩就是2MB。⼤概就是这样⼦来决定Region的数
+量和⼤⼩的，⼤家⼀般保持默认的计算⽅式就可以
+如果通过⼿动⽅式来指定，则是“-XX:G1HeapRegionSize”
+刚开始的时候，默认新⽣代对堆内存的占⽐是5%，也就是占据200MB左右的内存，对应⼤概是100个Region，这个是可以通过“-
+XX:G1NewSizePercent”来设置新⽣代初始占⽐的，其实维持这个默认值即可。
+因为在系统运⾏中，JVM其实会不停的给新⽣代增加更多的Region，但是最多新⽣代的占⽐不会超过60%，可以通过“-
+XX:G1MaxNewSizePercent”。
+⽽且⼀旦Region进⾏了垃圾回收，此时新⽣代的Region数量还会减少，这些其实都是动态的。
+</code></pre>
+<p><strong>G1的新生代垃圾回收</strong></p>
+<pre><code>G1的新生代也有Eden和Survivor的区分那么触发垃圾回收机制是类似的
+随着不停的在新生代的Eden对应的Region中放对象，JVM就会不停的给新生代加入更多的Region，直到新生代占据堆内存大小的最大比例60%
+
+这个时候还是会触发新生代GC，G1，就会用用之前的复制算法，来进行垃圾回收，就会进入一个 stop the world 状态
+然后Eden对应的Region中存活的对象放在S1对应的Region中，接着回收掉Eden对应的Region中的垃圾对象。
+
+但是这个过程跟之前是有区别的，因为G1是可以设定目标GC停顿时间，也就是G1执行GC的时候最多可以让系统停顿多长时间，可以
+通过“-XX:MaxGCPauseMills”参数来设定，默认值是200ms。
+
+那么G1就会通过之前说的，对每个Region追踪回收他需要多少时间，可以回收多少对象来选择回收⼀部分的Region，保证GC停顿时间
+控制在指定范围内，尽可能多的回收掉⼀些对象。
+</code></pre>
+<p><strong>对象什么时候进⼊⽼年代？</strong></p>
+<pre><code>⼤家都知道，在G1的内存模型下，新⽣代和⽼年代各⾃都会占据⼀定的Region，⽼年代也会有⾃⼰的Region
+按照默认新⽣代最多只能占据堆内存60%的Region来推算，⽼年代最多可以占据40%的Region，⼤概就是800个左右的Region。
+那么对象什么时候从新⽣代进⼊⽼年代呢？
+可以说跟之前⼏乎是⼀样的，还是这么⼏个条件：
+
+（1）对象在新⽣代躲过了很多次的垃圾回收，达到了⼀定的年龄了，“-XX:MaxTenuringThreshold”参数可以设置这个年龄，他就会进
+⼊⽼年代
+（2）动态年龄判定规则，如果⼀旦发现某次新⽣代GC过后，存活对象超过了Survivor的50%
+此时就会判断⼀下，⽐如年龄为1岁，2岁，3岁，4岁的对象的⼤⼩总和超过了Survivor的50%，此时4岁以上的对象全部会进⼊⽼年
+代，这就是动态年龄判定规则
+⼤家看下图，所以经过⼀段时间的新⽣代使⽤和垃圾回收之后，总有⼀些对象会进⼊⽼年代中。
+</code></pre>
+<p><strong>⼤对象Region</strong></p>
+<pre><code>⼤家此时可能会疑惑了，唉？以前说是那种⼤对象也是可以直接进⼊⽼年代的，那么现在在G1的这套内存模型下呢？
+实际上这⾥会有所改变，G1提供了专⻔的Region来存放⼤对象，⽽不是让⼤对象进⼊⽼年代的Region中。
+在G1中，⼤对象的判定规则就是⼀个⼤对象超过了⼀个Region⼤⼩的50%，⽐如按照上⾯算的，每个Region是2MB，只要⼀个⼤对象
+超过了1MB，就会被放⼊⼤对象专⻔的Region中
+⽽且⼀个⼤对象如果太⼤，可能会横跨多个Region来存放。
+https://apppukyptrl1086.pc.xiaoe-tech.com/detail/i_5d11e34610610_u5mTbQgL/1?from=p_5d0ef9900e896_MyDfcJi8&amp;type=6 6/7
+肯定还有⼈会问，那堆内存⾥哪些Region⽤来存放⼤对象啊？
+不是说60%的给新⽣代，40%的给⽼年代吗，那还有哪些Region给⼤对象？
+很简单，之前说过了，在G1⾥，新⽣代和⽼年代的Region是不停的变化的
+⽐如新⽣代现在占据了1200个Region，但是⼀次垃圾回收之后，就让⾥⾯1000个Region都空了，此时那1000个Region就可以不属于新
+⽣代了，⾥⾯很多Region可以⽤来存放⼤对象。
+那么还有⼈会问了，⼤对象既然不属于新⽣代和⽼年代，那么什么时候会触发垃圾回收呢？
+也很简单，其实新⽣代、⽼年代在回收的时候，会顺带带着⼤对象Region⼀起回收，所以这就是在G1内存模型下对⼤对象的分配和回
+收的策略。
+</code></pre>
+<p>YoungGC 指年轻代GC<br>
+OldGC 指老年代GC<br>
+FullGC 指年轻代老年代永久代共同的GC</p>
+<p>YoungGC的触发时机<br>
+其实一般就是新生代Eden区域满了之后就会触发。采用的是复制算法来回收新生代垃圾</p>
+<p>OldGC 和FullGC的触发时机<br>
+有3个条件，概括成一句话就是，老年代空间也不够了，没办法放入更多的对象</p>
+<p>FullGc 其实就是包含了YoungGC 和OldGC</p>
+<p><strong>永久代满了怎么办</strong></p>
+<p>假如存放永久代的类信息，常量池满了之后，就会触发一次FullGC。<br>
+如果回收之后发现没腾出来更多的地方，只能抛出内存不够的异常。</p>
+<h3 id="jvm实战">JVM实战</h3>
+<h4 id="自己动手模拟出频繁younggc的场景体验一下">自己动手模拟出频繁YoungGC的场景体验一下！</h4>
+<p>https://apppukyptrl1086.pc.xiaoe-tech.com/detail/i_5d11e5a85d6b2_DwhvAoB3/1?from=p_5d0ef9900e896_MyDfcJi8&amp;type=6</p>
+<p><strong>如何打印初JVM日志</strong></p>
+<ol>
+<li>
+<p>-XX:+PrintGCDetils：打印详细的gc⽇志</p>
+</li>
+<li>
+<p>-XX:+PrintGCTimeStamps：这个参数可以打印出来每次GC发⽣的时间</p>
+</li>
+<li>
+<p>-Xloggc:gc.log：这个参数可以设置将gc⽇志写⼊⼀个磁盘⽂件</p>
+<pre><code> -XX:NewSize=5242880
+ -XX:MaxNewSize=5242880
+ -XX:InitialHeapSize=10485760
+ -XX:MaxHeapSize=10485760
+ -XX:SurvivorRatio=8
+ -XX:PretenureSizeThreshold=10485760
+ -XX:+UseParNewGC
+ -XX:+UseConcMarkSweepGC
+ -XX:+PrintGCDetails
+ -XX:+PrintGCTimeStamps
+ -Xloggc:gc.log
+</code></pre>
+</li>
+</ol>
+<p><strong>JVM的YoungGC日志</strong></p>
+<p>https://apppukyptrl1086.pc.xiaoe-tech.com/detail/i_5d11e5cb74122_FMDnQJY8/1?from=p_5d0ef9900e896_MyDfcJi8&amp;type=6</p>
+<h4 id="自己动手模拟出对象进入老年代的场景体验一下">自己动手模拟出对象进入老年代的场景体验一下</h4>
+<p>https://apppukyptrl1086.pc.xiaoe-tech.com/detail/i_5d11e5f81ddb5_Lb2e4fEx/1?from=p_5d0ef9900e896_MyDfcJi8&amp;type=6</p>
+<p>https://apppukyptrl1086.pc.xiaoe-tech.com/detail/i_5d11e621d622a_fQtn5OrT/1?from=p_5d0ef9900e896_MyDfcJi8&amp;type=6</p>
+<p><strong>JVM的Full GC日志</strong></p>
+<p>https://apppukyptrl1086.pc.xiaoe-tech.com/detail/i_5d11e648db045_G5rICbYJ/1?from=p_5d0ef9900e896_MyDfcJi8&amp;type=6</p>
+<h4 id="使用jstat摸清线上系统的jvm运行状况">使用jstat摸清线上系统的JVM运行状况</h4>
+<p>https://apppukyptrl1086.pc.xiaoe-tech.com/detail/i_5d11e6b3c5c6a_K6Xk3Bs1/1?from=p_5d0ef9900e896_MyDfcJi8&amp;type=6</p>
+<p>平常我们对运行中的系统，如果要检查他的JVM整体的运行情况，比较实用的工具就是 jstat</p>
+<p><strong>jstat -gc PID</strong><br>
+首先第一个命令就是在你们生产的机器的linux上，找到你们java进程的PID</p>
+<p>运⾏这个命令之后会看到如下列，给⼤家解释⼀下：</p>
+<ol>
+<li>S0C：这是From Survivor区的⼤⼩</li>
+<li>S1C：这是To Survivor区的⼤⼩</li>
+<li>S0U：这是From Survivor区当前使⽤的内存⼤⼩</li>
+<li>S1U：这是To Survivor区当前使⽤的内存⼤⼩</li>
+<li>EC：这是Eden区的⼤⼩</li>
+<li>EU：这是Eden区当前使⽤的内存⼤⼩</li>
+<li>OC：这是⽼年代的⼤⼩</li>
+<li>OU：这是⽼年代当前使⽤的内存⼤⼩</li>
+<li>MC：这是⽅法区（永久代、元数据区）的⼤⼩</li>
+<li>MU：这是⽅法区（永久代、元数据区）的当前使⽤的内存⼤⼩</li>
+<li>YGC：这是系统运⾏迄今为⽌的Young GC次数</li>
+<li>YGCT：这是Young GC的耗时</li>
+<li>FGC：这是系统运⾏迄今为⽌的Full GC次数</li>
+<li>FGCT：这是Full GC的耗时</li>
+<li>GCT：这是所有GC的总耗时</li>
+</ol>
+<p><strong>其他的jstat命令</strong></p>
+<ol>
+<li>jstat -gccapacity PID：堆内存分析</li>
+<li>jstat -gcnew PID：年轻代GC分析，这⾥的TT和MTT可以看到对象在年轻代存活的年龄和存活的最⼤年龄</li>
+<li>jstat -gcnewcapacity PID：年轻代内存分析</li>
+<li>jstat -gcold PID：⽼年代GC分析</li>
+<li>jstat -gcoldcapacity PID：⽼年代内存分析</li>
+<li>jstat -gcmetacapacity PID：元数据区内存分析</li>
+</ol>
+<p><strong>到底该如何使用jstat工具</strong></p>
+<p>新生代对象的增长速率</p>
+<p>jstat -gc 1000 10 ：每隔1s更新最新的一行jstat统计信息，一共执行10次jstat</p>
+<p><strong>Young GC的触发频率和每次耗时</strong></p>
+<p><strong>每次Young GC 后多少对象是存活的和进入老年代的</strong></p>
+<h4 id="使用jmap和jhat摸清线上系统的对象分布">使用jmap和jhat摸清线上系统的对象分布</h4>
+<p>使用jstat就可以非常轻松便捷的了解到线上系统的运行状态，从对象增速，Young GC 触发频率以及耗时，再到对象进入老年代的增速，以及Full GC 触发频率以及耗时，可以完全摸清楚线上系统JVM运行情况</p>
+<p>到底什么对象占据了这么大的内存</p>
+<p>先看一个命令 <strong>jmap -heap PID</strong></p>
+<p>使用jmap 了解系统运行时对象分布式</p>
+<p>jmap -histo PID :如果想了解JVM中对象内存的占用情况</p>
+<p>使用jmap生成堆内存存储快照</p>
+<p>jmap -dump:live,format=b,file=dump.hprof PID</p>
+<p>这个命令会在当前目录下生成一个dump.hprof文件，这里是一个二进制文件，他把 这一时刻JVM堆内存里所有对象的快照都放到这个文件中<br>
+供后续分析</p>
+<p>5.使用jhat 在浏览器中分析堆转出快照<br>
+使用如下命令可以启动jhat服务器，还可以指定自己想要的http端口号，默认好似7000端口<br>
+jhat dump.hprof -port 7000</p>
+<p>如何分析JVM运行状况及合理优化？</p>
+<p>优化思路其实简单来说就是一句话：<br>
+尽量让每次Young GC 存活的对象小于survivor区域的50Z5，都留在年轻代里；尽量别让对象进入老年代。<br>
+尽量减少fullGC的频率，避免Full GC对JVM性能的影响。</p>
+<p>比较 常用的监控系统：<br>
+Zabbix OpenFalcon Ganglia 等等</p>
+<p>然后部署你的系统，把JVM的监控项发送到这些监控系统中，此时你就可以在这些监控系统中可视化的界面看到你需要的指标数据</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#jvm%E4%BB%8E0%E5%88%B0%E5%AE%9E%E6%88%98">JVM从0到实战</a>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+<li><a href="#%E5%A4%A7%E7%BA%B2">大纲</a></li>
+<li><a href="#jvm%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86">JVM运行原理</a>
+<ul>
+<li><a href="#jvm%E6%A0%B8%E5%BF%83%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B">JVM核心运行流程</a></li>
+<li><a href="#jvm%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6">JVM类加载机制</a></li>
+<li><a href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%92%8C%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6">类加载器和双亲委派机制</a></li>
+<li><a href="#jvm%E4%B8%AD%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F">JVM中内存区域</a></li>
+</ul>
+</li>
+<li><a href="#jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6">JVM垃圾回收机制</a>
+<ul>
+<li><a href="#jvm%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E6%98%AF%E7%94%A8%E6%9D%A5%E5%B9%B2%E5%98%9B%E7%9A%84%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6">JVM的垃圾回收机制是用来干嘛的？为什么要垃圾回收？</a></li>
+<li><a href="#jvm%E5%88%86%E4%BB%A3%E6%A8%A1%E5%9E%8B">JVM分代模型</a></li>
+<li><a href="#jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95">JVM垃圾回收算法</a></li>
+<li><a href="#jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8">JVM垃圾回收器</a>
+<ul>
+<li><a href="#parnew%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8">parNew垃圾回收器</a></li>
+<li><a href="#cms%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8">CMS垃圾回收器</a></li>
+<li><a href="#g1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8">G1垃圾回收器</a></li>
+</ul>
+</li>
+<li><a href="#jvm%E5%AE%9E%E6%88%98">JVM实战</a>
+<ul>
+<li><a href="#%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E6%A8%A1%E6%8B%9F%E5%87%BA%E9%A2%91%E7%B9%81younggc%E7%9A%84%E5%9C%BA%E6%99%AF%E4%BD%93%E9%AA%8C%E4%B8%80%E4%B8%8B">自己动手模拟出频繁YoungGC的场景体验一下！</a></li>
+<li><a href="#%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E6%A8%A1%E6%8B%9F%E5%87%BA%E5%AF%B9%E8%B1%A1%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E5%9C%BA%E6%99%AF%E4%BD%93%E9%AA%8C%E4%B8%80%E4%B8%8B">自己动手模拟出对象进入老年代的场景体验一下</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8jstat%E6%91%B8%E6%B8%85%E7%BA%BF%E4%B8%8A%E7%B3%BB%E7%BB%9F%E7%9A%84jvm%E8%BF%90%E8%A1%8C%E7%8A%B6%E5%86%B5">使用jstat摸清线上系统的JVM运行状况</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8jmap%E5%92%8Cjhat%E6%91%B8%E6%B8%85%E7%BA%BF%E4%B8%8A%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%88%86%E5%B8%83">使用jmap和jhat摸清线上系统的对象分布</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zuolinlin.github.io/zuo.github.io/post/dubbo/">
+              <h3 class="post-title">
+                Dubbo
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">zuozuozuo</a>
+  <a class="rss" href="https://zuolinlin.github.io/zuo.github.io//atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
