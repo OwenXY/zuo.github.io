@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zuolinlin.github.io/zuo.github.io/</id>
     <title>zuolinlin</title>
-    <updated>2022-04-08T13:46:58.124Z</updated>
+    <updated>2022-04-08T14:15:28.520Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zuolinlin.github.io/zuo.github.io/"/>
     <link rel="self" href="https://zuolinlin.github.io/zuo.github.io/atom.xml"/>
@@ -673,7 +673,28 @@ address: zookeeper://127.0.0.1:2181
         <link href="https://zuolinlin.github.io/zuo.github.io/post/springboot/">
         </link>
         <updated>2022-04-08T13:32:48.000Z</updated>
-        <content type="html"><![CDATA[<p>springboot</p>
+        <content type="html"><![CDATA[<h1 id="springboot">springboot</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#SpringBoot2%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8">SpringBoot2核心技术-基础入门</a>
+<ul>
+<li><a href="#Spring%E4%B8%8ESpringBoot">Spring与SpringBoot？</a></li>
+<li><a href="#SpringBoot2%E5%85%A5%E9%97%A8">SpringBoot2入门</a></li>
+<li><a href="#%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86">自动配置原理</a></li>
+</ul>
+</li>
+<li><a href="#SpringBoot2%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD">SpringBoot2核心技术-核心功能</a>
+<ul>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">配置文件？</a></li>
+<li><a href="#Web%E5%BC%80%E5%8F%91">Web开发</a></li>
+<li><a href="#Web%E5%BC%80%E5%8F%91">Web开发</a></li>
+<li><a href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">单元测试</a></li>
+<li><a href="#%E6%8C%87%E6%A0%87%E7%9B%91%E6%8E%A7">指标监控</a></li>
+<li><a href="#%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90">原理解析</a></li>
+</ul>
+</li>
+<li><a href="#SpringBoot2%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E5%9C%BA%E6%99%AF%E6%95%B4%E5%90%88">SpringBoot2核心技术-场景整合</a></li>
+</ul>
 ]]></content>
     </entry>
     <entry>
