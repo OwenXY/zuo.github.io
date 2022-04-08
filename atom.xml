@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zuolinlin.github.io/zuo.github.io/</id>
     <title>zuolinlin</title>
-    <updated>2022-04-08T13:36:31.634Z</updated>
+    <updated>2022-04-08T13:40:45.442Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zuolinlin.github.io/zuo.github.io/"/>
     <link rel="self" href="https://zuolinlin.github.io/zuo.github.io/atom.xml"/>
@@ -10,6 +10,72 @@
     <logo>https://zuolinlin.github.io/zuo.github.io/images/avatar.png</logo>
     <icon>https://zuolinlin.github.io/zuo.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, zuolinlin</rights>
+    <entry>
+        <title type="html"><![CDATA[Dubbo]]></title>
+        <id>https://zuolinlin.github.io/zuo.github.io/post/dubbo/</id>
+        <link href="https://zuolinlin.github.io/zuo.github.io/post/dubbo/">
+        </link>
+        <updated>2022-04-08T13:39:07.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="dubbo">Dubbo</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a>
+<ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+</ul>
+</li>
+<li><a href="#%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%9E%B6%E6%9E%84">概念与架构</a>
+<ul>
+<li><a href="#%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0">服务发现</a></li>
+<li><a href="#%E5%8D%8F%E8%AE%AE">协议</a></li>
+<li><a href="#%E6%B5%81%E9%87%8F%E7%AE%A1%E7%90%86">流量管理</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE">配置</a></li>
+<li><a href="#%E9%83%A8%E7%BD%B2%E6%9E%B6%E6%9E%84">部署架构</a></li>
+<li><a href="#%E6%89%A9%E5%B1%95%E6%80%A7">扩展性</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="目录-2">目录</h1>
+<h2 id="简介">简介</h2>
+<p>Apache Dubbo 是一款微服务开发框架，它提供了 RPC通信 与 微服务治理 两大关键能力。<br>
+这意味着，使用 Dubbo 开发的微服务，将具备相互之间的远程发现与通信能力， 同时利用 Dubbo 提供的丰富服务治理能力，可以实现诸如服务发现、负载均衡、流量调度等服务治理诉求。<br>
+同时 Dubbo 是高度可扩展的，用户几乎可以在任意功能点去定制自己的实现，以改变框架的默认行为来满足自己的业务需求。</p>
+<p>全新服务发现模型</p>
+<pre><code>相比于 2.x 版本中的基于接口粒度的服务发现机制，3.x 引入了全新的基于应用粒度的服务发现机制， 新模型带来两方面的巨大优势：
+
+进一步提升了 Dubbo3 在大规模集群实践中的性能与稳定性。新模型可大幅提高系统资源利用率，降低 Dubbo 地址的单机内存消耗（50%），降低注册中心集群的存储与推送压力（90%）， Dubbo 可支持集群规模步入百万实例层次。
+打通与其他异构微服务体系的地址互发现障碍。新模型使得 Dubbo3 能实现与异构微服务体系如Spring Cloud、Kubernetes Service、gRPC 等，在地址发现层面的互通， 为连通 Dubbo 与其他微服务体系提供可行方案。
+在 Dubbo3 前期版本将会同时提供对两套地址发现模型的支持，以最大程度保证业务升级的兼容性。
+</code></pre>
+<p>一站式微服务解决方案</p>
+<p>Dubbo 提供了从服务定义、服务发现、服务通信到流量管控等几乎所有的服务治理能力，并且尝试从使用上对用户屏蔽底层细节，以提供更好的易用性。</p>
+<p>定义服务在 Dubbo 中非常简单与直观，可以选择使用与某种语言绑定的方式（如 Java 中可直接定义 Interface），也可以使用 Protobuf IDL 语言中立的方式。无论选择哪种方式，站在服务消费方的视角，都可以通过 Dubbo 提供的透明代理直接编码。</p>
+<p>需要注意的是，在 Dubbo 中，我们提到服务时，通常是指 RPC 粒度的、提供某个具体业务增删改功能的接口或方法，与一些微服务概念书籍中泛指的服务并不是一个概念。</p>
+<p>点对点的服务通信是 Dubbo 提供的另一项基本能力，Dubbo 以 RPC 的方式将请求数据（Request）发送给后端服务，并接收服务端返回的计算结果（Response）。RPC 通信对用户来说是完全透明的，使用者无需关心请求是如何发出去的、发到了哪里，每次调用只需要拿到正确的调用结果就行。同步的 Request-Response 是默认的通信模型，它最简单但却不能覆盖所有的场景，因此，Dubbo 提供更丰富的通信模型：</p>
+<p>消费端异步请求(Client Side Asynchronous Request-Response)<br>
+提供端异步执行（Server Side Asynchronous Request-Response）<br>
+消费端请求流（Request Streaming）<br>
+提供端响应流（Response Streaming）<br>
+双向流式通信（Bidirectional Streaming）<br>
+Dubbo 的服务发现机制，让微服务组件之间可以独立演进并任意部署，消费端可以在无需感知对端部署位置与 IP 地址的情况下完成通信。Dubbo 提供的是 Client-Based 的服务发现机制，使用者可以有多种方式启用服务发现：</p>
+<p>使用独立的注册中心组件，如 Nacos、Zookeeper、Consul、Etcd 等。<br>
+将服务的组织与注册交给底层容器平台，如 Kubernetes，这被理解是一种更云原生的方式</p>
+<h2 id="概念与架构">概念与架构</h2>
+<h3 id="服务发现">服务发现</h3>
+<p>服务发现<br>
+服务发现，即消费端自动发现服务地址列表的能力，是微服务框架需要具备的关键能力，借助于自动化的服务发现，微服务之间可以在无需感知对端部署位置与 IP 地址的情况下实现通信。</p>
+<p>实现服务发现的方式有很多种，Dubbo 提供的是一种 Client-Based 的服务发现机制，通常还需要部署额外的第三方注册中心组件来协调服务发现过程，如常用的 Nacos、Consul、Zookeeper 等，Dubbo 自身也提供了对多种注册中心组件的对接，用户可以灵活选择。</p>
+<p>Dubbo 基于消费端的自动服务发现能力，其基本工作原理如下图：</p>
+<figure data-type="image" tabindex="1"><img src="./images/dubbo_architecture.png" alt="dubbo_architecture" loading="lazy"></figure>
+<p>服务发现的一个核心组件是注册中心，Provider 注册地址到注册中心，Consumer 从注册中心读取和订阅 Provider 地址列表。 因此，要启用服务发现，需要为 Dubbo 增加注册中心配置：</p>
+<p>以 dubbo-spring-boot-starter 使用方式为例，增加 registry 配置</p>
+<pre><code class="language-yml"># application.properties
+  dubbo
+  registry
+address: zookeeper://127.0.0.1:2181
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[springboot]]></title>
         <id>https://zuolinlin.github.io/zuo.github.io/post/springboot/</id>
@@ -6857,16 +6923,6 @@ Node节点一般都是部署在每天Mysql机器上的，因为Node节点通过�
 <p>-传递代码就是将新行为作为参数传递给方法。<br>
 但是在Java8之前实现起来很啰嗦，在java8之前可以适应匿名内部类来减少，1.8可以使用lambda表达式来</p>
 <p>关于stream的使用</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[随笔]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/sui-bi/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/sui-bi/">
-        </link>
-        <updated>2022-04-05T07:58:50.000Z</updated>
-        <content type="html"><![CDATA[<p>有些人并不是你的花 ，你只是途径了它的绽放。<br>
-2022.04.04</p>
 ]]></content>
     </entry>
 </feed>
