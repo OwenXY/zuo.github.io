@@ -1,22 +1,107 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://zuolinlin.github.io/zuo.github.io/</id>
-    <title>zuolinlin</title>
-    <updated>2022-04-08T13:20:08.396Z</updated>
-    <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://zuolinlin.github.io/zuo.github.io/"/>
-    <link rel="self" href="https://zuolinlin.github.io/zuo.github.io/atom.xml"/>
-    <subtitle>你要问我如何去二仙桥，我会告诉你走成华大道，可你要问人生，我也说不清。</subtitle>
-    <logo>https://zuolinlin.github.io/zuo.github.io/images/avatar.png</logo>
-    <icon>https://zuolinlin.github.io/zuo.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2022, zuolinlin</rights>
-    <entry>
-        <title type="html"><![CDATA[mysql]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/mysql/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/mysql/">
-        </link>
-        <updated>2022-04-08T13:18:19.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="mysql">mysql</h1>
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>mysql | zuolinlin</title>
+<link rel="shortcut icon" href="https://zuolinlin.github.io/zuo.github.io//favicon.ico?v=1649424004937">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zuolinlin.github.io/zuo.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="mysql | zuolinlin - Atom Feed" href="https://zuolinlin.github.io/zuo.github.io//atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="mysql
+目录
+
+
+mysql基础架构
+
+mysql架构设计
+InnoDB存储引擎的架构设计
+
+[buffer pool](#buffer pool)
+[redo log](#redo log)
+[undo log](#undo log)..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zuolinlin.github.io/zuo.github.io/">
+  <img class="avatar" src="https://zuolinlin.github.io/zuo.github.io//images/avatar.png?v=1649424004937" alt="">
+  </a>
+  <h1 class="site-title">
+    zuolinlin
+  </h1>
+  <p class="site-description">
+    你要问我如何去二仙桥，我会告诉你走成华大道，可你要问人生，我也说不清。
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              mysql
+            </h2>
+            <div class="post-info">
+              <span>
+                2022-04-08
+              </span>
+              <span>
+                77 min read
+              </span>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://img2.baidu.com/it/u=386207633,576554623&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=GIF?w=500&amp;h=277" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="mysql">mysql</h1>
 <h2 id="目录">目录</h2>
 <ul>
 <li>
@@ -1108,186 +1193,191 @@ Node节点一般都是部署在每天Mysql机器上的，因为Node节点通过�
 <p>然后用es来进行复杂搜索，找出一波主键id，再根据主键id去分库分表里找到完整数据。</p>
 <p>分库分表的玩法基本都是这套思路，按业务id分库分表，建立索引映射表的同时进行分库分表，数据同步到es做复杂搜索，</p>
 <p>基本这套玩法就可以保证你的分库分表的场景下，各种业务都可以执行</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[idea 找不到符号]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/idea-zhao-bu-dao-fu-hao/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/idea-zhao-bu-dao-fu-hao/">
-        </link>
-        <updated>2022-04-07T13:12:32.000Z</updated>
-        <content type="html"><![CDATA[<p>在使用IDEA的时候，经常出现过找不到包或者找不到符号的情况，可以尝试以下几种方式来解决</p>
-<p>1.如果项目使用的是Maven可以使用Maven-Reimport<br>
-<img src="https://zuolinlin.github.io/zuo.github.io//post-images/1649337559961.png" alt="" loading="lazy"><br>
-2.还可以 Invalidate and Restart （无效并重新启动）<br>
-<img src="https://zuolinlin.github.io/zuo.github.io//post-images/1649337602794.png" alt="" loading="lazy"><br>
-3.重新编译<br>
-1.打开Project Structure --&gt;Modules 找到项目编译输出目录<br>
-<img src="https://zuolinlin.github.io/zuo.github.io//post-images/1649337677309.png" alt="" loading="lazy"><br>
-2.将target目录下文件清空<br>
-<img src="https://zuolinlin.github.io/zuo.github.io//post-images/1649337720835.png" alt="" loading="lazy"><br>
-3.右键项目重新build<br>
-<img src="https://zuolinlin.github.io/zuo.github.io//post-images/1649337751258.png" alt="" loading="lazy"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[函数式编程]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/han-shu-shi-bian-cheng/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/han-shu-shi-bian-cheng/">
-        </link>
-        <updated>2022-04-05T13:58:04.000Z</updated>
-        <content type="html"><![CDATA[<pre><code>行为参数化就是让一个方法接受多种不同的行为作为参数，并且在内部使用他们，完成不同行为的能力。
-行为参数化可以让代码更好的适应不断变化的要求，减轻未来的工作量。
-</code></pre>
-<pre><code class="language-java">
 
-</code></pre>
-<p>-传递代码就是将新行为作为参数传递给方法。<br>
-但是在Java8之前实现起来很啰嗦，在java8之前可以适应匿名内部类来减少，1.8可以使用lambda表达式来</p>
-<p>关于stream的使用</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[随笔]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/sui-bi/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/sui-bi/">
-        </link>
-        <updated>2022-04-05T07:58:50.000Z</updated>
-        <content type="html"><![CDATA[<p>有些人并不是你的花 ，你只是途径了它的绽放。<br>
-2022.04.04</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Spring Cloud Alibaba底层原理]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/spring-cloud-alibaba-di-ceng-yuan-li/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/spring-cloud-alibaba-di-ceng-yuan-li/">
-        </link>
-        <updated>2022-03-27T12:30:32.000Z</updated>
-        <content type="html"><![CDATA[<p>Spring Cloud Alibaba底层原理</p>
-<p>组件</p>
-<p>nacos：服务注册中心 配置中心</p>
-<p>dubbo：RPC调用框架  负载均衡  远程调用</p>
-<p>sentinel:限流</p>
-<p>seata：分布式事务管理</p>
-<figure data-type="image" tabindex="1"><img src="/Users/develop/code/java-stack/docs/framework/images/springcloudAlibaba.png" alt="img_1.png" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[UML]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/uml/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/uml/">
-        </link>
-        <updated>2022-03-27T11:32:04.000Z</updated>
-        <content type="html"><![CDATA[<p>统一建模语言(Unified Modeling Language，UML)是一种为面向对象系统的产品进行说明、可视化和编制文档的一种标准语言，是非专利的第三代建模和规约语言。UML是面向对象设计的建模工具，独立于任何具体程序设计语言。</p>
-<p>UML系统开发中有三个主要的模型： [3]<br>
-功能模型：从用户的角度展示系统的功能，包括用例图。 [3]<br>
-对象模型：采用对象，属性，操作，关联等概念展示系统的结构和基础，包括类别图、对象图。 [3]<br>
-动态模型：展现系统的内部行为。包括序列图，活动图，状态图。 [3]</p>
-<p>序列图（也叫左时序图，顺序图）</p>
-<p>为什么要绘制时序图？<br>
-我们编码的时候，知道有的用例的业务逻辑按照比较确定的时间先后顺序进行展开。这时候，我们就需要知道我们设计的系统中的不同类之间传递消息（可以认为是不同对象函数间的调用）要按照怎么样的顺序、传递什么消息、返回什么消息。这时候用时序图是最好不过的了</p>
-<p>时序图的定义：</p>
-<p>时序图是描述消息时间顺序的交互图。在图形上，时序图是一张表，其中显示的对象沿横轴排列，从左到右分布在图的顶部；而消息则沿纵轴按时间顺序排序。创建时序图时，以能够使图尽量简洁为依据布局。</p>
-<p>时序图创建步骤</p>
-<p>1、确定交互过程的上下文；</p>
-<p>2、识别参与过程的交互对象；</p>
-<p>3、为每个对象设置生命线；</p>
-<p>4、从初始消息开始，依次画出随后消息；</p>
-<p>5、考虑消息的嵌套，标示消息发生时的时间点，则采用FOC（focus of control）；</p>
-<p>6、说明时间约束的地点。</p>
-<p>时序图的元素<br>
-我们在画时序图时会涉及7种元素：角色(Actor)、对象(Object)、生命线(LifeLine)、控制焦点(Activation)、消息(Message)、自关联消息、组合片段。其中前6种是比较常用和重要的元素，剩余的一种组合片段元素不是很常用，但是比较复杂。我们先介绍前6种元素，在单独介绍组合片段元素。</p>
-<p>角色(Actor)<br>
-系统角色，可以是人或者其他系统，子系统。以一个小人图标表示。<br>
-对象(Object)<br>
-对象位于时序图的顶部,以一个矩形表示。对象的命名方式一般有三种：<br>
-1 对象名和类名。例如：华为手机:手机、loginServiceObject:LoginService。<br>
-2 只显示类名，不显示对象，即为一个匿名类。例如：:手机、:LoginSservice。<br>
-3 只显示对象名，不显示类名。例如：华为手机:、loginServiceObject:。<br>
-生命线(LifeLine)<br>
-时序图中每个对象和底部中心都有一条垂直的虚线，这就是对象的生命线(对象的时间线)。以一条垂直的虚线表。<br>
-控制焦点(Activation)<br>
-控制焦点代表时序图中在对象时间线上某段时期执行的操作。以一个很窄的矩形表示。<br>
-消息(Message)<br>
-表现代表对象之间发送的信息。消息分为三种类型。<br>
-同步消息(Synchronous Message)<br>
-消息的发送者把控制传递给消息的接收者，然后停止活动，等待消息的接收者放弃或者返回控制。用来表示同步的意义。以一条实线+实心箭头表示。<br>
-异步消息(Asynchronous Message)<br>
-消息发送者通过消息把信号传递给消息的接收者，然后继续自己的活动，不等待接受者返回消息或者控制。异步消息的接收者和发送者是并发工作的。以一条实线+大于号表示。<br>
-返回消息(Return Message)<br>
-返回消息表示从过程调用返回。以小于号+虚线表示。<br>
-自关联消息<br>
-表示方法的自身调用或者一个对象内的一个方法调用另外一个方法。以一个半闭合的长方形+下方实心剪头表示。</p>
-<p>组合片段<br>
-组合片段用来解决交互执行的条件和方式，它允许在序列图中直接表示逻辑组件，用于通过指定条件或子进程的应用区域，为任何生命线的任何部分定义特殊条件和子进程。组合片段共有13种，名称及含义如下：</p>
-<p><img src="https://zuolinlin.github.io/zuo.github.io//post-images/1648381778972.png" alt="" loading="lazy"><br>
-<img src="https://zuolinlin.github.io/zuo.github.io//post-images/1648381787741.png" alt="" loading="lazy"></p>
-<p>常用组合片段举例</p>
-<p>抉择（Alt）<br>
-抉择在任何场合下只发生一个序列。 可以在每个片段中设置一个临界来指示该片段可以运行的条件。else 的临界指示其他任何临界都不为 True 时应运行的片段。如果所有临界都为 False 并且没有 else，则不执行任何片段。Alt片段组合可以理解为if..else if...else条件语句</p>
-<p>选项（Opt）<br>
-包含一个可能发生或不发生的序列。Opt相当于if..语句。</p>
-<p>循环（Loop）<br>
-片段重复一定次数，可以在临界中指示片段重复的条件。Loop相当于for语句。</p>
-<p>并行（Par）<br>
-并行处理，片段中的事件可以并行交错。Par相当于多线程。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[navicat]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/navicat/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/navicat/">
-        </link>
-        <updated>2022-03-23T14:23:02.000Z</updated>
-        <content type="html"><![CDATA[<!-- more -->
-<p>使用navicat生成逆向模型</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[git]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/git/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/git/">
-        </link>
-        <updated>2022-03-23T14:22:17.000Z</updated>
-        <content type="html"><![CDATA[<p>Git高速下载地址：https://npm.taobao.org/mirrors/git-for-windows/</p>
-<p><a href="hhttps://blog.csdn.net/unique_perfect/article/details/104833391">Git以及Github的使用</a></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[idea]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/wo-er-ti-yu/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/wo-er-ti-yu/">
-        </link>
-        <updated>2022-03-22T15:14:10.000Z</updated>
-        <content type="html"><![CDATA[<ul>
-<li>snoarline</li>
-<li>lombok</li>
-<li>restfultool</li>
-<li>translation</li>
-<li>codata</li>
-<li>FindBugs</li>
-<li>Alibaba Java Coding Guidelines</li>
-<li>CodeGlance</li>
-<li>MyBatisCodeHelperPro</li>
-<li>Free-idea-mybatis</li>
-<li>github copilot</li>
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#mysql">mysql</a>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
 </ul>
-<p>JetBrains</p>
-<pre><code>账号: linlinzuo    Kupcu4-davqiq-hosdaf  邮箱：zuoxiyue@outlook.com
-账号：qiaosiye     xiyuezuo1993@         邮箱：878522146@qq.com
-账号：yuezuo     Kupcu4-davqiq-hosdaf         邮箱：zuoxiyue2022@163.com
-账号：xizuo      Kupcu4-davqiq-hosdaf   邮箱：zuoxiyue202204@163.com Ymqctx2022
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[maven]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/re-wu-ta-ren/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/re-wu-ta-ren/">
-        </link>
-        <updated>2022-03-22T12:46:20.000Z</updated>
-        <content type="html"><![CDATA[<p><a href="https://blog.csdn.net/TZ845195485/article/details/111661715">MAVEN01_概述+核心概念+IDEA中如何插件项目</a><br>
-<a href="https://blog.csdn.net/TZ845195485/article/details/111767726">MAVEN02_依赖范围+依赖冲突+解决冲突+继承聚合</a></p>
-]]></content>
-    </entry>
-</feed>
+</li>
+<li><a href="#%E7%9B%AE%E5%BD%95-2">目录</a>
+<ul>
+<li><a href="#mysql%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84">Mysql基础架构</a>
+<ul>
+<li><a href="#mysql%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1">Mysql架构设计</a></li>
+<li><a href="#innodb%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1">InnoDB存储引擎的架构设计</a>
+<ul>
+<li><a href="#buffer-pool">buffer pool</a></li>
+<li><a href="#redo-log">redo log</a></li>
+<li><a href="#undo-log">undo log</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8B%E5%8A%A1">事务</a>
+<ul>
+<li><a href="#%E5%A4%9A%E4%BA%8B%E5%8A%A1%E5%B9%B6%E5%8F%91%E6%9B%B4%E6%96%B0%E6%88%96%E8%80%85%E6%9F%A5%E8%AF%A2%E7%9A%84%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98">多事务并发更新或者查询的数据问题</a>
+<ul>
+<li><a href="#%E8%84%8F%E5%86%99">脏写</a></li>
+<li><a href="#%E8%84%8F%E8%AF%BB">脏读</a></li>
+<li><a href="#%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB">不可重复读</a></li>
+<li><a href="#%E5%B9%BB%E8%AF%BB">幻读</a></li>
+</ul>
+</li>
+<li><a href="#sql%E6%A0%87%E5%87%86%E4%B8%AD%E5%AF%B9%E4%BA%8B%E5%8A%A1%E7%9A%844%E4%B8%AA%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB">SQL标准中对事务的4个隔离级别</a>
+<ul>
+<li><a href="#read-uncommitted-%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4%E6%98%AF%E4%B8%8D%E5%85%81%E8%AE%B8%E8%84%8F%E5%86%99%E7%9A%84">read uncommitted 读未提交：是不允许脏写的</a></li>
+<li><a href="#read-committed-rc-%E8%AF%BB%E5%B7%B2%E6%8F%90%E4%BA%A4%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%8F%91%E7%94%9F%E8%84%8F%E5%86%99%E5%92%8C%E8%84%8F%E8%AF%BB">read committed  RC 读已提交：不可能发生脏写和脏读</a></li>
+<li><a href="#repeatable-read-rr-%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%8F%91%E7%94%9F%E8%84%8F%E8%AF%BB%E8%84%8F%E5%86%99%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB">repeatable read RR 可重复读：不可能发生脏读脏写，不可重复读</a></li>
+<li><a href="#serializable-%E4%B8%B2%E8%A1%8C%E5%8C%96">serializable 串行化</a></li>
+</ul>
+</li>
+<li><a href="#spring%E5%AF%B9%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%94%AF%E6%8C%81">spring对事务的支持</a></li>
+<li><a href="#%E9%80%8F%E5%BD%BB%E5%89%96%E6%9E%90mysql%E7%9A%84mvcc%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E6%9C%BA%E5%88%B6">透彻剖析Mysql的MVCC事务隔离机制</a>
+<ul>
+<li><a href="#undo-log%E7%89%88%E6%9C%AC%E9%93%BE">Undo log版本链</a></li>
+<li><a href="#readview%E6%9C%BA%E5%88%B6">ReadView机制</a></li>
+<li><a href="#read-committed%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E6%98%AF%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8Ereadview%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E7%9A%84">Read Committed隔离级别是如何基于ReadView机制实现的？</a></li>
+<li><a href="#mysql%E6%9C%80%E7%89%9B%E7%9A%84rr%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E6%98%AF%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8Ereadview%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E7%9A%84">MySQL最牛的RR隔离级别，是如何基于ReadView机制实现的？</a></li>
+</ul>
+</li>
+<li><a href="#%E5%A4%9A%E4%B8%AA%E4%BA%8B%E5%8A%A1%E6%9B%B4%E6%96%B0%E5%90%8C%E4%B8%80%E8%A1%8C%E6%95%B0%E6%8D%AE%E6%97%B6%E6%98%AF%E5%A6%82%E4%BD%95%E5%8A%A0%E9%94%81%E9%81%BF%E5%85%8D%E8%84%8F%E5%86%99%E7%9A%84">多个事务更新同一行数据时，是如何加锁避免脏写的？</a>
+<ul>
+<li><a href="#%E5%85%B1%E4%BA%AB%E9%94%81">共享锁</a></li>
+<li><a href="#%E7%8B%AC%E5%8D%A0%E9%94%81">独占锁</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9C%A8%E8%A1%A8%E7%BA%A7%E5%88%AB%E5%8A%A0%E9%94%81">在表级别加锁</a></li>
+<li><a href="#%E7%B4%A2%E5%BC%95">索引</a>
+<ul>
+<li><a href="#%E7%A3%81%E7%9B%98%E4%B8%8A%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84">磁盘上数据页的存储结构</a></li>
+</ul>
+</li>
+<li><a href="#%E9%A1%B5%E5%88%86%E8%A3%82%E7%9A%84%E8%BF%87%E7%A8%8B">页分裂的过程</a></li>
+<li><a href="#%E4%B8%BB%E9%94%AE%E7%B4%A2%E5%BC%95">主键索引</a></li>
+<li><a href="#b%E6%A0%91%E5%AE%9E%E7%8E%B0%E7%B4%A2%E5%BC%95%E7%9A%84%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84">B+树实现索引的物理结构</a></li>
+<li><a href="#%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95">聚簇索引</a></li>
+<li><a href="#%E9%92%88%E5%AF%B9%E4%B8%BB%E9%94%AE%E4%B9%8B%E5%A4%96%E7%9A%84%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5%E5%BB%BA%E7%AB%8B%E7%B4%A2%E5%BC%95%E7%9A%84%E5%8E%9F%E7%90%86">针对主键之外的其他字段建立索引的原理</a></li>
+<li><a href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9">索引的优缺点</a></li>
+<li><a href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99">索引的使用规则</a></li>
+<li><a href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E8%AE%BE%E8%AE%A1%E8%A7%84%E5%88%99">索引的设计规则</a></li>
+<li><a href="#%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92">执行计划</a></li>
+<li><a href="#sql%E8%B0%83%E4%BC%98">Sql调优</a></li>
+</ul>
+</li>
+<li><a href="#mysql%E7%89%A9%E7%90%86%E5%AD%98%E5%82%A8">mysql物理存储</a>
+<ul>
+<li><a href="#varchar%E8%BF%99%E7%A7%8D%E5%8F%98%E9%95%BF%E5%AD%97%E6%AE%B5%E5%9C%A8%E7%A3%81%E7%9B%98%E4%B8%8A%E5%88%B0%E5%BA%95%E6%98%AF%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E7%9A%84">VARCHAR这种变长字段，在磁盘上到底是如何存储的</a></li>
+<li><a href="#%E4%B8%80%E8%A1%8C%E6%95%B0%E6%8D%AE%E4%B8%AD%E7%9A%84%E5%A4%9A%E4%B8%AAnull%E5%AD%97%E6%AE%B5%E5%80%BC%E5%9C%A8%E7%A3%81%E7%9B%98%E4%B8%8A%E6%80%8E%E4%B9%88%E5%AD%98%E5%82%A8">一行数据中的多个NULL字段值在磁盘上怎么存储</a></li>
+<li><a href="#%E7%A3%81%E7%9B%98%E6%96%87%E4%BB%B6%E4%B8%AD40%E4%B8%AAbit%E4%BD%8D%E7%9A%84%E6%95%B0%E6%8D%AE%E5%A4%B4%E4%BB%A5%E5%8F%8A%E7%9C%9F%E5%AE%9E%E6%95%B0%E6%8D%AE%E6%98%AF%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E7%9A%84">磁盘文件中40个bit位的数据头以及真实数据是如何存储的</a></li>
+<li><a href="#%E4%B8%80%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%AE%9E%E9%99%85%E5%9C%A8%E7%A3%81%E7%9B%98%E4%B8%8A%E7%9A%84%E5%AD%98%E5%82%A8">一行数据实际在磁盘上的存储</a></li>
+<li><a href="#%E8%A1%8C%E6%BA%A2%E5%87%BA">行溢出</a></li>
+<li><a href="#%E8%A1%A8%E7%A9%BA%E9%97%B4">表空间</a></li>
+</ul>
+</li>
+<li><a href="#%E7%94%9F%E4%BA%A7%E5%AE%9E%E8%B7%B5">生产实践</a>
+<ul>
+<li><a href="#%E7%9C%9F%E5%AE%9E%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%BA%E5%99%A8%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E8%A7%84%E5%88%92">真实生产环境下的数据库机器配置如何规划</a></li>
+<li><a href="#%E4%BA%92%E8%81%94%E7%BD%91%E5%85%AC%E5%8F%B8%E7%9A%84%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E6%95%B0%E6%8D%AE%E5%BA%93%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%9A%84">互联网公司的生产环境数据库是如何进行性能测试的？</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E5%AF%B9%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9B%E8%A1%8C360%E5%BA%A6%E6%97%A0%E6%AD%BB%E8%A7%92%E5%8E%8B%E6%B5%8Bhttpsapppukyptrl1086pcxiaoe-techcomdetaili_5e383c5357307_mjhluwmb1fromp_5e0c2a35dbbc9_mndgdybatype6">如何对生产环境中的数据库进行360度无死角压测？（https://apppukyptrl1086.pc.xiaoe-tech.com/detail/i_5e383c5357307_MjhluwMb/1?from=p_5e0c2a35dbbc9_MNDGDYba&amp;type=6）</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E5%A4%9A%E4%B8%AAbuffer-pool%E6%9D%A5%E4%BC%98%E5%8C%96%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%B9%B6%E5%8F%91%E6%80%A7%E8%83%BD">如何通过多个Buffer Pool来优化数据库的并发性能</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87chunk%E6%9D%A5%E6%94%AF%E6%8C%81%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%90%E8%A1%8C%E6%9C%9F%E9%97%B4%E7%9A%84buffer-pool%E5%8A%A8%E6%80%81%E8%B0%83%E6%95%B4">如何通过chunk来支持数据库运行期间的Buffer Pool动态调整</a></li>
+<li><a href="#%E5%9C%A8%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8E%E6%9C%BA%E5%99%A8%E9%85%8D%E7%BD%AE%E6%9D%A5%E5%90%88%E7%90%86%E8%AE%BE%E7%BD%AEbuffer-pool">在生产环境中，如何基于机器配置来合理设置Buffer Pool</a></li>
+<li><a href="#linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%B1%82%E5%8E%9F%E7%90%86%E5%89%96%E6%9E%90%E4%BB%A5%E5%8F%8Aio%E8%B0%83%E5%BA%A6%E4%BC%98%E5%8C%96%E5%8E%9F%E7%90%86">Linux操作系统的存储系统软件层原理剖析以及IO调度优化原理</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8%E7%9A%84raid%E5%AD%98%E5%82%A8%E6%9E%B6%E6%9E%84%E5%88%9D%E6%AD%A5%E4%BB%8B%E7%BB%8D">数据库服务器使用的RAID存储架构初步介绍</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84raid%E5%AD%98%E5%82%A8%E6%9E%B6%E6%9E%84%E7%9A%84%E7%94%B5%E6%B1%A0%E5%85%85%E6%94%BE%E7%94%B5%E5%8E%9F%E7%90%86">数据库服务器上的RAID存储架构的电池充放电原理</a></li>
+<li><a href="#raid%E9%94%82%E7%94%B5%E6%B1%A0%E5%85%85%E6%94%BE%E7%94%B5%E5%AF%BC%E8%87%B4%E7%9A%84mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%A7%E8%83%BD%E6%8A%96%E5%8A%A8%E7%9A%84%E4%BC%98%E5%8C%96">RAID锂电池充放电导致的MySQL数据库性能抖动的优化</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5%E6%95%85%E9%9A%9C%E7%9A%84%E5%AE%9A%E4%BD%8Dtoomanyconnections">数据库无法连接故障的定位TooManyConnections</a></li>
+<li><a href="#%E7%BA%BF%E4%B8%8A%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E6%80%A7%E8%83%BD%E6%8A%96%E5%8A%A8%E4%BC%98%E5%8C%96">线上数据库不确定性的性能抖动优化</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#mysql%E4%B8%BB%E4%BB%8E%E6%9E%B6%E6%9E%84">mysql主从架构</a>
+<ul>
+<li><a href="#%E4%B8%BB%E4%BB%8E%E6%9E%B6%E6%9E%84%E7%9A%84%E5%8E%9F%E7%90%86">主从架构的原理</a></li>
+<li><a href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E6%9E%B6%E6%9E%84%E7%9A%84%E6%90%AD%E5%BB%BA%E6%9C%80%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84">主从复制架构的搭建(最基础架构)</a><br>
+*
+<ul>
+<li><a href="#%E4%B8%BB%E4%BB%8E%E5%8D%8A%E5%A4%8D%E5%88%B6%E7%94%9F%E4%BA%A7%E5%AE%9E%E8%B7%B5">主从半复制（生产实践）</a></li>
+<li><a href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E6%95%B0%E6%8D%AE%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98">主从复制数据延迟问题</a></li>
+<li><a href="#%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84">高可用架构</a></li>
+<li><a href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8">分库分表</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zuolinlin.github.io/zuo.github.io/post/idea-zhao-bu-dao-fu-hao/">
+              <h3 class="post-title">
+                idea 找不到符号
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">zuozuozuo</a>
+  <a class="rss" href="https://zuolinlin.github.io/zuo.github.io//atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
