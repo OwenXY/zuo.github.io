@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zuolinlin.github.io/zuo.github.io/</id>
     <title>zuolinlin</title>
-    <updated>2022-04-08T13:20:08.396Z</updated>
+    <updated>2022-04-08T13:21:18.569Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zuolinlin.github.io/zuo.github.io/"/>
     <link rel="self" href="https://zuolinlin.github.io/zuo.github.io/atom.xml"/>
@@ -10,6 +10,685 @@
     <logo>https://zuolinlin.github.io/zuo.github.io/images/avatar.png</logo>
     <icon>https://zuolinlin.github.io/zuo.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, zuolinlin</rights>
+    <entry>
+        <title type="html"><![CDATA[redis]]></title>
+        <id>https://zuolinlin.github.io/zuo.github.io/post/redis/</id>
+        <link href="https://zuolinlin.github.io/zuo.github.io/post/redis/">
+        </link>
+        <updated>2022-04-08T13:20:28.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="redis">redis</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li>
+<p><a href="#redis%E6%9E%B6%E6%9E%84">redis架构</a></p>
+<ul>
+<li><a href="#Redis%E6%8C%81%E4%B9%85%E5%8C%96">redis持久化</a>
+<ul>
+<li><a href="#RDB%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6">RDB持久化机制</a></li>
+<li><a href="#AOF%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6">AOF持久化机制</a></li>
+</ul>
+</li>
+<li><a href="#Redis%E4%B8%BB%E4%BB%8E">redis主从</a></li>
+<li><a href="#Redis%E5%93%A8%E5%85%B5">redis哨兵</a></li>
+<li><a href="#Redis%E9%9B%86%E7%BE%A4">redis集群</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#Redis%E5%8F%8C%E5%86%99%E4%B8%80%E8%87%B4%E6%80%A7">redis双写一致性</a></p>
+</li>
+<li>
+<p><a href="#Redis%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E3%80%81%E7%A9%BF%E9%80%8F%E3%80%81%E5%87%BB%E7%A9%BF">redis缓存雪崩、穿透、击穿</a></p>
+</li>
+<li>
+<p><a href="#Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86">redis分布式锁的实现原理</a></p>
+</li>
+<li>
+<p><a href="#redis%E5%AE%9E%E6%88%98">redis实战</a><br>
+-<a href="#string">string</a><br>
+-[setnx](#setnx redis分布式锁实现)<br>
+-<a href="#mset,mget,msetnx">mset,mget,msetnx</a><br>
+-<a href="#append">append</a><br>
+-<a href="#incr">incr</a><br>
+-<a href="#decr">decr</a><br>
+-<a href="#exists">exists</a><br>
+-<a href="#exists">del</a><br>
+-<a href="#type">type</a><br>
+-<a href="EXPIRE">EXPIRE</a><br>
+-<a href="#hash">hash</a><br>
+-<a href="#hset,hget">hset,hget</a><br>
+-<a href="#hincr,hdecr">hincr,hdecr</a><br>
+-<a href="#list">list</a><br>
+-<a href="#lpush">lpush</a><br>
+-[BRPOP BLPOP](#BRPOP BLPOP)<br>
+-[RPOPLPUSH BRPOPLPUSH](#RPOPLPUSH BRPOPLPUSH)<br>
+-[LINDEX LSET LINSERT LTRIM LREM ](#LINDEX LSET LINSERT LTRIM LREM )<br>
+-<a href="#set">set</a><br>
+-<a href="#sadd">sadd</a><br>
+-[BRPOP BLPOP](#BRPOP BLPOP)<br>
+-[RPOPLPUSH BRPOPLPUSH](#RPOPLPUSH BRPOPLPUSH)<br>
+-[LINDEX LSET LINSERT LTRIM LREM ](#LINDEX LSET LINSERT LTRIM LREM )</p>
+<p>-[sorted set](#sorted set)<br>
+-<a href="#HyperLoglog">HyperLoglog</a>；<br>
+-<a href="#bitmap">bitmap</a><br>
+-<a href="#GeoHash">GeoHash</a></p>
+</li>
+</ul>
+<h1 id="redis-2">redis</h1>
+<h2 id="目录-2">目录</h2>
+<h3 id="redis架构">Redis架构</h3>
+<h4 id="redis持久化">Redis持久化</h4>
+<p>redis持久化机制对于故障恢复意义</p>
+<pre><code>    数据备份和故障恢复，
+    如果没有持久化，redis遇到灾难性故障的时候，就会丢失所有的数据，
+    如果通过持久化将数据搞一份在磁盘上，然后定期同步到云服务器上，那么就可以保证数据不丢失全部，
+    还是可以恢复一部分
+</code></pre>
+<h5 id="rdb持久化机制">RDB持久化机制</h5>
+<p>RDB持久化机制原理介绍：每隔几分钟，生成redis内存数据的一份完整的快照<br>
+缺点：redis故障恢复时，数据对丢失的比AOF更多<br>
+主进程在fork RDB文件时，如果文件过大，可能导致服务暂停数毫秒，甚至数秒<br>
+优点：1.RDB会生成多个数据文件，每个文件都代表了某一时刻中redis的数据，这种多个数据文件的方式，特别适合做冷备。<br>
+2.RDB对外提供的读写服务，影响非常小，可以让redis保持高性能，因为redis主进程只需要fork一个子进程，让子进程执行磁盘IO操作来进行RDB持久化即可。<br>
+3.相对于AOF来说，直接基于RDB来重启和恢复redis进程，更加快速<br>
+AOF存放的是指令日志，做数据恢复的时候，其实要回放和执行所有指令日志，来恢复出来内存中的所有数据。<br>
+RDB，就是一份数据文件，恢复的时候，直接加载到内存中即可</p>
+<p>一般不要让redis的RDB间隔时间太长</p>
+<h5 id="aof持久化机制">AOF持久化机制</h5>
+<p>AOF持久化机制原理介绍：AOF机制对每条写入命令作为日志，以append-only的模式写入os cache 中，fsync 在将os cache数据输入缓存一个日志文件中，在redis重启的时候，<br>
+可以通过回放AOF日志中的写入命令来重构整个数据集。<br>
+如果我们想要redis仅仅作为纯内存的缓存来使用，那么可以禁止RDB和AOF所有持久化机制<br>
+如果想要同时使用RDB和AOF两种持久化机制，那么在redis重启的时候，会使用AOF来重构数据，因为AOF的数据更加完整<br>
+缺点：<br>
+优点：1.更好的保证数据不丢失，即使redis进程挂了，最多丢失1m的数据<br>
+2.AOF日志文件以append-only模式写入，写入性能非常高<br>
+3.AOF日志文件即使过大，出现后台重写操作，也不会影响客户端读写，因为在rewrite log的时候，会对其中的指令进行压缩，创建出一份需要恢复数据的最小日志出来，<br>
+在创建新日志文件的时候，老日志文件还是照常写入，当新的merge后日志文件ready的时候，再交换新老日志文件即可</p>
+<p>RDB和AOF如何选择：<br>
+redis是支持两种模式的持久化</p>
+<h4 id="redis主从">Redis主从</h4>
+<p>redis replication --&gt;  主从架构---&gt;读写分离---&gt;水平扩容支持高并发<br>
+读多写少：</p>
+<pre><code>一主多从，主负责写，并且将数据同步复制到其它slave节点，从节点负责读，所有的读请求全部走slave。
+进行扩容的
+</code></pre>
+<p>redis replication的核心机制：</p>
+<pre><code>    1.redis采用异步方式复制数据到slave节点，不过从redis 2.8开始，slave节点会周期性的确认自己每次复制数据量
+    2.一个master 可以配置多个slave node 
+    3.slave node也可以连接其它slave node 
+    4.slave node做复制的时候是不会block master node 的正常工作的
+    5.slave node在做复制的时候是不会block对自己的查询操作，它会用旧的数据集提供服务，但是复制完成时候，需要删除旧的数据集，加载新的数据集，这个时候会暂停对外的服务。
+    6.slave node主要是用来做横向扩容的，增加slave node可以提高吞吐量
+</code></pre>
+<p>master 持久化对于主从架构安全保障的意义</p>
+<pre><code>如果采用了主从架构，那么建议开启master node持久化
+
+master 节点如果没有开启持久化机制，redis宕机之后，恢复时数据就是空的，同步到时候slave node数据也是空的，数据100%丢失。
+</code></pre>
+<p>redis主从复制的原理、断点续传、无磁盘化复制、过期key处理<br>
+1.redis主从复制的原理</p>
+<pre><code>    当启动一个slave node的时候，它会发送一个fsync命令给master node ，
+    如果是slave node重新连接master node，那么master node仅仅会复制给slave node部分缺少的数据。
+    否则，如果是slave node第一次连接master node，那么会触发一次full resynchronized
+    
+    开始full resynchronized的时候，master会启动一个后台线程，开始生成一份rdb快照，同时还会将客户端的所有写命令缓存到内存中，RDB
+    生成完成之后，master 会讲这个rdb发送给slave ，slave先写入到本地磁盘，然后加载到内存，然后master会讲内存中的缓存写命令发送给slave，
+    slave node也会同步这些数据
+</code></pre>
+<p>2.redis的断点续传</p>
+<pre><code>    从redis2.0开始就支持断点续传，如果主从复制的过程中，网络连接突然断掉了，那么可以接着上次复制的地方，继续复制下去，而不是从头复制一份。
+    master node会在内存中保存一个backlog，master和slave都会保存一个replica offset 还有一个master node id，
+    offset就是保存在backlog中，如果master和slave node网络突然断掉了，slave node会让master node从上次replica offset开始继续复制
+    但是如果没有找到对应的offset，那么会执行一次resynchronized
+</code></pre>
+<p>3.无磁盘化复制</p>
+<pre><code>RDB在内存中直接创建rdb，然后发送给slave，不会在自己本地落磁盘了
+</code></pre>
+<p>4.过期key处理</p>
+<pre><code>slave不会过期key，只会等待master过期key，如果msater过期了一个key或者通过lru淘汰了一个key，那么会模拟一条del 命令发送给slave。
+</code></pre>
+<h4 id="redis哨兵">Redis哨兵</h4>
+<p>sentinal，中文名是哨兵，<br>
+哨兵是redis集群架构中的一个非常重要的组建，主要功能如下<br>
+(1).集群监控，负责监控redis master node和slave node进程是否正常工作<br>
+(2).消息通知，如果某个redis实例有故障，那么哨兵负责发送消息作为报警通知给管理员<br>
+(3).故障转移，如果master node挂掉了，那么会自动转移到slave node<br>
+(4).配置中心，如果故障转移发生了，通知client客户端新的master上</p>
+<p>哨兵本身也是分布式的，作为哨兵集群去运行，互相协同工作<br>
+(1).故障转移时，判断一个master node是宕机了，需要大部分哨兵都同意才行，涉及到分布式选举到问题<br>
+(2).即使部分哨兵节点挂掉了，哨兵集群还能正常工作，如果一个作为高可用的机制的重要组成部分故障转移系统本身是单点的，那就很坑爹了</p>
+<p>目前采用的是sentinal 2版本，sentinal2 相对于sentinel 1来说，重写了很多代码，主要是让故障转移的机制和算法变得更加的健壮和简单</p>
+<p>2.哨兵的核心知识</p>
+<pre><code>(1).哨兵至少需要3个实例，来保证自己的健壮性
+(2).哨兵+redis的主从架构，是不会保证数据0丢失的，只能保证redis集群的高可用
+(3).对于哨兵+redis这种主从复杂的部署架构，尽量在测试和生产环境，都进行充足的测试和演练
+</code></pre>
+<p>3.为什么redis哨兵集群只有两个节点时无法正常工作</p>
+<pre><code>哨兵集群必须部署2个以上的节点
+如果哨兵集群仅仅部署了2个哨兵实例，quorum =1 ：表示有（1）多少个哨兵觉得master宕机了，就可以进行切换了，这个时候会尝试进行故障转移
+M1       R1 
+S1       S2
+
+master宕机，s1和s2中只要有1个哨兵认为master宕机，就可以进行切换，同时s1  和s2中会选举出一个哨兵
+来执行故障转移
+同时这个时候，需要majority =2,也就是大多数哨兵是运行的，2个哨兵的majority就是2，2个哨兵都运行着，就可以允许故障转移
+
+但是如果整个m1和s1运行的机器宕机了，那么哨兵只要一个了，此时就没有majority来允许执行故障转移了
+虽然还有一台机器r1，但是故障转移不会执行
+</code></pre>
+<p>经典的3个哨兵集群</p>
+<pre><code>M1       R1      R2
+S1       S2      S3
+quorum =2 表示有（2）多少个哨兵觉得master宕机了，就可以进行切换了，这个时候会尝试进行故障转移
+majority =2 2个哨兵的majority就是2，2个哨兵都运行着，就可以允许故障转移 ， 同时s2  和s3中会选举出一个哨兵
+来执行故障转移
+</code></pre>
+<p>哨兵主备切换的数据丢失问题：异步复制，集群脑裂</p>
+<p>异步复制导致的数据丢失问题</p>
+<pre><code>这个旧的master node内存里的那些数据还没来的及给是slave node 就挂掉了。
+slave node就成了master node，那些内存中没来得及复制的数据不就丢失了吗
+</code></pre>
+<p>集群脑裂导致的数据丢失问题</p>
+<pre><code>脑裂，也就是master所在的机器突然脱离了正常的网络，跟其它slave node机器不能连接，但是实际上master node运行着，
+此时哨兵可能就会认为master宕机了，然后开启选举，将其它slave node 切换成master 
+这个时候，集群中就有两个master，也就是所谓的脑裂。
+此时虽然某个slave node被切换成了master ，但是可能client 还没来得及切换到新的master，还继续写向旧的master，
+因此旧master再次恢复的时候，会作为slave挂载到存的master上去，自己的数据会清空，重新从新的master复制数据
+</code></pre>
+<p>解决异步复制和脑裂导致的数据丢失问题</p>
+<pre><code>    min-slaves-to-write 1 
+    min-slaves-max-lag 10
+    要求至少有1个slave node，复制数据和同步的延迟不超过10s
+    如果说一旦所有的slave，复制数据和同步数据都超过了10s，那么这个时候master将不在接受任何请求
+    以上两个配置可以减少异步复制和脑裂的数据丢失问题
+
+    (1).减少异步复制的数据丢失问题  
+    min-slaves-max-lag这个配置，就可以确保说，一旦slave复制数据和ack延时太长，就认为可能master宕机后损失的数据太多了，那么就可以拒绝写请求，
+    这样就可以把master宕机时由于部分数据未同步到slave node导致的数据丢失降低在可控范围内。
+    (2).减少脑裂的数据丢失问题
+    如果一个master出现了脑裂，跟其它slave node丢了连接，那么上面的两个配置可以确保的说，如果不能继续给指定数量的slave发送数据，而且slave node
+    超过10s没有给自己ack消息，那么就直接拒绝客户端的写请求
+    这样脑裂后旧的master就不会接受新的client 的新数据，也就避免了数据丢失
+    以上的配置就确保了，如果跟任何一个slave node丢失了连接，在10s之内发现slave没有给自己ack，那么久拒绝新的写请求
+</code></pre>
+<p>sdown和odown转换机制</p>
+<pre><code>sdown是主观宕机，就是一个哨兵就是自己觉得一个master宕机了，那么就是主观宕机
+odown是客观宕机，如果quorum数量的哨兵都觉得一个mastar宕机了，那么就是客观宕机
+sdown达成的条件很简单，如果一个哨兵ping一个master，超过了is-masterHost-down-millisecondssecond
+指定的毫秒数之后，就主观认为master宕机了
+sdown到odown的条件很简单，如果一个哨兵在指定时间内，收到了quorum指定数量的其它哨兵也认为那个master sdown 
+那么就任务odown 
+</code></pre>
+<p>哨兵和slave自动发现机制</p>
+<pre><code>    哨兵互相之间的发现是通过redis 的pub/sub系统实现的，每个哨兵都会放_sentinel_:hello这个
+    channel里发送一个消息，这个时候其它哨兵就可以消费到这条消息，并感知其它哨兵的存在
+    每隔两秒钟，每个哨兵都会往自己监控的某个master+slave对应的 _sentinel_:hello channel 里发送一个消息，
+    内容是自己的host  ip 和runid，还有这个对应master的监控配置
+    每个哨兵也会监听自己监控的某个master+slave对应的 _sentinel_:hello channel，然后去感知到同样在监听这个master +slave的其它哨兵的存在。
+    每个哨兵还会跟其它哨兵交换对master的监控配置，互相进行监控配置的同步
+</code></pre>
+<p>slave --&gt; master选举算法</p>
+<p>如果一个master被认为odown了，而且majority哨兵都允许了主备切换，那么某个哨兵就会执行主备切换操作，此时首先要选举出一个slave来<br>
+会考虑slave的一些信息</p>
+<pre><code>(1).跟master断开连接的时长
+(2).slave node优先级
+(3).run id
+(4).复制的offset
+
+接下来会对slave进行排序
+
+（1).按照slave的优先级进行排序，slave node priority越低优先级越高
+（2).如果slave node priority相同，那么看replica offset ，哪个slave复制了越多的数据，offset越靠后，优先级就越高。
+ (3).如果 上面两个条件都相同，那么选择一个run id比较小的那个slave
+</code></pre>
+<p>slave配置的自动纠正</p>
+<pre><code>哨兵会自定纠正slave的一些配置，比如slave node如果要成为潜在的master候选人，哨兵会确保slave node在复制现有master的数据
+，如果slave连接到错误的master上，比如故障转移之后，哨兵会确保他们连接到正确的master上
+</code></pre>
+<p>quorum和majority</p>
+<pre><code>每一次一个哨兵要做主备切换，首先要quorum数量的哨兵认为odown，然后选举出一个哨兵来做切换，
+，这个哨兵还的得到majority哨兵的授权，才能正式执行切换，
+但是如果quorum &gt;= majority，那么必须quorum数量的哨兵都授权，比如5个哨兵quorum是5，那么必须5个哨兵都同意授权，才能进行切换。
+</code></pre>
+<p>configuration epoch</p>
+<pre><code>哨兵会对一套redis master +slave 进行监控，有相应监控的配置
+会执行切换的那个哨兵，会从要切换到新的master（slave -&gt; master）那里会得到一个configuration epoch。这就是一个version号，每次切换的version必须是唯一的。
+如果第一个选举出来的哨兵都失败了，那么其它哨兵，会等待failover-timeout时间，然后接替者继续切换此时会从新获取一个新的configuration epoch
+作为新的版本号
+</code></pre>
+<p>configuration 传播</p>
+<pre><code>    哨兵切换之后，会在自己本地更新生成最新的master配置，然后同步给其它的哨兵，所以就是通过之前所说的pub/sub消息机制
+    这里之前的version号就很重要了，因为各种消息是通过channel发布和监听的，所以一个哨兵完成一次新的切换之后，
+    新的master配置是跟着新的version号的，其它哨兵都是根据版本号大小更新自己的master配置
+</code></pre>
+<h4 id="redis集群">Redis集群</h4>
+<p>主从架构的缺点：master节点的数据和slave节点的数据是一摸一样的，<br>
+master最大能容纳多大的数据量，那么slave最多能容纳多大数据量</p>
+<p>redis Cluster 可以支持多个master ，每个master都会挂载多个slave<br>
+也支持读写分离的架构，对于每个master来说，写就写到master，然后读就从master对应的slave上读<br>
+高可用，因为每个master都有slave节点，那么如果master挂掉，redis cluster 会自动将slave切换成master</p>
+<p>redis cluster （多master+读写分离+高可用）</p>
+<p>Redis cluster 主要针对海量数据+高并发+高可用的场景</p>
+<p>Redis cluster介绍</p>
+<pre><code>(1).自动将数据分片，每个master上放一部分数据
+(2).提供内置的高可用支持，部分master不可用时，还可以继续工作
+在redis cluster架构下，每个redis要开放两个端口号，一个是6379 另一个是加10000的端口号16379。
+16379端口号是用于节点间通信的，也就是cluster bus的东西，集群总线，cluster bus的通信，用于进行故障检验，配置更新
+故障转移授权
+</code></pre>
+<p>redis 数据分布算法<br>
+1.hash算法<br>
+2.一致性hash算法</p>
+<h3 id="redis双写一致性">Redis双写一致性</h3>
+<p>1.读的时候，先读缓存，缓存没有，在读数据库，设置缓存<br>
+2.更新时候，先删除缓存，然后在更新数据库<br>
+如果直接更新缓存，在更新数据库，如果在更新缓存的成功了，更新数据库失败了，下次读取的时候，直接读缓存，那么数据还是旧数据，缓存和数据库不一致</p>
+<h3 id="redis缓存雪崩-穿透-击穿">Redis缓存雪崩、穿透、击穿</h3>
+<h4 id="缓存雪崩">缓存雪崩，</h4>
+<pre><code>是指缓存机器意外发生了全盘宕机，缓存挂了，导致请求全部落在数据库，数据库也支撑不住。
+</code></pre>
+<p>解决方案如下：<br>
+事前：redis高可用，主从+哨兵，redis cluster避免全盘数据崩溃<br>
+事中：本地缓存+hystrix限流降级，避免mysql被打死<br>
+事后：redis持久化，一旦重启，自动从磁盘中加载数据到缓存，快速恢复缓存数据</p>
+<h4 id="缓存穿透">缓存穿透</h4>
+<pre><code>很多请求是黑客恶意发送的，缓存中查不到，每次去数据库也查不到
+，这种恶意的请求就直接把数据库打死
+</code></pre>
+<p>解决办法；<br>
+只要数据库没查到，就设置一个空值到缓存，返回设置一个过期时间，这样的话，下次有相同的key</p>
+<h4 id="缓存击穿">缓存击穿</h4>
+<pre><code>    某个key非常热点，访问非常频繁，处于集中式高并发访问的情况
+    当这个key在失效的瞬间，大量的请求就击穿了缓存，直接请求数据库
+</code></pre>
+<p>解决方案如下：</p>
+<pre><code>    可以将热点数据设置为永远不过期，或者基于redis or zookeeper实现互斥锁，等待第一个请求构建完缓存之后，再释放锁，进而
+    其它请求也能通过该key访问数据
+</code></pre>
+<h4 id="redis分布式锁的实现原理">Redis分布式锁的实现原理</h4>
+<p>如果说公司里落地生产环境用分布式锁的时候，一般都会使用开源类库，比如redis的分布式锁，一般就是用redisson框架就好了，非常简单易用。</p>
+<pre><code class="language-java">
+ /**
+   * @author ChengJianSheng
+   * @date 2019-07-30
+   */
+    @Slf4j
+   @Service
+  public class OrderServiceImpl implements OrderService {
+     @Autowired
+     private StockService stockService;
+     @Autowired
+     private OrderRepository orderRepository;
+     @Autowired
+     private RedissonClient redissonClient;
+     /**
+       * 乐观锁
+       */
+             @Override
+     public String save(Integer userId, Integer productId) {
+                 int stock = stockService.getByProduct(productId);
+                 log.info(&quot;剩余库存：{}&quot;, stock);
+                 if (stock &lt;= 0) {
+                         return null;
+                 }
+                 //  如果不加锁，必然超卖
+                 RLock lock = redissonClient.getLock(&quot;stock:&quot; + productId);
+                 try {
+                         lock.lock(10, TimeUnit.SECONDS);
+                         //扣减库存
+                        redissonClient.decr();
+                         String orderNo = UUID.randomUUID().toString().replace(&quot;-&quot;, &quot;&quot;).toUpperCase();
+                         if (stockService.decrease(productId)) {
+                                 OrderModel orderModel = new OrderModel();
+                                 orderModel.setUserId(userId);
+                                 orderModel.setProductId(productId);
+                                 orderModel.setOrderNo(orderNo);
+                                 Date now = new Date();
+                                 orderModel.setCreateTime(now);
+                                 orderModel.setUpdateTime(now);
+                                 orderRepository.save(orderModel);
+                                 return orderNo;
+                             }
+            
+                     } catch (Exception ex) {
+                         log.error(&quot;下单失败&quot;, ex);
+                     } finally {
+                         lock.unlock();
+                     }
+        
+                 return null;
+             }
+         }
+
+</code></pre>
+<p>⼆、Redisson 实现 Redis 分布式锁的底层原理</p>
+<p>（1）加锁机制<br>
+首先一个客户端1会hash算法，选择一台机器，紧接着发送一段lua脚本到redis上<br>
+<img src="img_1.png" alt="img_1.png" loading="lazy">，<br>
+这一段脚本就是保证复杂业务的原子性，</p>
+<p>RLock lock = redisson.getLock(&quot;myLock);<br>
+先会走一个判断 exists mylock，如果你要加的那个锁的那个key不存在的话你就执行加锁</p>
+<pre><code>hset mylock 客户端id：1 1
+如果出现了一个这样的数据结构说明加锁成功
+</code></pre>
+<p>（2）锁互斥机制<br>
+同样客户端过来尝试加锁，执行一段同样的lua脚本，会咋样？<br>
+先会走一个判断 exists mylock，如果你要加的那个锁的那个key不存在的话你就执行加锁<br>
+发现myLock这个锁key已经存在了。</p>
+<pre><code>接着走第二个if判断，判断一下myLock锁key的hash数据结构中，是否包含了客户端2 的id 
+但是很明显，那里只包含了客户端1的id
+所以客户端2 会获取到pttl myLock返回一个数字，这个数字代表了myLock这个锁key的剩余生存是时间，比如还剩15000 毫秒的生存时间
+此时客户端2 ，会进入一个while循环，不停的尝试加锁
+</code></pre>
+<p>（3）watch dog ⾃动延期机制</p>
+<pre><code>客户端1加锁的锁key默认生存时间才30s，如果超过了30s，客户端1还想持有这把锁怎么办？
+简单，客户端1一旦加锁成功，就会启动一个watch dog 看门狗，它是一个后台线程，会每隔10s检查一下
+如果客户端1还持有锁key，那么就会不断延长锁key的生存时间
+</code></pre>
+<p>（4）可重⼊加锁机制<br>
+如果客户端1已经持有了锁，再次加锁，依然执行命令，加锁次数累计加1</p>
+<p>（5）锁释放机制<br>
+如果执行lock.unLock()，就可以释放分布式锁，此时的业务逻辑也非常简单<br>
+其实说白了，就是每次都对myLock数据结构的那个加锁次数减1。<br>
+如果发现加锁次数是0了，那么说明客户端不再持有锁了，此时就会用<br>
+del mylock 命令，从redis里面删除这个key</p>
+<p>（6）此种⽅案 Redis 分布式锁的缺陷</p>
+<pre><code>其实上⾯那种⽅案最⼤的问题，就是如果你对某个 redis master 实例，写⼊了 myLock 这种锁 key 的 value，此时会异步复制给对应的 master slave 实例。
+但是这个过程中⼀旦发⽣ redis master 宕机，主备切换，redis slave 变为了 redis master。 接着就会导致，客户端 2 来尝试加锁的时候，在新的 redis master 上完成了加锁，⽽客户端 1
+也以为⾃⼰成功加了锁。 此时就会导致多个客户端对⼀个分布式锁完成了加锁。 这时系统在业务语义上⼀定会出现问题，导致各种脏数据的产⽣。 
+所以这个就是 redis cluster，或者是 redis master-slave 架构的主从异步复制导致的 redis 分布式 锁的最⼤缺陷：在 redis master 实例宕机的时候，可能导致多个客户端同时完成加锁。
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="img.png" alt="img.png" loading="lazy"></figure>
+<h3 id="redis实战">Redis实战</h3>
+<h4 id="string">String</h4>
+<h5 id="setnxredis分布式锁实现">Setnx(redis分布式锁实现)</h5>
+<pre><code>分布式锁
+命令：
+set mykey newval nx
+set mykey newval xx
+
+java：
+//加锁
+jedis.set(&quot;locks_test&quot;, &quot;value_test&quot;,SetParams.setParams().nx())
+//释放锁
+jedis.del(&quot;locks_test&quot;);
+必须是这个key此时是不存在的，才能设置成功，如果说key要是存在了，此时设置失败
+</code></pre>
+<h5 id="msetmgetmsetnx">mset,mget,msetnx</h5>
+<pre><code>命令
+mset a 10 b 20 c 30
+mset a 10 b 20 c 30
+
+java 
+mset:一下子设置多个key-value对
+mget:一下子获取多个key的value 
+msetnx:就是多个key都不存在的情况下，一次性设置多个key的value,只要key都不存在才能成功
+mset和mgt相当于batch批量设置和查询，比如说加入你要一次性要往redis里塞入
+20条数据
+//新增或修改
+jedis.mset(&quot;key:key&quot;,&quot;value&quot;,&quot;key:key1&quot;,&quot;value2&quot;)
+//新增，key不能存在
+jedis.msetnx(&quot;key:key&quot;,&quot;value&quot;,&quot;key:key1&quot;,&quot;value2&quot;)
+//获取
+jedis.mget(&quot;key:key&quot;,&quot;key:key1&quot;)
+// 获取value长度
+jedis.strlen(&quot;key:key&quot;)
+//截取 value的字符
+jedis.getrange(&quot;key:key&quot;，0，5)
+</code></pre>
+<h5 id="append">append</h5>
+<pre><code>日志审计
+redis append api 就是不停的把数据追加到指定的key里去
+jedis.append(key,value);
+</code></pre>
+<h5 id="incr">incr</h5>
+<pre><code>生成唯一id/（点赞）
+命令：
+set counter 100
+incr counter
+incrby counter 50
+
+INCR 命令将字符串值解析成整型，将其加一，最后将结果保存为新的字符串值，类似的命令有INCRBY, DECR 和 DECRBY。实际上他们在内部就是同一个命令，只是看上去有点儿不同。
+INCR是原子操作意味着什么呢？就是说即使多个客户端对同一个key发出INCR命令，也决不会导致竞争的情况。例如如下情况永远不可能发生：『客户端1和客户端2同时读出“10”，他们俩都对其加到11，然后将新值设置为11』。最终的值一定是12，read-increment-set操作完成时，其他客户端不会在同一时间执行任何命令。
+对字符串，另一个的令人感兴趣的操作是GETSET命令，行如其名：他为key设置新值并且返回原值。这有什么用处呢？例如：你的系统每当有新用户访问时就用INCR命令操作一个Redis key。你希望每小时对这个信息收集一次。你就可以GETSET这个key并给其赋值0并读取原值。
+
+java
+jedis.incr(&quot;key&quot;);
+</code></pre>
+<h5 id="decr">decr</h5>
+<pre><code>抢购
+命令：
+set counter 100
+自增
+incr counter
+</code></pre>
+<h5 id="exists">exists</h5>
+<pre><code>命令
+exists mykey
+EXISTS命令返回1或0标识给定key的值是否存在
+</code></pre>
+<h5 id="del">del</h5>
+<pre><code>使用DEL命令可以删除key对应的值，DEL命令返回1或0标识值是被删除(值存在)或者没被删除(key对应的值不存在)。
+</code></pre>
+<h5 id="type">type</h5>
+<pre><code>TYPE命令可以返回key对应的值的存储类型：
+命令
+type mykey
+</code></pre>
+<h5 id="expire">EXPIRE</h5>
+<pre><code>EXPIRE来设置超时时间(也可以再次调用这个命令来改变超时时间，使用PERSIST命令去除超时时间 )。
+命令
+set key some-value
+expire key 5
+也可以在创建值的时候设置超时时间:
+set key 100 ex 10
+
+TTL命令用来查看key对应的值剩余存活时间。
+ttl key
+</code></pre>
+<h4 id="hash">hash</h4>
+<p>Hash 便于表示 objects，实际上，你可以放入一个 hash 的域数量实际上没有限制（除了可用内存以外）。所以，你可以在你的应用中以不同的方式使用 hash</p>
+<h5 id="hsethget">hset,hget</h5>
+<pre><code>值得注意的是，小的 hash 被用特殊方式编码，非常节约内存。
+# 获取
+hget user:1000 username
+hgetall user:1000
+hmget user:1000 username birthyear no-such-field
+# 将value +10
+hincrby user:1000 birthyear 10
+
+HMSET 指令设置 hash 中的多个域，而 HGET 取回单个域。HMGET 和 HGET 类似，但返回一系列值：
+
+
+
+基于token令牌的登陆会话机制：
+用户平时在访问我们的系统，在处理任何一个请求之前，必须检查这个请求是否带上了一个令牌，
+如果带上了这个令牌，那么此时必须在redis里检查一下，这个令牌是否在redis里合法，有效的session会话。
+
+如果有这个session会话，那么此时可以允许这个请求被处理，说明这个人已经登陆过我们的系统，登陆之后在会在
+redis里放一个有效的session会话，
+如果说没有这个session会话，此时就会导致用户被迫强制登陆
+如果用户登陆之后，就会返回浏览器或者客户端一块令牌，同时在redis里初始化ession会话，后续客户端
+就会在指定时间范围内发送请求的时候，带上一块令牌，每次令牌和服务端的session校验通过就可以执行请求
+过一段时间过后，服务端的redis里的session会话就会过期，过期之后又回导致你重新登陆。
+</code></pre>
+<h4 id="list">list</h4>
+<p>常用案例</p>
+<pre><code>秒杀活动下利用公平队列的抢购机制   待办事项  
+
+秒杀系统有很多实现方式，其中一种技术方案，就是对所有涌入系统的秒杀抢购请求，都放入redis里的一个linhuatest
+数据结构中去，进行公平队列排队，然后入队之后等待秒杀结果，专门搞一个消费者从redis 里面按顺序
+获取抢购请求，按顺序进行库存扣减，扣减成功了，就让抢购成功。
+
+如果说你要是不要公平队列的话，可能会导致你很多抢购请求进来，大家都在尝试去扣减库存
+ 此时可能先涌入进来的请求并没有先对redis进行抢购请求，此时可能后进入的请求先执行了抢购请求，此时就是不公平的
+
+公平队列：基于redis里的list数据结构，搞一个队列，抢购请求先进队列，先入先出，先进来的人先抢购，此时就是公平的。
+
+对于抢购队列，就用lpush list 就可以了，然后对出队的队列进行抢购
+</code></pre>
+<h5 id="lpush">lpush</h5>
+<pre><code> LPUSH 命令可向list的左边（头部）添加一个新元素，而RPUSH命令可向list的右边（尾部）添加一个新元素。最后LRANGE 命令可从list中取出一定范围的元素:
+//从左边(头部)添加元素
+lpush mylist A
+//从右边(尾部)添加元素
+rpush mylist A
+//从尾部开始，指定范围获取元素
+lrange mylist 0 -1
+
+注意:LRANGE 带有两个索引，一定范围的第一个和最后一个元素。这两个索引都可以为负来告知Redis从尾部开始计数，因此-1表示最后一个元素，-2表示list中的倒数第二个元素，以此类推。
+
+rpop mylist
+lpop mylist
+pop,它从list中删除元素并同时返回删除的值。可以在左边或右边操作
+
+
+
+List上的阻塞操作
+可以使用Redis来实现生产者和消费者模型，如使用LPUSH和RPOP来实现该功能。但会遇到这种情景：list是空，这时候消费者就需要轮询来获取数据，这样就会增加redis的访问压力、增加消费端的cpu时间，而很多访问都是无用的。
+ 为此redis提供了阻塞式访问 BRPOP 和 BLPOP 命令。 消费者可以在获取数据时指定如果数据不存在阻塞的时间，如果在时限内获得数据则立即返回，如果超时还没有数据则返回null, 0表示一直阻塞。
+
+同时redis还会为所有阻塞的消费者以先后顺序排队。
+
+如需了解详细信息请查看 RPOPLPUSH 和 BRPOPLPUSH。
+</code></pre>
+<h5 id="brpop-blpop">BRPOP BLPOP</h5>
+<pre><code>BRPOP 是一个阻塞的列表弹出原语。 它是 RPOP 的阻塞版本，因为这个命令会在给定list无法弹出任何元素的时候阻塞连接。 该命令会按照给出的 key 顺序查看 list，并在找到的第一个非空 list 的尾部弹出一个元素。
+
+请在 BLPOP 文档 中查看该命令的准确语义，因为 BRPOP 和 BLPOP 基本是完全一样的，除了它们一个是从尾部弹出元素，而另一个是从头部弹出元素。
+
+BRPOP list1 list2 0
+
+返回值
+多批量回复(multi-bulk-reply): 具体来说:
+
+当没有元素可以被弹出时返回一个 nil 的多批量值，并且 timeout 过期。
+当有元素弹出时会返回一个双元素的多批量值，其中第一个元素是弹出元素的 key，第二个元素是 value。
+</code></pre>
+<h5 id="rpoplpush-brpoplpush">RPOPLPUSH BRPOPLPUSH</h5>
+<h5 id="lindex-lset-linsert-ltrim-lrem">LINDEX LSET LINSERT LTRIM LREM</h5>
+<pre><code>LINDEX：返回指定位置的数据
+LSET：设置指定位置的数据
+LINSERT：往指定位置插入数据
+LTRIM：然后保留指定的数据，删掉一些数据
+LREM：删掉一些数据
+</code></pre>
+<h4 id="set">set</h4>
+<pre><code>案例 抽奖  公共关注  推荐关注 微博关系 点赞 uv
+无序且不重复的数据集合
+</code></pre>
+<h5 id="sadd">sadd</h5>
+<pre><code> 添加元素
+ sadd myset 1 2 3
+
+返回所以元素
+smembers myset
+
+
+现在我已经把三个元素加到我的 set 中，并告诉 Redis 返回所有的元素。可以看到，它们没有被排序 —— Redis 在每次调用时可能按照任意顺序返回元素，因为对于元素的顺序并没有规定。
+
+判断元素是否存在
+sismember myset 30
+
+返回所以元素
+srem myset
+
+取交集
+sinter tag:1:news tag:2:news tag:10:news tag:27:news 
+
+对多个集合取并集
+sunionstore game:1:deck deck
+
+取差集
+sdiffstore new——set  set1 set2
+
+获取随机元素
+
+spop game:1:deck   随机从set里弹出几个元素
+
+srandmember
+</code></pre>
+<h5 id="scard">scard</h5>
+<pre><code> scared 获取key数据总数
+</code></pre>
+<h4 id="sorted-set">sorted set</h4>
+<pre><code>案例  推荐商品  排行榜  自动补全
+
+sorted set不能又重复数据，加入进去的每一个数据都可以带一个分数，它在里面的数据都是按照分数排序的、
+有序的set 自动按照分数来排序，相当于你可以定制它的排序规则
+
+添加
+zadd hackers 1940 &quot;Alan Kay&quot;
+
+查询   从索引0 到最后一个元素 分数排序
+zrange hackers 0 -1
+
+如果我想按相反的顺序，从最小的到最大的顺序，怎么办？使用ZREVRANGE而不是ZRANGE：
+zrevrange hackers 0 -1
+
+询问元素在有序元素集中的位置
+zrank hackers &quot;Anita Borg&quot;
+
+
+搜索结果返回分数
+zrange hackers 0 -1 withscores
+zrevrange hackers 0 -1 withscores
+
+搜索指定分数范围内的数据
+zrangebyscore hackers -inf 1950
+
+根据指定分数搜索后删除
+zremrangebyscore hackers 1940 1960
+
+ZRANGEBYLEX，我们可以查询字典范围：
+zrangebylex hackers [B [P
+
+将分数自增
+zincrby
+</code></pre>
+<h4 id="hyperloglog">HyperLoglog</h4>
+<pre><code>案例  日活 网站垃圾数据去重或者过滤
+
+HyperLoglog ，数据结构+概率算法 组合而成的，去重统计 近似数
+
+ 如果基于set来计数，太耗费内存，基于HyperLoglog算法来计数，是近似数，有
+  0.8%误差，但是误差不会太大，可以给出一个相对准确的近似数，而且就占12KB内存
+
+每次看到新元素时，都要使用PFADD将其添加到计数中。
+pfadd hll a b c d 
+    
+每次要检索迄今为止使用PFADD添加的唯一元素的当前近似值时，都要使用PFCOUNT
+pfcount hll
+
+
+pfmerge  
+</code></pre>
+<h4 id="bitmap">bitmap</h4>
+<pre><code>bitmap位图：二进制里的一位一位的，字符串，int ，long double 都可以用二进制表示
+在二进制中都是表示多少位，一个字节是8位的二进制数
+int 就是四个字节 就是32位
+我可以直接在redis里操作二进制的位数据。
+
+可以把网站里的每一种操作，每天执行过的用户放在一个位图里，
+一个用户仅仅代表一位而已
+
+案例 ：基于位图用户行为记录程序
+如果说你要记录一下，在系统里执行一些特殊操作，每天执行过某个操作的用户有多少个人
+操作日志，审计日志，
+记录下来每个用户每天做了哪些操作
+
+ 设置位图
+ setbit key offset 1
+ 表示把 这个offset 对应位图的位置设置位1
+
+getbit key value
+</code></pre>
+<h4 id="geohash">GeoHash</h4>
+<pre><code>geoadd key longitude latitude user 
+geoadd key longitude latitude shop 
+geodist key user shop init ='KM'_ 
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[mysql]]></title>
         <id>https://zuolinlin.github.io/zuo.github.io/post/mysql/</id>
@@ -1278,16 +1957,6 @@ Node节点一般都是部署在每天Mysql机器上的，因为Node节点通过�
 账号：yuezuo     Kupcu4-davqiq-hosdaf         邮箱：zuoxiyue2022@163.com
 账号：xizuo      Kupcu4-davqiq-hosdaf   邮箱：zuoxiyue202204@163.com Ymqctx2022
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[maven]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/re-wu-ta-ren/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/re-wu-ta-ren/">
-        </link>
-        <updated>2022-03-22T12:46:20.000Z</updated>
-        <content type="html"><![CDATA[<p><a href="https://blog.csdn.net/TZ845195485/article/details/111661715">MAVEN01_概述+核心概念+IDEA中如何插件项目</a><br>
-<a href="https://blog.csdn.net/TZ845195485/article/details/111767726">MAVEN02_依赖范围+依赖冲突+解决冲突+继承聚合</a></p>
 ]]></content>
     </entry>
 </feed>
