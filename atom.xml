@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zuolinlin.github.io/zuo.github.io/</id>
     <title>zuolinlin</title>
-    <updated>2022-04-08T13:24:20.681Z</updated>
+    <updated>2022-04-08T13:27:53.805Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zuolinlin.github.io/zuo.github.io/"/>
     <link rel="self" href="https://zuolinlin.github.io/zuo.github.io/atom.xml"/>
@@ -10,6 +10,3133 @@
     <logo>https://zuolinlin.github.io/zuo.github.io/images/avatar.png</logo>
     <icon>https://zuolinlin.github.io/zuo.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, zuolinlin</rights>
+    <entry>
+        <title type="html"><![CDATA[消息中间件]]></title>
+        <id>https://zuolinlin.github.io/zuo.github.io/post/xiao-xi-zhong-jian-jian/</id>
+        <link href="https://zuolinlin.github.io/zuo.github.io/post/xiao-xi-zhong-jian-jian/">
+        </link>
+        <updated>2022-04-08T13:26:28.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="消息中间件">消息中间件</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li>
+<p><a href="#%E6%94%BE%E5%A4%A7100%E5%80%8D%E5%8E%8B%E5%8A%9B%EF%BC%8C%E6%89%BE%E5%87%BA%E4%BD%A0%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%8A%80%E6%9C%AF%E6%8C%91%E6%88%98">放大100倍压力，找出你系统的技术挑战</a></p>
+</li>
+<li>
+<p><a href="#%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6">消息中间件</a></p>
+<ul>
+<li><a href="#%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BD%9C%E7%94%A8">消息中间件作用</a></li>
+<li><a href="#Kafka%E3%80%81RabbitMQ%E4%BB%A5%E5%8F%8ARocketMQ%E5%AF%B9%E6%AF%94">Kafka、RabbitMQ 以及 RocketMQ对比</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#RocketMQ">RocketMQ</a></p>
+<ul>
+<li><a href="#RocketMQ%E6%9E%B6%E6%9E%84%E5%8E%9F%E7%90%86">RocketMQ架构原理</a>
+<ul>
+<li><a href="#NameServer">NameServer</a></li>
+<li><a href="#Broker%E4%B8%BB%E4%BB%8E%E6%9E%B6%E6%9E%84">Broker主从架构</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B">RocketMQ的核心数据模型</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2">RocketMQ的集群部署</a>
+<ul>
+<li><a href="#%E5%B0%8F%E8%A7%84%E6%A8%A1RocketMQ%E7%9A%84%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2">小规模RocketMQ的集群部署</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E9%9B%86%E7%BE%A4%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9B%91%E6%8E%A7">RocketMQ的集群可视化监控</a></li>
+<li><a href="#RocketMQ%E7%94%9F%E4%BA%A7%E5%8F%82%E6%95%B0%E8%B0%83%E6%95%B4">RocketMQ生产参数调整</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E9%9B%86%E7%BE%A4%E5%8E%8B%E6%B5%8B">RocketMQ的集群压测</a></li>
+<li><a href="#RocketMQ%E7%94%9F%E4%BA%A7%E9%9B%86%E7%BE%A4%E7%9A%84%E8%A7%84%E5%88%92">RocketMQ生产集群的规划</a></li>
+</ul>
+</li>
+<li><a href="#RocketMQ%E7%94%9F%E4%BA%A7%E8%80%85%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E6%A8%A1%E5%BC%8F">RocketMQ生产者发送消息模式</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E6%B6%88%E8%B4%B9%E6%A8%A1%E5%BC%8F">RocketMQ的消费模式</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E6%B6%88%E8%B4%B9%E6%A8%A1%E5%BC%8F">RocketMQ的消费模式</a></li>
+</ul>
+</li>
+<li><a href="#RocketMQ%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86">RocketMQ底层原理</a><br>
+- <a href="#%E7%94%9F%E4%BA%A7%E8%80%85%E5%BE%80Broker%E9%9B%86%E7%BE%A4%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91">生产者往Broker集群发送消息的底层逻辑</a><br>
+- <a href="#Broker%E6%8E%A5%E5%8F%97%E6%B6%88%E6%81%AF%E5%90%8E%E5%A6%82%E4%BD%95%E5%9C%A8%E5%AD%98%E5%82%A8%E5%88%B0%E7%A3%81%E7%9B%98%E4%B8%8A%E7%9A%84">Broker接受消息后如何在存储到磁盘上的</a><br>
+- <a href="#%E5%9F%BA%E4%BA%8EDledger%E6%8A%80%E6%9C%AF%E9%83%A8%E7%BD%B2Broker%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%EF%BC%8C%E5%88%B0%E5%BA%95%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5">基于Dledger技术部署Broker高可用集群，到底如何进行数据同步</a><br>
+- <a href="#%E6%B6%88%E8%B4%B9%E8%80%85%E5%88%B0%E5%BA%95%E6%98%AF%E5%9F%BA%E4%BA%8E%E4%BB%80%E4%B9%88%E7%AD%96%E7%95%A5%E9%80%89%E6%8B%A9Master%E6%88%96Slave%E6%8B%89%E5%8F%96%E6%95%B0%E6%8D%AE">消费者到底是基于什么策略选择Master或Slave拉取数据</a><br>
+- <a href="#%E6%B6%88%E8%B4%B9%E8%80%85%E6%98%AF%E5%A6%82%E4%BD%95%E4%BB%8EBroker%E6%8B%89%E5%8F%96%E6%B6%88%E6%81%AF%E8%BF%9B%E8%A1%8C%E5%A4%84%E7%90%86%E4%BB%A5%E5%8F%8AACK%E7%9A%84%EF%BC%9F%E5%A6%82%E6%9E%9C%E6%B6%88%E8%B4%B9%E8%80%85%E6%95%85%E9%9A%9C%E4%BC%9A%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86">消费者是如何从Broker拉取消息进行处理以及ACK的？如果消费者故障会如何处理</a><br>
+- <a href="#RocketMQ%E6%98%AF%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8ENetty%E6%89%A9%E5%B1%95%E5%87%BA%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E6%9E%B6%E6%9E%84%E7%9A%84">RocketMQ 是如何基于Netty扩展出高性能网络通信架构的？</a><br>
+- <a href="#%E5%9F%BA%E4%BA%8Emmap%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84%E5%AE%9E%E7%8E%B0%E7%A3%81%E7%9B%98%E6%96%87%E4%BB%B6%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E8%AF%BB%E5%86%99">基于mmap内存映射实现磁盘文件的高性能读写</a><br>
+- <a href="#%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86">事务消息机制的底层实现原理</a><br>
+- <a href="#Broker%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E9%9B%B6%E4%B8%A2%E5%A4%B1%E6%96%B9%E6%A1%88">Broker保证消息零丢失方案</a><br>
+- <a href="#Consumer%E6%B6%88%E6%81%AF%E9%9B%B6%E4%B8%A2%E5%A4%B1%E6%96%B9%E6%A1%88">Consumer消息零丢失方案</a><br>
+- <a href="#MQ%E6%B6%88%E6%81%AF%E5%B9%82%E7%AD%89%E6%80%A7">MQ消息幂等性</a><br>
+- <a href="#MQ%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97">MQ死信队列</a><br>
+- <a href="#MQ%E6%B6%88%E6%81%AF%E4%B9%B1%E5%BA%8F">MQ消息乱序</a><br>
+- <a href="#MQ%E8%BF%87%E6%BB%A4%E6%9C%BA%E5%88%B6">MQ过滤机制</a><br>
+- <a href="#MQ%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF%E6%9C%BA%E5%88%B6">MQ延迟消息机制</a><br>
+- <a href="#MQ%E6%B6%88%E6%81%AF%E7%A7%AF%E5%8E%8B">MQ消息积压</a><br>
+- <a href="#%E9%87%91%E8%9E%8D%E7%BA%A7%E7%B3%BB%E7%BB%9F%E9%92%88%E5%AF%B9RocketMQ%E9%9B%86%E7%BE%A4%E5%B4%A9%E6%BA%83%E8%AE%BE%E8%AE%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88">金融级系统针对RocketMQ集群崩溃设计高可用方案</a><br>
+- <a href="#MQ%E6%B6%88%E6%81%AF%E9%99%90%E6%B5%81">MQ消息限流</a></li>
+<li><a href="#RocketMQ%E6%BA%90%E7%A0%81">RocketMQ源码</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#RabbitMQ">RabbitMQ</a></p>
+<ul>
+<li><a href="#RabbitMQ%E6%A6%82%E8%BF%B0">RabbitMQ概述</a></li>
+<li><a href="#RabbitMQ%E5%AE%89%E8%A3%85">RabbitMQ安装</a></li>
+<li><a href="#%E6%B6%88%E6%81%AF%E5%88%86%E5%8F%91%E6%A8%A1%E5%BC%8F">消息分发模式</a></li>
+<li><a href="#%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E7%B1%BB%E5%9E%8B">交换机的类型</a></li>
+<li><a href="#SpringBoot%E6%95%B4%E5%90%88RabbitMQ%E6%95%B4%E5%90%88">SpringBoot整合RabbitMQ整合</a></li>
+<li><a href="#TTL%E9%98%9F%E5%88%97%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4">TTL队列过期时间</a></li>
+<li><a href="#%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97">死信队列</a></li>
+<li><a href="#%E5%86%85%E5%AD%98%E5%92%8C%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E7%9B%91%E6%8E%A7">内存和磁盘空间监控</a></li>
+<li><a href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1">分布式事务</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#KafKa">KafKa</a></p>
+<ul>
+<li><a href="#KafKa%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">KafKa源码分析环境搭建</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="消息中间件-2">消息中间件</h1>
+<h2 id="放大100倍压力找出你系统的技术挑战">放大100倍压力，找出你系统的技术挑战</h2>
+<p>思考一：系统的核心链路，有哪些步骤，各个步骤的性能如何，是否有改进空间？</p>
+<pre><code>    下单--预约--核销---退款
+     其余的流程可以走MQ异步处理
+</code></pre>
+<p>思考二：系统中是否有类似后台线程定时补偿的逻辑</p>
+<pre><code>订单长时间未支付，要关闭，
+预约单长时间无人确认接单，自动分单，
+秒杀活动/优惠券设置时间后要自动开始，到点后要自动结束
+</code></pre>
+<p>思考三：系统中有哪些和第三方系统的耦合？</p>
+<pre><code>    耦合微信支付，短信，推送等
+      
+    考虑MQ解耦
+</code></pre>
+<p>思考四：核心链路中是否存在哪些关键步骤可能会失败的情况？万一失败了该怎么办？</p>
+<pre><code> 例如退款失败后怎么办
+</code></pre>
+<p>思考五：平时是否有其他系统需要获取你们的数据的情况？他们是如何获取数据的？</p>
+<pre><code>是直接跑SQL从你们的数据库里查询？或者是调用你们的接口来获取数据？
+是否有这种情况？如果有，对你们有什么影响吗？
+
+可以基于mysql的binlog 日志将数据发送给MQ，别的部门从MQ中消费消息
+</code></pre>
+<p>思考六：你们的系统是否存在流量洪峰的情况，有时候突然之间访问量增大好几倍，是否对你们的系统产生无法承受的压力？</p>
+<h2 id="消息中间件-3">消息中间件</h2>
+<h3 id="消息中间件作用">消息中间件作用</h3>
+<p>解耦<br>
+异步<br>
+消峰</p>
+<h3 id="kafka-rabbitmq以及rocketmq对比">Kafka、RabbitMQ以及RocketMQ对比</h3>
+<p>（1）、Kafka的优势与劣势</p>
+<p>kafka 性能很高，基本发消息给kafka都是毫秒级的性能，可用性也很高，kafka支持集群部署的，其中部分宕机是可以继续运行的</p>
+<p>但是kafka比较为人诟病的一点，似乎是丢数据方能的问题，因为kafka收到消息后会写入一个磁盘缓冲区里，并没有落地到物理磁盘上，</p>
+<p>所以要是机器本身故障，可能会导致磁盘缓冲区数据丢失。</p>
+<p>而且kafka另外一个比较大的缺点，就是功能非常单一，主要支持发送消息给他，然后从里面消费消息，其他的就没有什么额外的高级功能了</p>
+<p>因此，综上所述，基本行业里的标准，是把kafka在用户行为日志的采集和传输上的，比如大数据团队要收集app上用于的一些行为日志，这种日志就是</p>
+<p>kafka收集传输的。</p>
+<p>（2）、RabbitMQ的优势与劣势</p>
+<p>RabbitMQ的优势是可以保证数据不丢失，也可以保证高可用性，即集群部署的时候。部分机器宕机可以继续运行，然后支持部分高级功能<br>
+比如说：死信队列，消息重试之类的</p>
+<p>但是他有个缺点最为人诟病的，就是RabbitMQ吞吐量比较低，一般就是每秒几万级别的，所以遇到特别高特别高的并发的情况下，支撑起来是有点困难的</p>
+<p>还有一个是它进行集群扩展的时候(就是加机器部署)，还是比较麻烦的</p>
+<p>（2）、RocketMQ的优势与劣势</p>
+<p>RocketMQ吞吐量也同样很高，单机可以达到10wQPS以上，而且可以保证高可用，性能很高，而且支持配置，保证数据绝对不丢失，可以部署<br>
+大规模集群，而且支持各种高级性能，比如说：延迟消息，事务消息，消息回溯，死信队列，消息积压等等</p>
+<h2 id="rocketmq">RocketMQ</h2>
+<h3 id="rocketmq架构原理">RocketMQ架构原理</h3>
+<figure data-type="image" tabindex="1"><img src="images/RockerMQjiagou.png" alt="img_1.png" loading="lazy"></figure>
+<p>RocketMQ 这个技术一共包含了四个核心部分</p>
+<pre><code>1.第一块就是他的NameServer，这个东西很重要，他要负责管理集群里所有Broker的信息，让使用MQ的系统能感知到集群里有哪些Broke。
+2.第二块就是Broke集群的本身信息，必须在多台机器上部署这么一个集群，而且还得用主从架构实现数据多副本和高可用。
+3.第三块就是消息生产者
+4.第四块就是消息的消费者
+</code></pre>
+<h4 id="nameserver">NameServer</h4>
+<p>NameServer的设计是采用Peer-to-Peer的模式来做的，可以集群化部署，但是里面任何一台机器都是独立运行的，跟其他机器没有任何通信。</p>
+<p>要部署RocketMQ，就得先部署NameServer，NameServer支持集群化部署，做到高可用。任何一台机器宕机，NameServer可以继续对外提供服务。</p>
+<p>每个Broker启动时都得向所有的NameServer进行注册，也就是说，每个NameServer都有一份集群中所有的Broker信息。</p>
+<p>RocketMQ中的生产者和消费者自己主动区NameServer拉取Broker信息的</p>
+<p>Broker和NameServer之间通过心跳机制（采用的是TCP长连接），Broker会每隔30s给所有的NameServer发送心跳，告诉NameServer自己还活着。</p>
+<p>每次NameServer收到Broker心跳，就可以更新一下它的最近一次心跳时间。</p>
+<p>然后NameServer 会每隔10s运行一个任务，区检查各个Broker的最近一次心跳，如果某个Broker超过120s都没发送心跳，那么就认为这个Broker已经挂掉。</p>
+<p>生产者和消费者会重新获取NameServer最新的路由信息，并缓存在本地</p>
+<h4 id="broker主从架构">Broker主从架构</h4>
+<p>为了保证RocketMQ的数据不丢失而且具备一定的高可用性，所以一般将Broker，部署成Master-Slave模式的，也就时一个Master Broker  对应一个Slave Broker</p>
+<p>RocketMQ的Master-Slave模式采取的是（Pull模式）Slave Broker不停的发送请求到Master Broker 去拉取消息</p>
+<p><strong>写入数据</strong>的时候，肯定是选择<strong>Master Broker</strong> 去写入的</p>
+<p><strong>读取数据</strong>的时候，<strong>有可能是Master Broker获取，有可能是Slave Broker 获取</strong>，一切根据当时的情况来定。</p>
+<p>如果Slave Broker 挂掉了，那么读写的压力都集中在Master Broker上。</p>
+<p>如果Master Broker 挂掉了，在RocketMQ4.5版本之前，Slave Broker无法自定切换为Master Broker,会导致服务不可用。</p>
+<p>RocketMQ 4.5之后的版本，RocketMQ支持一种新的机制，叫Dledger，可实现RocketMQ高可用自动切换的效果。</p>
+<p>(备注:redis 的Master-Slaver 是基于哨兵模式，异曲同工）</p>
+<h4 id="rocketmq的核心数据模型">RocketMQ的核心数据模型</h4>
+<p>MQ的核心数据模型 Topic</p>
+<p>Topic其实就是一个（逻辑上）数据集合的意思，不同的数据，你的放到不同的Topic里面。</p>
+<p>每个Topic分布式存储在Master Broker上，Slave Broker或同步Master Broker 数据。</p>
+<p>生产者跟NameServer建立一个TCP长连接，然后定时的从他那里拉取最新的路由信息，包含集群中有哪些Broker，哪些Topic，每个Topic存储在哪些Broker 上</p>
+<p>然后生产者找到自己要投递的Topic分布在哪些Broker上，根据负载均衡算法，选择出一台Broker出来，然后跟这个Broker页建立一个TCP长连接，然后通过长连接向Broker发送消息即可。</p>
+<p>这里要注意的是生产者一定是投递消息到Master Broker的，然后通过Master Broker会同步数据到他的Slave Broker上</p>
+<p>实现一份数据多个副本，保证Master Broker故障之后，数据不丢失，而且可以把Slave Broker切换为Master Broker提供服务。</p>
+<p>消费者页生产者类似，他们也会从NameServer建立长连接，然后拉取路由消息，找到自己消息的Topic在哪几台Broker上，就可以跟Broker建立长连接，从里面拉取消息了。</p>
+<p>这里唯一要注意的就是消费者系统可能会从Master Broker拉取消息，也可以从Slave Broker拉取消息，都有可能，一切看具体情况。</p>
+<h4 id="rocketmq的集群部署">RocketMQ的集群部署</h4>
+<h5 id="小规模rocketmq的集群部署">小规模RocketMQ的集群部署</h5>
+<h5 id="rocketmq的集群可视化监控">RocketMQ的集群可视化监控</h5>
+<h5 id="rocketmq生产参数调整">RocketMQ生产参数调整</h5>
+<h5 id="rocketmq的集群压测">RocketMQ的集群压测</h5>
+<h5 id="rocketmq生产集群的规划">RocketMQ生产集群的规划</h5>
+<h3 id="rocketmq生产者发送消息模式">RocketMQ生产者发送消息模式</h3>
+<pre><code>同步发送：生产者发送消息出去之后，登台MQ返回通知，程序在接着向下执行
+异步发送：生产者发送消息出去，无需登台MQ返回，直接向下执行，待MQ响应之后，callBack函数，
+        如果发送成功，则调用onSuccess函数
+        如果发送失败，则调用onException函数
+单向发送：生产者发送消息出去之后，代码向下执行，不关注MQ是否返回结果，无论消息发送成功或者发送失败都不管你的事。
+</code></pre>
+<h3 id="rocketmq的消费模式">RocketMQ的消费模式</h3>
+<p>Push消费模式：就是Broker主动把消息发送给你的消费者<br>
+Pull消费模式：就是消费者主动发送请求到Broker去拉取消息</p>
+<h2 id="rocketmq底层原理">RocketMQ底层原理</h2>
+<h3 id="生产者往broker集群发送消息的底层逻辑">生产者往Broker集群发送消息的底层逻辑</h3>
+<p>topic数据分片机制：</p>
+<figure data-type="image" tabindex="2"><img src="images/topicfenpianjizhi.png" alt="img_1.png" loading="lazy"></figure>
+<pre><code>Message Queue 将一个Topic的数据拆分成了很多个数据分片，然后再每个Broker机器上存储一些Message Queue
+</code></pre>
+<p>生产者写入数据的过程：</p>
+<figure data-type="image" tabindex="3"><img src="images/sehngchanzhexierushuju.png" alt="img.png" loading="lazy"></figure>
+<p>Broker故障时：</p>
+<p>Master Broker故障时，此时正在等待其他Slave Broker自动热切换为Master Broker，但是在这个过程中，这一组Broker是没有Master Broker可以写入的。</p>
+<p>通常建议大家打开 Product 中开启一个开关，就是sendLatencyFaultEnable</p>
+<p>一旦打开这个开关，那么他就会有一个自动容错机制，比如某次发现一个Broker无法访问，则自动回避访问这个Broker一段时间，过段时间再去访问他。</p>
+<h3 id="broker接受消息后如何在存储到磁盘上的">Broker接受消息后如何在存储到磁盘上的</h3>
+<pre><code>Broker 数据存储实际才是MQ最核心的环节，他决定了生产者消息写入的吞吐量，决定了消息不能丢失，决定了消费者获取消息的吞吐量，这些都是由他决定的。
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="images/Brokercunchujizhi.png" alt="img.png" loading="lazy"></figure>
+<pre><code>首先，当生产者的消息发送到Broker上的时候，他会把这个消息写入到磁盘上的日志文件，叫做commitLog，直接顺序写入这个文件，（先进入OS Cache Page ，再刷入磁盘）
+这个CommitLog是很多个磁盘文件，每个文件限定差不多1GB
+Broker收到消息之后就直接追加写入这个文件的末尾，如果一个CommitLog写满了1GB，就会重新创建一个CommitLog
+
+在Broker中，对Topic下的每个MessageQueue都会有一系列的ConsumeQueue文件
+
+格式大致为 $HOME/store/consumeQueue/{topic}/{queueId}/{consumeQueueFileName}
+topic：就是指逻辑上的那个Topic
+queueId：值某个那个Topic下的某个MessageQueue
+consumeQueueFileName：MessageQueue对应的consumeQueue文件名称
+
+当你的Broker收到消息写入到CommitLog之后，其实他同时会将这条数据在CommitLog中的物理位置，也就是一个文件的偏移量（offset），写入到这条消息所属的
+MessageQueue对应的consumeQueue文件中去（offset其实的是CommitLog文件消息的地址引用）。
+
+实际上consumeQueue中存储的每条数据不止消息在CommitLog中的offset偏移量，还包含了消息的长度，以及tag，hashCode，一条数据是20个字节，每个consumeQueue保存30W条数据
+大概每个文件是5.72M
+
+所以实际上Topic的每个MessageQueue都对应了Broker机器上的多个ConsumeQueue文件，这些文件保存了这个MessageQueue的所有消息在CommitLog文件中的物理位置，也就是offset偏移量。
+</code></pre>
+<p>为了提升CommitLog文件的写入性能</p>
+<pre><code>先写OS操作系统的Page Cache 和顺序写两个机制来提升写入CommitLog文件的性能
+</code></pre>
+<p>同步刷盘和异步刷盘</p>
+<pre><code>异步刷盘模式下，写入到OS Page Cache 缓存成功后，直接提交ACK给生产者，如果刷盘失败，会导致数据丢失，但是吞吐量很高
+
+同步刷盘模式下，写入到OS Page Cache 缓存成功后，必须强制把这台哦消息刷入到底层的物理磁盘，然后才返回ACK给生产者，此时你才知道消息写入成功，
+这个模式下，保证Master 数据不会丢失，但是吞吐量下降。
+返回ACK后，如果Master挂掉，数据没同步，切换到Slave时，也会出现数据丢失。
+</code></pre>
+<h3 id="基于dledger技术部署broker高可用集群到底如何进行数据同步">基于Dledger技术部署Broker高可用集群，到底如何进行数据同步</h3>
+<figure data-type="image" tabindex="5"><img src="images/Dledger.png" alt="img.png" loading="lazy"></figure>
+<p>Dledger技术实际上首先他自己就有一个CommitLog机制，你把数据交给他，他会写CommitLog磁盘文件里去，这是他能干的第一件事情。</p>
+<p>如果以及Dledger技术来实现Broker高可用架构，实际上就是用Dledger先替换掉原来的Broker，Dledger自己来来管理CommitLog</p>
+<p>那么就是每个Broker上都有一个Dledger组件，</p>
+<p>Dledger是基于Raft协议来进行Leader Broker选举的，会从中选举出一个Leader来</p>
+<p>Raft协议投票原理：</p>
+<pre><code>    比如三台机器，第一轮投票开始，他们都把票投给自己，结果每个人得到的票数一样，第一轮选举失败
+
+    接着每个人进入一个随机休眠，如果是第一个人休息三秒，第二个人休息5秒，四但个人休息4秒
+
+    接着第一个人开始醒过来，继续把票投给自己，然后发送自己的选票给别人，下一个人醒来时，发现自己没有票
+
+    会把票投给那个有票的人，接着第三个人醒来同理
+
+    依靠这个休眠机制一般都能选出一个Leader
+</code></pre>
+<p>Dledger是基于Raft协议进行多副本同步</p>
+<p>Raft协议多副本同步机制：</p>
+<pre><code>    首先Leader Broker上的Dledger收到一条数据之后，会标记uncommitted 状态
+    然后他会通过自己的DledgerServer组件把这个uncommitted数据发送给Following Broker的Dledger
+    接着Follower Broker的DledgerServer收到uncommitted消息之后，必须返回一个ack给Leader Broker的DledgerServer
+    然后如果Leader Broker收到超过半数的Follower Broker返回的ack之后，会将消息标记为committed状态
+    然后Leader Broker上的DledgerServer就会发送commited消息给Follower Broker机器的DledgerServer，让他们也把消息标记为committed状态
+</code></pre>
+<p>如果Leader Broker发生宕机了</p>
+<p>如果Leader Broker 发生宕机了，剩下的两个Follower Broker会重新发起选举，他们还是会采用Raft协议的算法，去选举出来一个新的Leader Broker继续对外提供服务，<br>
+而且会对没有完成数据同步的进行一些恢复性操作，保证数据不会丢失。</p>
+<h3 id="消费者到底是基于什么策略选择master或slave拉取数据">消费者到底是基于什么策略选择Master或Slave拉取数据</h3>
+<p>集群模式：一个消费者组获取一条消息，只会交给组内的一台机器取处理，而不是每台机器都可以获取到这条消息的<br>
+广播模式：那么对于消费者组获取到一条消息，组内的每台机器都可以获取到这条消，但是相对而言，广播模式用的很少，常见基本都是使用集群消费模式<br>
+一个Topic的多个MessageQueue会均匀分摊给消费者组内的多个机器取消费，这里的一个原则就是，<br>
+一个MessageQueue只能被一个消费机器取消费，但是一个消费机器，可以负责多个MessageQueue的消息处理</p>
+<p>Push模式和Pull模式<br>
+实际上这两个模式是一样的，都是消费者机器主动发送请求到Broker机器上取拉取一批消息下来。</p>
+<p>Push消费模式本质底层也是基于这种消费者主动拉取的模式实现的，只不过他的名字叫Push而已，意思是Broker会尽可能的实时的把消息<br>
+交给消费者机器来处理，他的消息实时性会更好。<br>
+一般我们使用RocketMQ的时候，消费者模式通常都是基于Push模式来做的，因为Pull模式的代码写起来更加复杂和繁琐，<br>
+而且Push模式底层本身就是基于消息拉取来做的，只不过实时性更好。</p>
+<p>push模式实现思路：当消费者发送请求到Broker取拉取消息的时候，如果有新消息可以消费那么立马就会返回一批消息到消费机器取处理。<br>
+处理完之后会接着立刻发送请求到Broker机器去拉取下一批消息。</p>
+<p>所以消费机器再push模式下会处理完一批消息，立马发送请求去拉取下一批消息，消息处理的实时性非常好，看起来就跟Broker<br>
+一直不停的推送消息到消费者机器一样。</p>
+<p>push模式下有一个请求挂起和长轮询的机制</p>
+<p>当你的请求发送到Broker，结果他发现没有新的消息给你处理的时候，就会请求线程挂起，默认挂起15s，然后这个期间<br>
+他会有后台线程每隔一会儿就会检查一下是否有新的消息给你，另外如果再这个挂起过程中，如果有新的消息到达了就会主动唤起挂起的线程<br>
+，然后把消息返回给你。</p>
+<p>其实消费消息的时候，本质就是根据你要的消费的MessageQueue以及开始消费的位置，去找对应的ConsumeQueue读取里面对应位置的消息<br>
+再commitLog中的物理offset偏移量，然后到CommitLog中更具offset读取消息数据返回给消费者机器。</p>
+<p>ConsumeQueue 文件同样也是基于 os page cache 来进行优化的</p>
+<p>也就是说，对于Broker机器磁盘上的大量的ConsumeQueue文件，再写入的时候也会优先进入os cache,</p>
+<p>而且os 自己有一个优化机制，就是读取一个磁盘文件的时候，他就会把磁盘文件的一些数据缓存到os cache中。</p>
+<p>CommitLog 是基于os cache + 磁盘一起读取的</p>
+<p>当你去拉取消息的时候，可以轻松从os cache 里读取少量的consumeQueue文件里的offset，这个性能是极高的，<br>
+但是当你去committedLog文件里去读取完整消息的时候，会有两种可能</p>
+<p>第一种可能：如果你读取的是那种刚刚写入commitLog的数据，那么大概率还停留再 os cache,<br>
+此时你可以顺利的直接从 os cache 中读取commitLog中的数据<br>
+第二种可能：你读取的是比较早之前写入的commitLog的数据，哪些数据很早就被刷入磁盘了，已经不在os cache 里了，<br>
+那么此时你读取就只能从磁盘文件里读取了</p>
+<h3 id="消费者是如何从broker拉取消息进行处理以及ack的如果消费者故障会如何处理">消费者是如何从Broker拉取消息进行处理以及ACK的？如果消费者故障会如何处理</h3>
+<p>当消费者处理完这批消息之后，消费者机器就会提交我们的目前一个消费进度到Broker上去，然后Broker就会存储我们的消费进度</p>
+<p>下次这个消费者组只要再次拉取这个ConsumeQueue的消息，就可以从Broker记录的消费位置开始拉取，不用从头开始拉取了。</p>
+<p>如果消费者族中机器宕机或扩展机器，这个时候其实会进入一个rebalance的环节，也就是说重新给各个消费者机器分配他们要处理的MessageQueue</p>
+<h3 id="rocketmq是如何基于netty扩展出高性能网络通信架构的">RocketMQ是如何基于Netty扩展出高性能网络通信架构的</h3>
+<p><img src="images/Reactormoxing.png" alt="img.png" loading="lazy"><br>
+首先作为Broker而言，他会有一个Reactor主线程，而且这个线程负责监听一个网络端口</p>
+<p>假设我么有一个Producer他现在想跟Broker建立TCP长连接，此时Broker上的这个Reactor主线程，他会在端口上监听到这个Producer建立连接的请求</p>
+<p>接着这个Reactor主线程就专门负责这个Producer按照TCP协议规定的一系列步骤和规范，建立好一个长连接</p>
+<p>Producer里面会有一个SocketChannel，Broker里也会有一个SocketChannel，这两个SocketChannel就代表他们两建立好这个长连接</p>
+<p>接着Producer会通过这个SocketChannel去发送消息给Broker。</p>
+<p>Reactor线程池，默认是3个线程</p>
+<p>Reactor主线程建立好每个连接SocketChannel，都会交给这个Reactor线程池里的其中一个线程去监听请求</p>
+<p>基于Worker线程池完成一系列准备工作</p>
+<p>线程池会转交请求给Worker线程池，进行一系列预处理</p>
+<p>Worker线程池默认有8个线程，此时Reactor线程收到的这个请求会交给Worker线程池中的一个线程进行处理，完成ssl加密，编码解码，连接空闲检查，网络连接管理诸如此类的事情。</p>
+<p>预处理之后，请求转交给业务线程池</p>
+<p>比如对于处理发送请求而言，就会把请求转发给SendMessage线程池。SendMessage是可以配置的配置的越高，处理消息的吞吐量越高</p>
+<p>所以最终的效果就是：</p>
+<ul>
+<li>Reactor主线程在端口上监听Producer建立连接的请求，建立长连接</li>
+<li>Reactor线程池并发的监听多个请求是否到达</li>
+<li>Worker线程池求情并发的对多个请求进行预处理</li>
+<li>业务线程池并发的对多个请求进行磁盘读写业务操作</li>
+</ul>
+<p>这样一套网络通信架构，最终实现的效果就是可以高并发、高吞吐的对大量的网络连接发送过来的大量请求数据进行处理，保证Broker实现高吞吐</p>
+<h3 id="基于mmap内存映射实现磁盘文件的高性能读写">基于mmap内存映射实现磁盘文件的高性能读写</h3>
+<p>传统文件IO操作的多次数据拷贝问题</p>
+<p>会先将磁盘文件拷贝到内核IO缓冲区，再将数据拷贝到用户进程的私有空间</p>
+<p>为了读取磁盘文件发生了两次拷贝，对磁盘读写的性能是由影响的</p>
+<p>RocketMQ 是利用mmap技术配合Page Cache技术进行文件读写优化的</p>
+<p>首先RocketMQ底层对CommitLog、ConsumeQueue之类的磁盘文件的读写操作，基本上都是采用mmap的技术来实现的</p>
+<p>基于JDK NIO包下的MappedByteBuffer的map()函数先将磁盘文件映射到内存里来</p>
+<p>MappedByteBuffer的map()底层就是基于mmap技术实现的</p>
+<p>mmap技术在进行文件映射的时候，一般由大小限制，在1.5GB-2GB间</p>
+<p>所以RocketMQ才能让CommitLog单个文件在1GB，ConsumeQueue文件在5.72MB，不会太大</p>
+<p>接下来就可以对这个已经映射到内存的磁盘文件进行读写操作，写的时候他会直接进入Page Cache中，</p>
+<p>然后过一段时间之后，由OS线程异步刷入磁盘中</p>
+<p>你加载的数据块的临近其他数据块也一起加载到Page Cache里去</p>
+<p>Broker针对磁盘文件高性能读写机制的优化：<br>
+1.<strong>内存预加载机制</strong>：Broker会针对磁盘中各种CommitLog、ConsumeQueue文件预先分配好MappedFile，<br>
+也就是提前对一些可能接下来要读写的磁盘文件，提前使用MappedByteBuffer执行map()函数完成映射，这样<br>
+后续读写文件的时候，就可以直接执行了。<br>
+2.<strong>文件预热</strong>：在提前对一些文件完成映射之后，因为映射不会直接将数据加载到内存里来，那么后续在读取<br>
+尤其是CommitLog、ConsumeQueue的时候，其实有可能会频繁的从磁盘文件里加载数据到内存中去。</p>
+<p>所以其实在执行完map()函数之后，会进行madvise()系统调用，就是提前尽可能多的把磁盘文件加载到内存里去。</p>
+<p>通过上述优化，才真正实现了一个效果<br>
+就是写磁盘文件的时候都是进入Page Cache的，保证写入的高性能；同时尽可能的多的通过map+madvise<br>
+的映射后预热机制，把磁盘文件里的数据尽可能多的加载到Page Cache里来，后续对ConsumeQueue、CommitLog进行读取<br>
+的时候，才能尽可能的从内存中读取数据。</p>
+<h3 id="事务消息机制的底层实现原理">事务消息机制的底层实现原理</h3>
+<figure data-type="image" tabindex="6"><img src="images/trancitionmessage.png" alt="img.png" loading="lazy"></figure>
+<pre><code>1.生产者发送half消息，这条half消息会定位到这个Topic的一个MessageQueue，
+通过MessageQueue消息写入CommitLog文件，同时消息的offset会写入到MessageQueue对应的consumeQueue
+
+2.但是此时这个half消息并没有发送到消费端对应的ConsumeQueue中，而是自己内部的RMQ_SYS_TRANS_HALF_TOPIC,
+对于事务消息下的half消息，RocketMQ是写入内部Topic的ConsumeQueue，而不是指定消费端ConsumeQueue
+此时别的系统无法在Topic对应的ConsumeQueue中查看到这套half消息，此时返回half响应给生产者。
+
+3.此时RocketMQ内部会有一个定时任务去扫描RMQ_SYS_TRANS_HALF_TOPIC中的half消息，如果此时你超过了一定时间
+还是half消息，此时会回调生产者系统的接口，让你判断这个half消息是rollback还是commit
+
+4.如果rollback，那么此时就需要对消息进行回滚。他的本质就是用一个OP操作来标记half消息的状态
+RocketMQ内部有一个OP_TOPIC，此时可以写入一条rollback OP记录在这个Topic里，标记某个half消息是rollback
+假设你一直没有执行rollback/commit，RocketMQ会对调生产者系统接口取判断half消息的状态，
+但是他最多就是回调15，如果15次之后，你都没有法告知他half消息的状态，此时就自动把消息标记为rollback
+
+5.如果订单系统提交了commit操作，此时RocketMQ就会在OP_TOPIC里写入一条记录，标记half消息已经是commit状态了。
+接着就需要把放在RMQ_SYS_TRANS_HALF_TOPIC中的half消息吸入人到消费端 Topic 的ConsumeQueue里去，然后下游系统就可以看到这条消息消费了
+</code></pre>
+<p>解决发送消息零丢失的方案:一定要使用事务消息方案</p>
+<h3 id="broker保证消息零丢失方案">Broker保证消息零丢失方案</h3>
+<figure data-type="image" tabindex="7"><img src="images/rocketmq_%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1.png" alt="img.png" loading="lazy"></figure>
+<p>解决方案总结：</p>
+<pre><code>    1.把Broker刷盘策略调整为同步刷盘，那么绝对不会因为机器宕机而丢失数据 
+    2.采用主从架构的Broker集群，那么一条消息写入成功，就意味着多个Broker机器都写入了
+    此时任何一台机器的磁盘故障，数据也不会丢失
+</code></pre>
+<h3 id="consumer消息零丢失方案">Consumer消息零丢失方案</h3>
+<p>在默认的Consumer消费模式下，必须是你处理完一批消息了，才会返回CONSUME_SUCCESS这个标识消息都处理结束了，去提交offset到Broker去。</p>
+<p>在这种情况下，正常来说是不会丢失消息的，即使你一个Customer宕机了，他会把没处理完的消息交给其他Customer去处理</p>
+<p>但是我们要警惕一点，就是我们在代码中不能对消息进行异步处理</p>
+<p>对全链路消息丢失方案的总结：</p>
+<p>发送消息到MQ的零丢失：<br>
+1.同步发送消息+反复多次重试<br>
+2.事务消息机制</p>
+<p>MQ收到消息之后的零丢失：<br>
+同步刷盘策略+主从架构同步机制</p>
+<p>消费消息的零丢失：</p>
+<p>采用RocketMQ的消费者，天然就可以保证你处理完消息之后，才会提交消息的offset到Broker，<br>
+记住千万别采用多线程异步处理消息的方式即可</p>
+<p>消息零丢失，会导致性能下降，MQ的吞吐量下降</p>
+<p>一般我们建议，对于金钱、交易以及核心数据相关的系统和核心链路，可以使用消息零丢失方案</p>
+<h3 id="mq消息幂等性">MQ消息幂等性</h3>
+<p>一般来说，对于MQ的重读消息问题而言，我们往MQ里面重复发送一样的消息其实是可以接受的，因为MQ里由多条重复消息，<br>
+他不会对核心链路造成影响，但是我们关键要保证的，是你从MQ里获取消息进行处理，必须保证消息不能重复处理。</p>
+<p>这样的话，要保证消息的幂等性，我们优先推荐的其实还是业务判断法，直接根据你的数据存储中的记录来判断这个消息是否处理过<br>
+如果处理过了，那就别在处理了。因为我们要知道，基于redis的消息发送状态的方案，在一些极端情况下还是没法完全保证幂等性。</p>
+<h3 id="mq死信队列">MQ死信队列</h3>
+<figure data-type="image" tabindex="8"><img src="images/rocket_%E9%87%8D%E8%AF%95%E9%98%9F%E5%88%97.png" alt="img.png" loading="lazy"></figure>
+<p>对于消息处理异常的，可以返回RECONSUME_LATER状态</p>
+<p>所以实际上，如果我们因为数据库宕机等问题，导致这批消息处理异常的，此时没法处理这批消息，我们就返回一个RECONSUME_LATER状态</p>
+<p>他的意思就是，我现在没法完成这批消息的处理，麻烦你稍后过段时间再次给我这批消息我重试一下！</p>
+<p>RocketMQ会有一个针对你这个CustomerGroup的重试队列，如果你返回了RECONSUME_LATER状态，他会把你的这批消息放到你的这个消费者组的重试队列中去。</p>
+<p>然后过一段时间之后，重试队列的消息再次给我们，我们再次进行处理，默认最多重试16次，每次重试的时间间隔是不一样的，配置如下所示：<br>
+messageDelayLevel:1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h</p>
+<p>如果联系16次还是无法处理消息</p>
+<p><img src="images/rocket_%E7%A7%81%E4%BF%A1%E9%98%9F%E5%88%97.png" alt="img.png" loading="lazy"><br>
+这个时候消息会进入死信队列，后面针对私信队列中的消息进行单独处理就可以了。</p>
+<h3 id="mq消息乱序">MQ消息乱序</h3>
+<p>在使用MQ的时候，出现消息乱序是是非常正常的一个问题，因为我们原本有顺序的消息，<br>
+完全有可能会分到不同的MessageQueue中去，然后不同机器上部署的Customer可能会用混乱的顺序从<br>
+不同的MessageQueue里获取消息然后处理。</p>
+<p>所以要解决消息乱序的问题其实非常简单：</p>
+<p>让同一个业务数据进入到同一个MessageQueue里去<br>
+Customer有序的处理一个订单的binlog，</p>
+<p>对于有序消息的方案中，如果你遇到消息处理失败的场景，就必须返回SUSPEND_CURRENT_QUEUE_A_MOMENT这个状态<br>
+意思是先等一会儿，一会儿再继续处理这批消息，而不能把他放到重试队列中去，然后直接处理下一批。</p>
+<h3 id="mq过滤机制">MQ过滤机制</h3>
+<p>RocketMQ支持比较丰富的数据过滤语法</p>
+<p>1.数值比较，比如: &gt; ,&gt;= ,&lt; ,&lt;= ,BETWEEN ,= ;<br>
+2.字符比较，比如： = ，&lt;&gt;,IN;<br>
+3.IS NULL或者IS NOT NULL;<br>
+4.逻辑符号 AND ,OR , NOT ;<br>
+5.数值，1f127853<br>
+6.字符，比如'abc'必须用单引号包裹起来<br>
+7.NULL,特殊的常量<br>
+8.布尔值 TRUE或者FALSE</p>
+<h3 id="mq延迟消息机制">MQ延迟消息机制</h3>
+<figure data-type="image" tabindex="9"><img src="images/rocket_%E5%AE%9A%E6%97%B6%E6%89%AB%E6%8F%8F%E4%B8%BA%E6%94%AF%E4%BB%98%E7%9A%84%E8%AE%A2%E5%8D%95.png" alt="img.png" loading="lazy"></figure>
+<p>这种方式很不好，导致一个订单要扫描很多遍才发现他超过了30min未支付<br>
+<img src="images/rocket_%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF.png" alt="img.png" loading="lazy"><br>
+因此针对这种场景，MQ里的延迟消息就会出场了，而且在实际项目中，MQ的延迟消息使用往往是很多的。</p>
+<p>所谓延迟消息，意思就是说，我们订单系统在创建一个订单之后，可以发送一条消息到MQ里去，<br>
+我们指定这条消息是延迟消息，比如要等待30分钟之后，才能被订单扫描服务给消费到。</p>
+<p>这种方式就比你用后台线程扫描订单的方式要好多了，一个是对每个订单你只会在他创建的30分钟查询他一次，<br>
+不会反复扫描多次。</p>
+<p>另外就是如果你的订单数量很多，你完全可以让订单扫描的服务多部署几台机器，<br>
+然后对于MQ中的Topic可以多指定一个MessageQueue，这样每个订单扫描服务的机器作为一个Customer都会处理<br>
+一部分订单查询的任务。</p>
+<p>MQ的延迟消息是非常常用并且非常有用的功能。</p>
+<p>其实发送延迟消息的核心，就是设置消息的delayTimeLevel，也就是延迟级别</p>
+<p>RocketMQ默认支持的延迟级别如下：1s,5s,10s,1m,2m,3m,4m,5m,6m,7m,8m,9m,10m,20m,1h,2h</p>
+<p>如果设置为3，意思是延迟10s,你发送出去的消息，会过10s被消费者获取到</p>
+<p>其实Consumer是支持设置从哪里开始消费消息的，常见有两种，一种是从Topic的第一条数据开始消费（CONSUMER_FROM_LAST_OFFSET），<br>
+另一种是从最后一次消费过的消息之后开始消费（CONSUMER_FROM_FIRST_OFFSET）</p>
+<p>一般来说，我们都会选择（CONSUMER_FROM_LAST_OFFSET），这样你刚才就从topic的第一条消息开始消费，但是每次重启，你都是从上一次消费到的位置<br>
+继续往后进行消费的。</p>
+<h3 id="mq消息积压">MQ消息积压</h3>
+<p>高峰期消息积压，消费者无法尽快处理</p>
+<p>增加消费者加大消费的吞吐量</p>
+<h3 id="金融级系统针对rocketmq集群崩溃设计高可用方案">金融级系统针对RocketMQ集群崩溃设计高可用方案</h3>
+<p>对于跟钱相关的问题，针对这种场景，我们通常会在发送MQ那个系统中设计高可用降级方案，这个降级的思路是,<br>
+在你需要发送MQ的地方进行try catch 捕获，如果发现发送消息到MQ有异常，此时就进行重试。</p>
+<p>如果发现连续重试超过一定次数还是失败，说明MQ集群彻底崩溃了，此时你必须把消息写入本地储存或者NoSQL存储中去，但是一定要保证消息写入的顺序。</p>
+<p>只要在这个方案下，即使MQ集群彻底崩溃了，你系统的消息也不会丢失，对于跟金钱相关的系统，广告系统来说，这个高可用的设计方案还是非常有必要的</p>
+<h3 id="mq消息限流">MQ消息限流</h3>
+<p>一般会根据MQ压测的结果来，通过压测看看MQ最多能抗下多少QPS，然后最好限流</p>
+<p>一般来说，限流算法可以采用令牌桶算法：也就是说每秒发放多少个令牌，然后只允许多少个请求通过</p>
+<h2 id="rocketmq源码">RocketMQ源码</h2>
+<h1 id="rabbitmq">RabbitMQ</h1>
+<h2 id="rabbitmq概述">RabbitMQ概述</h2>
+<figure data-type="image" tabindex="10"><img src="images/RabbitMQ%E7%9B%B8%E5%85%B3%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5.png" alt="" loading="lazy"></figure>
+<p>Producer ：生产者，生成消息并把消息发送给 RabbitMQ 。</p>
+<p>Consumer ：消费者，从 RabbitMQ 中接收消息。</p>
+<p>Exchange ：交换器，具有路由的作用，将生产者传递的消息根据不同的路由规则传递到对应的队列中。交换器具有四种不同的类型，每种类型对应不同的路由规则。</p>
+<p>Queue ：队列，实际存储消息的地方，消费者通过订阅队列来获取队列中的消息。</p>
+<p>Binding ：绑定交换器和队列，只有绑定后消息才能被交换器分发到具体的队列中，用一个字符串来代表Binding Key。</p>
+<p>消息是如何由生产者传递到消费者：</p>
+<p>1、生产者 Producer 生成消息 msg ，并指定这条消息的路由键 Routing Key ，然后将消息传递给交换器 Exchange 。</p>
+<p>2、交换器 Exchange 接收到消息后根据 Exchange Type 也就是交换器类型以及交换器和队列的 Binding 绑定关系来判断路由规则并分发消息到具体的队列 Queue 中。</p>
+<p>3、消费者 Consumer 通过订阅具体的队列，一旦队列接收到消息便会将其传递给消费者。</p>
+<p>这里的 Routing Key 和 Binding 我是按照自己的理解解释的，与某些参考资料是有出入的，读者理解就好。</p>
+<p>当然完成上述三个步骤还缺少两个关键的东西：</p>
+<p>Connection ：连接，不论生产者还是消费者想要使用 RabbitMQ 都必须首先建立到RabbitMQ 的 TCP 连接。</p>
+<p>Channel ：信道，建立完TCP 连接后还必须建立一个信道，消息都是在信道中传递和操作的。<br>
+<img src="images/amqp%E4%BF%A1%E9%81%93.png" alt="信道" loading="lazy"></p>
+<p>、上图形象的展示了连接和信道之间的关系，一个连接中可以建立多个信道，而且每个信道之间都是完全隔离的，同时我们需要记住的是创建和销毁 TCP 连接是很消耗资源的，而信道则不是，所以能够通过创建多个信道来隔离环境的不要通过创建多个连接。</p>
+<h2 id="消息分发模式">消息分发模式</h2>
+<ul>
+<li>简单模式</li>
+<li>工作模式</li>
+<li>fanout模式</li>
+<li>direct模式</li>
+<li>topic模式</li>
+<li>RPC模式</li>
+</ul>
+<h2 id="交换机的类型">交换机的类型</h2>
+<p>交换器类型</p>
+<p>交换器具有路由分发消息的作用，其有四种不同的类型，每种类型对应不同的路由规则：</p>
+<p>fanout ：广播，将消息传递给所有该交换器绑定的队列。</p>
+<p>direct ：直连，将消息传递给 Routing Key 与 Binding Key完全一致的队列中，可以有多个队列。</p>
+<p>topic ：模糊匹配，Binding Key 是一个可以用符号 . 分隔单词的字符串，模糊匹配下，符号 * 用于匹配任意一个单词，符号  # 用于匹配零个或多个单词。</p>
+<p>headers ：这个比较特殊，是根据消息中具体内容的 header 属性来作为路由规则的，这种类型对资源消耗太大，一般很少使用，前面三种类型就够了。</p>
+<h2 id="rabbitmq安装">RabbitMQ安装</h2>
+<pre><code>注意：如果docker pull rabbitmq 后面不带management，启动rabbitmq后是无法打开管理界面的，所以我们要下载带management插件的rabbitmq.
+
+docker pull rabbitmq:3.8.6-management
+
+mkdir -p /data/rabbitmq
+
+#机器1运行:
+docker run -d --restart=always --name rabbitmq1 --hostname rabbitmq1 --add-host=&quot;rabbitmq1&quot;:172.18.163.76 --add-host=&quot;rabbitmq2&quot;:172.18.163.77 --add-host=&quot;rabbitmq3&quot;:172.18.163.78 -p 5672:5672 -p 15672:15672 -p 4369:4369 -p 25672:25672 -v /data/rabbitmq/:/var/lib/rabbitmq -e RABBITMQ_DEFAULT_VHOST=mrb_vhost -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_NODENAME=rabbitmq1 -e RABBITMQ_DEFAULT_PASS=dTybUNtvyu90 -e RABBITMQ_ERLANG_COOKIE=dTybUNtvyu90 docker.io/rabbitmq:3.8.6-management
+#进入容器:
+docker exec -it rabbitmq1 bash
+#容器内执行:
+rabbitmqctl stop_app
+rabbitmqctl reset
+rabbitmqctl start_app
+rabbitmqctl set_user_tags admin administrator
+rabbitmqctl set_policy -p mrb_vhost ha &quot;^&quot; '{&quot;ha-mode&quot;:&quot;all&quot;,&quot;ha-sync-mode&quot;:&quot;automatic&quot;}'
+
+#机器2运行:
+docker run -d --restart=always --name rabbitmq2 --hostname rabbitmq2 --add-host=&quot;rabbitmq1&quot;:172.18.163.76 --add-host=&quot;rabbitmq2&quot;:172.18.163.77 --add-host=&quot;rabbitmq3&quot;:172.18.163.78 -p 5672:5672 -p 15672:15672 -p 4369:4369 -p 25672:25672 -v /data/rabbitmq/:/var/lib/rabbitmq -e RABBITMQ_DEFAULT_VHOST=mrb_vhost -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_NODENAME=rabbitmq2 -e RABBITMQ_DEFAULT_PASS=dTybUNtvyu90 -e RABBITMQ_ERLANG_COOKIE=dTybUNtvyu90 docker.io/rabbitmq:3.8.6-management
+#进入容器:
+docker exec -it rabbitmq2 bash
+#容器内执行:
+rabbitmqctl stop_app
+rabbitmqctl reset
+rabbitmqctl join_cluster rabbitmq1@rabbitmq1
+rabbitmqctl start_app
+
+#机器3运行:
+docker run -d --restart=always --name rabbitmq3 --hostname rabbitmq3 --add-host=&quot;rabbitmq1&quot;:172.18.163.76 --add-host=&quot;rabbitmq2&quot;:172.18.163.77 --add-host=&quot;rabbitmq3&quot;:172.18.163.78 -p 5672:5672 -p 15672:15672 -p 4369:4369 -p 25672:25672 -v /data/rabbitmq/:/var/lib/rabbitmq -e RABBITMQ_DEFAULT_VHOST=mrb_vhost -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_NODENAME=rabbitmq2 -e RABBITMQ_DEFAULT_PASS=dTybUNtvyu90 -e RABBITMQ_ERLANG_COOKIE=dTybUNtvyu90 docker.io/rabbitmq:3.8.6-management
+#进入容器:
+docker exec -it rabbitmq3 bash
+#容器内执行:
+rabbitmqctl stop_app
+rabbitmqctl reset
+rabbitmqctl join_cluster rabbitmq1@rabbitmq1
+rabbitmqctl start_app
+</code></pre>
+<h2 id="springboot整合rabbitmq整合">SpringBoot整合RabbitMQ整合</h2>
+<p>生产者</p>
+<pre><code class="language-java">    @Autowired
+    private RabbitTemplate rabbitTemplate;
+     rabbitTemplate.convertAndSend(exchange, routingKey, msg, new CorrelationData(IdUtil.objectId()));
+</code></pre>
+<p>消费者</p>
+<pre><code>队列与交换机的绑定可以在生产者，也可以在消费者，也可以同时绑定，建议在消费者端绑定，因为消费者端先启动
+绑定的方式可以使用配置文件的方式，可以使用注解的方式
+</code></pre>
+<pre><code class="language-java">@Slf4j
+@Component
+@RabbitListener(bindings = @QueueBinding(
+        value = @Queue(value = FanoutQueue.PROJECT_VIEW),
+        exchange = @Exchange(value = FanoutExchange.PROJECT, type = ExchangeTypes.FANOUT)
+))
+public class ProjectViewListener {
+
+</code></pre>
+<h2 id="ttl队列过期时间">TTL队列过期时间</h2>
+<p>概述</p>
+<pre><code>过期时间TTl表示可以对消息设置预期时间，在这个时间内都可以被消费者接受获取，过了时间之后，消息将自动被删除
+目前有两种方式设置：
+第一种方法是通过队列属性设置，队列中所有的消息都有相同的过期时间 
+第二张是对消息进行单独设置，每条消息的TTL可以不同
+</code></pre>
+<p>对队列设置过期时间</p>
+<pre><code class="language-java"> 
+    x-messsage-ttl:设置这个属性单位是毫秒 
+   
+
+</code></pre>
+<p>对消息设置过期时间</p>
+<pre><code class="language-java">MessagePostProcessor messagePostProcessor = new MessagePostProcessor(){
+    
+    @Override
+public Message messagePostProcessor(Message message){
+        message..getMessagePostProcessor.setExpiration(&quot;5000&quot;);
+        message..getMessagePostProcessor.setContentEncoding(&quot;UTF-8&quot;);
+  }
+}
+
+        rabbitTemplate.convertAndSend(exchange, routingKey, msg, new CorrelationData(IdUtil.objectId()),messagePostProcessor);
+</code></pre>
+<p>过期队列，和过期消息的区别</p>
+<pre><code>过期队列，时间到了之后，会将消息进行移除，但是不是直接移除，而是放到一个死信队列里面来。
+过期消息，时间到了之后，会将消息进行移除，不会放在任何一个地方。
+</code></pre>
+<h2 id="死信队列">死信队列</h2>
+<p>概述</p>
+<pre><code>DLX：Dead Letter Exchange，可以称之为死信交换机，也可以称之为死信邮箱，当一个消息在一个队列中变成死信之后，它能被重新发送到另一个交换机中，这个
+交换机就是DLX，绑定DLX的队列称之为私信队列
+DLX交换机是正常的交换机和一般交换机没有区别，它能在任何队列上被指定，实际上就是
+设置某一队列的属性，当这个队列存在死信时，RabbitMQ会自动将这个消息发布到DLX上去，
+进而被路由到另一个队列即死信队列。
+</code></pre>
+<p>消息变成死信的原因：</p>
+<pre><code>消息被拒绝
+消息过期
+消息达到最大长度
+</code></pre>
+<p>设置死信队列：只需要在定义队列的时候设置队列参数：x-dead-letter-exchange，指定交换机即可。</p>
+<h2 id="内存和磁盘空间监控">内存和磁盘空间监控</h2>
+<h1 id="kafka">KafKa</h1>
+<h2 id="kafka源码分析环境搭建">KafKa源码分析环境搭建</h2>
+<p>1.按照jdk<br>
+2.安装scala<br>
+直接下载傻瓜式安装就可以了。<br>
+接着配置SCALA_HOME和PATH两个环境变量<br>
+3.安装Gradle，项目构建<br>
+4.zookeeper是必须是必须适用的</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[spring]]></title>
+        <id>https://zuolinlin.github.io/zuo.github.io/post/spring/</id>
+        <link href="https://zuolinlin.github.io/zuo.github.io/post/spring/">
+        </link>
+        <updated>2022-04-08T13:24:44.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="spring">spring</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#%E7%B2%BE%E9%80%89%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%9ASpringIOC%E5%AE%B9%E5%99%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E8%BF%87%E7%A8%8B">精选面试题：SpringIOC容器初始化过程</a>
+<ul>
+<li><a href="#IOC%E6%98%AF%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84">IOC是如何工作的？</a></li>
+<li><a href="#Resource%E5%AE%9A%E4%BD%8D">Resource定位</a></li>
+<li><a href="#%E8%BD%BD%E5%85%A5BeanDefinition">载入BeanDefinition</a></li>
+<li><a href="#%E5%B0%86BeanDefinition%E6%B3%A8%E5%86%8C%E5%88%B0%E5%AE%B9%E5%99%A8">将BeanDefinition注册到容器</a></li>
+</ul>
+</li>
+<li><a href="#SpringIOC%E4%BE%9D%E8%B5%96%E6%9F%A5%E6%89%BE">SpringIOC依赖查找</a>
+<ul>
+<li><a href="#%E6%A0%B9%E6%8D%AEBean%E5%90%8D%E7%A7%B0%E6%9F%A5%E6%89%BE">根据Bean名称查找</a></li>
+<li><a href="#%E6%A0%B9%E6%8D%AEBean%E7%B1%BB%E5%9E%8B%E6%9F%A5%E6%89%BE">根据Bean类型查找</a></li>
+<li><a href="#%E4%BE%9D%E8%B5%96%E6%9F%A5%E6%89%BE%E4%B8%AD%E7%9A%84%E7%BB%8F%E5%85%B8%E5%BC%82%E5%B8%B8%EF%BC%9ABean%E6%89%BE%E4%B8%8D%E5%88%B0%EF%BC%9FBean%E4%B8%8D%E6%98%AF%E5%94%AF%E4%B8%80%E7%9A%84%EF%BC%9F">依赖查找中的经典异常：Bean找不到？Bean不是唯一的？</a></li>
+</ul>
+</li>
+<li>[源码剖析：Spring IOC容器Bean初始化流程？](#源码剖析：Spring IOC容器Bean初始化流程？)</li>
+<li><a href="#SpringIOC%E4%BE%9D%E8%B5%96%E6%9F%A5%E6%B3%A8%E5%85%A5">SpringIOC依赖查注入</a></li>
+<li><a href="#%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A@Autowire%E6%B3%A8%E8%A7%A3%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E7%9A%84%E5%8E%9F%E7%90%86">源码剖析：@Autowire注解依赖注入的原理</a></li>
+<li><a href="#%E7%B2%BE%E9%80%89%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%9A@Autowire%E5%92%8C@Resource%E5%8C%BA%E5%88%AB">精选面试题：@Autowire和@Resource区别</a></li>
+<li>[Spring IOC依赖来源有哪些？](#Spring IOC依赖来源有哪些？)</li>
+<li>[精选面试题：@Value是如何将外部化配置注入到spring bean中？](#精选面试题：@Value是如何将外部化配置注入到spring bean中？)</li>
+<li>[精选面试题：spring IOC如何解决循环依赖问题？](#精选面试题：spring IOC如何解决循环依赖问题？)</li>
+<li><a href="#JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E5%92%8CCGLIB%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86">JDK动态代理和CGLIB动态代理</a></li>
+<li>[_Aspect、Join Points、Pointcuts 和 Advice 语法](#Aspect、Join Points、Pointcuts和Advice语法)</li>
+<li>[_源码分析：Spring AOP JDK动态代理实现原理](#_源码分析：Spring AOP JDK动态代理实现原理)</li>
+<li>[精选面试题：Spring AOP和AspectJ AOP存在哪些区别？](#精选面试题：Spring AOP和AspectJ AOP存在哪些区别？)</li>
+<li><a href="#%E5%BC%95%E5%85%A5logback%E6%A1%86%E6%9E%B6%E8%BF%9B%E8%A1%8C%E6%97%A5%E5%BF%97%E6%89%93%E5%8D%B0">引入logback框架进行日志打印</a></li>
+<li><a href="#@Aspect%E6%B3%A8%E8%A7%A3%E6%98%AF%E6%80%8E%E4%B9%88%E8%BF%90%E4%BD%9C%E8%B5%B7%E6%9D%A5%E7%9A%84">@Aspect注解是怎么运作起来的</a></li>
+<li>[_代码实战：基于Spring AOP机制，实现全局异常处理](#_代码实战：基于Spring AOP机制，实现全局异常处理)</li>
+<li>[基于Spring AOP机制拦截处理登陆信息](#基于Spring AOP机制拦截处理登陆信息)</li>
+<li>[精选面试题：Spring AOP的设计模式有哪些？](#精选面试题：Spring AOP的设计模式有哪些？)</li>
+<li><a href="#%E5%85%88%E6%9D%A5%E7%9C%8B%E7%9C%8B%E5%8E%9F%E7%94%9FJDBC%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C">先来看看原生 JDBC 如何进行数据库操作</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8EDruid%E8%BF%9E%E6%8E%A5%E6%B1%A0%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%EF%BC%8C%E6%8F%90%E5%8D%87%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD">基于 Druid 连接池进行数据操作，提升系统性能</a></li>
+<li><a href="#SpringEvent%E4%BA%8B%E4%BB%B6%E9%80%9A%E7%9F%A5%E6%9C%BA%E5%88%B6%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86">Spring Event事件通知机制底层原理</a></li>
+<li>[玩转Spring Cache中@Cacheable注解的底层原理](#玩转Spring Cache中@Cacheable注解的底层原理)</li>
+<li><a href="#%E7%B2%BE%E9%80%89%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%9A%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E5%AF%BC%E8%87%B4Spring%E4%BA%8B%E5%8A%A1%E5%A4%B1%E6%95%88%EF%BC%9F">精选面试题：什么情况导致Spring事务失效？</a></li>
+</ul>
+<h1 id="目录-2">目录</h1>
+<h2 id="精选面试题springioc容器初始化过程">精选面试题：SpringIOC容器初始化过程</h2>
+<h3 id="ioc是如何工作的">IOC是如何工作的</h3>
+<pre><code class="language-java">
+ApplicationContext appContext=new ClassPathXmlApplicationContext(&quot;/bean.xml&quot;);
+        User user=(User)appContext.getBean(&quot;user&quot;);
+
+</code></pre>
+<pre><code>如上述代码所示，通过ApplicationContext 创建Spring容器，该容器会读取配置文件 &quot;/bean.xml&quot;,
+并统一管理由该文件中定义好的Bean实例对象，如果要获取某个bean实例，使用getBean方法就行了，
+假设将user配置在beans.xml文件中，之后就不需要使用new User()的方式创建对象，
+而是通过ApplicationContext 容器来获取User的实例
+</code></pre>
+<p>剖析创建IOC容器要经历的几个阶段： Resource定位、载入BeanDefinition、将BeanDefinition注册到容器</p>
+<h4 id="resource定位">Resource定位</h4>
+<pre><code>Resource定位是Spring中用于封装I/O操作的接口。在创建Spring容器时，会去访问xml配置文件，还可以通过文件类型
+、二进制留、URL等方式访问资源。这些都可以理解为Resource。其体系结构如下如所示：
+</code></pre>
+<ul>
+<li>
+<p>FileSystemResource：以文件绝对路径访问资源</p>
+</li>
+<li>
+<p>ClassPathResource：以类路径的方式访问资源</p>
+</li>
+<li>
+<p>ServletContextResource：web应用根目录的方式访问资源</p>
+</li>
+<li>
+<p>UrlResource：访问网络资源的实现类</p>
+</li>
+<li>
+<p>ByteArrayResource:访问字节数组资源的实现类</p>
+<pre><code>那么这些类型在Spring中是如何访问的呢？Spring 提供了ResourceLoader接口用于实现不同的Resource加载策略，
+该接口的实例对象中可以获取一个resource对象。
+如下代码所示,在ResourceLoader接口中只定义了两个方法：
+</code></pre>
+</li>
+</ul>
+<pre><code class="language-java">
+public ResourceLoader{
+        //通过提供的资源location参数获取Resource 实例
+        Resource getResource(String location);
+
+// 获取ClassLoader，通过ClassLoader可将资源载入到JVM
+        ClassLoader getClassLoader(String location);
+
+        }
+
+
+</code></pre>
+<p>注：</p>
+<pre><code>   ApplicationContext德所有实现类都实现ResourceLoader接口，因此可以直接调用getResource(location)获取Resource 对象，。
+   不同的ApplicationContext实现类使用getResource方法获取资源类型不同。
+   例如：
+    FileSystemXmlApplicationContent.getResource获取的就是FileSystemResource实例
+    ClassPathXmlApplicationContext.getResource获取的就是ClassPathResource实例
+    XmlWebApplicationContent.getResource获取的就是ClassPathResource实例
+     另外像不需要通过xml直接使用注解@Configuration方式加载资源的AnnotationConfigApplicationContext等等
+</code></pre>
+<p>在资源定位过程完成以后，就为资源文件中的bean的载入创造了I/O操作的条件。</p>
+<h4 id="载入beandefinition">载入BeanDefinition</h4>
+<p>如何读取资源中德数据------BeanDefinition的载入过程中的描述</p>
+<pre><code>BeanDefinition是一个数据结构，BeanDefinition是根据Resource对象中bean来生成的。bean会在SpringIoc容器内部以BeanDefinition的形式存在，
+Ioc容器对Bean的管理和依赖注入的实现是通过BeanDefinition来完成的。BeanDefinition就是Bean在Ioc容器中的存在形式。
+
+由于Spring的配置文件主要是XML格式，一般而言会使用AbstractXmlApplicationContext类进行文件读取，如图，该类定义了一个名为
+loadBeanDefinition(DefaultListableBeanFactory beanFactory)的方法来获取BeanDefinition
+
+方法内会new 一个BeanDefinitionReader对象，然后将生成的实例传入loadBeanDefinition方法
+</code></pre>
+<pre><code class="language-java">
+import java.io.IOException;
+
+public class AbstractXmlApplicationContext {
+
+    //获取BeanDefinition
+    protected void loadBeanDefinition(DefaultListableBeanFactory beanFactory) throws BeanException, IOException {
+
+        XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
+        beanDefinitionReader.setEnvironment(this.getEnvironment());
+        beanDefinitionReader.setResourceLoader(this);
+        beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
+        //用于获取BeanDefinition
+        this.loadBeanDefinitions(beanDefinitionReader);
+    }
+
+    protected void loadBeanDefinitions(XmlBeanDefinitionReader reader) throws BeanException, IOException {
+        //获取所有定位到的resource资源定位（用户定义）
+        Resource[] configResources = getConfigResources();
+        if (configResources != null) {
+            //载入resource
+            reader.loadBeanDefinitions(configResources);
+        }
+        //获取所有本地配置文件的位置（容器本身）
+        String[] configLocations = getConfigLocations();
+        if (configLocations != null) {
+            //载入resource
+            reader.loadBeanDefinitions(configLocations);
+        }
+    }
+}
+
+</code></pre>
+<p>顺着看reader中loadBeanDefinitions方法，该方法override了AbstractBeanDefinitionReader类，父接口的BeanDefinitionReader。<br>
+方法体中，将所有资源全部加载，并且交给AbstractBeanDefinitionReader的实现子类处理这些resource。</p>
+<pre><code class="language-java">
+public class AbstractBeanDefinitionReader extends BeanDefinitionReader {
+
+    @Override
+    public int loadBeanDefinitions(Resource... resources) throws BeanDefinitionStoreException {
+        Assert. assert (resources,&quot;Resource array must not be null&quot;);
+        int counter = 0;
+        for (Resource resource : resources) {
+            //将所有资源全部加载，交给AbstractBeanDefinitionReader的实现子类处理这个resource
+            counter += loadBeanDefinitions(resource);
+        }
+        return counter;
+    }
+
+}
+
+
+
+</code></pre>
+<p>再BeanDefinitionReader 接口中定义了 int loadBeanDefinitions(Resource resource) 方法</p>
+<pre><code class="language-java">public interface BeanDefinitionReader {
+
+    int loadBeanDefinition(Resource Resource) throws BeanDefinitionStoreException;
+
+    int loadBeanDefinition(Resource... Resource) throws BeanDefinitionStoreException;
+}
+
+</code></pre>
+<p>此时回到XmlBeanDefinitionReader上来,它主要是针对XML方式的Bean进行读取，XmlBeanDefinitionReader 主要是实现了AbstractBeanDefinitionReader抽象类，<br>
+而该类继承与BeanDefinitionReader，主要实现的方法也是来自于BeanDefinitionReader的loadBeanDefinitions(Resource) 方法</p>
+<figure data-type="image" tabindex="1"><img src="images/XmlBeanDefinitionReader%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E5%9B%BE.png" alt="img_1.png" loading="lazy"></figure>
+<p>如图所示，读取Bean之后就是加载Bean的过程了，XmlBeanDefinitionReader中的loadBeanDefinitions方法主要来处理加载Bean的工作。<br>
+首先对资源经行验证，然后从资源对象中加载Document对象，使用了documentLoader中的loadDocument方法，<br>
+然后跟上registerBeanDefinition对文档对应的Resource进行注册，也就是将XML文件中Bean 转换成容器中BeanDefinition。</p>
+<pre><code class="language-java">    public class AbstractBeanDefinitionReader {
+
+    protected int doLoadBeanDefinitions(InPutSource inputSource, Resource Resource) throws BeanDefinitionStoreException {
+
+        try {
+            //获取指定资源的验证方法
+            int validation = getValidationModeFotResource(Resource);
+            //将资源对象中加载Document对象，大致过程为：将Resource资源文件的内容读入到document
+            //DocumentReader 在容器中读取XML文件过程中有着举足轻重的作用！
+            // XmlBeanDefinitionReader实例化时会创建一个DefaultDocumentLoader型私有属性，继而调用loadDocument方法
+            // inputSource --要加载的文档输入源
+            this.documentLoader.loadDocument(inputSource,
+                    this.entityResolver,
+                    this.errorHandler, validationMode,
+                    this.namespaceAware);
+
+            //将document文件的bean封装成BeanDefinition，并注册到容器
+            return registerBeanDefinition(doc, resource);
+        } catch {
+            //
+        }
+    }
+
+
+}
+
+
+
+</code></pre>
+<p>如上图所示，接下来就是registerBeanDefinitions方法了，它主要是针对Spring Bean 语义进行转换，变成BeanDefinition类型。</p>
+<p>首先获取DefaultBeanDefinitionDocumentReader实例，然后获取容器中的bean数量，通过documentReader中的registerBeanDefinition</p>
+<p>方法进行注册和转换工作</p>
+<pre><code class="language-java">
+public class XmlBeanDefinitionReader {
+
+    public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
+        //获取到DefaultBeanDefinitionDocumentReader实例
+        BeanDefaultDocumentReader documentReader = createBeanDefinitionDocumentReader();
+        //获取容器中bean的数量
+        int countBefore = getRegister().getBeanDefinitionCount();
+        documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
+        return getRegister().getBeanDefinitionCount() - countBefore;
+
+    }
+
+}
+
+
+</code></pre>
+<p>顺着上面的思路继续往下，在DefaultBeanDefinitionDocumentReader中的registerBeanDefinitions方法如下图所示，其获取document的根据根节点然后顺势访问所有子节点。同时把处理<br>
+BeanDefinition的过程委托给BeanDefinitionParserDelegate对象完成。</p>
+<pre><code class="language-java">
+import org.w3c.dom.Element;
+
+public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocumentReader {
+
+    public void registerBeanDefinitions(Document doc, XmlReaderContext readerContext) {
+        this.readerContext = readerContext;
+        logger.debug(&quot;Loading bean definitions &quot;)
+        // 获取doc 的root 节点 ，通过该节点能够访问所有子节点
+        Element root = doc.getDocumentElement();
+        // 处理beanDefinition的过程委托给beanDefinitionParseDelegate实例对象完成
+        BeanDefinitionParseDelegate delegate = createHelper(readerContext, root);
+        preProcessXml(root);
+        //核心方法 代理
+        parseBeanDefinitions(root, delegate);
+        postProcessXml(root);
+
+    }
+
+    /**
+     * BeanDefinitionParseDelegate类主要负责BeanDefinition的解析
+     *这里涉及到JDK和CGLIB动态代理的知识
+     * BeanDefinitionParseDelegates代理完全对符合Spring语义规则的处理。
+     * 比如&lt;bean&gt;&lt;/bean&gt;、&lt;import&gt;&lt;/import&gt;、&lt;alias&gt;&lt;/alias&gt;等的检测
+     * 就是如下
+     * BeanDefinitionParseDelegate代理类中的parseBeanDefinitions方法，用来对XML文件中节点进行解析。
+     * 通过遍历&lt;import&gt;&lt;/import&gt;标签节点调用importBeanDefinitionResource方法对其进行处理，然后利用遍历
+     * bean节点调用processBeanDefinition对其调用。
+     *
+     */
+
+    protected void parseBeanDefinitions(Element root, BeanDefinitionParseDelegate delegate) {
+        if (delegate.isDefaultNamespace) {
+            NodeList nl = root.getChildNodes();
+            // 遍历所有节点，做对应解析工作
+            // 如遍历到&lt;import&gt; 标签节点就调用importBeanDefinitionResource(ele)方法对应处理
+            // 遍历到&lt;bean&gt; 标签就调用processBeanDefinition(ele ,delegate)方法对应处理
+            for (int i = 0; i &lt; nl.getElementCount(); i++) {
+                Node node = nl.get(i);
+                if (node instanceof Element) {
+                    Element ele = (Element) node;
+                    if (delegate.isDefaultNamespace(ele)) {
+                        parseDefaultElement(ele, delegate);
+                    } else {
+                        // 处理用户自定义节点的处理方法
+                        delegate.parseCustomElement(ele);
+                    }
+                }
+            }
+        } else {
+            delegate.parseCustomElement(root);
+        }
+    }
+}
+
+
+</code></pre>
+<p>如图 再看parseBeanDefinitions方法中调用的parseDefaultElement方法，顾名思义它是对节点元素进行处理。 从方法体的语句可以看出它对<br>
+import标签、alias标签、bean标签进行处理。每类标签对应不同的 BeanDefinition的处理方法。</p>
+<pre><code class="language-java">
+private void parseDefaultElement(Element ele,BeanDefinitionParserDelegate delegate){
+
+        // 解析&lt;import&gt;标签
+        if(delegate.nodeNameEquals(ele,IMPORT_ELEMENT)){
+        importBeanDefinitionResource(ele);
+        }
+        // 解析 &lt;alias&gt; 标签
+        else if(delegate.nodeNameEquals(ele,ALIAS_ELEMENT)){
+        processAliasRegistrations(ele);
+        }
+        // 解析bean标签
+        else if(delegate.nodeNameEquals(ele,BEAN_ELEMENT)){
+        processBeanDefinition(ele,delegate);
+        }
+        // 解析beans 标签
+        else if(delegate.nodeNameEquals(ele,NESTED_BEANS_ELEMENT)){
+        // recurse
+        doRegisterBeanDefinitions(ele);
+        }
+
+        }
+
+</code></pre>
+<p>在parseDefaultElement 调用了众多方法中，我们选取processBeanDefinition方法给大家讲解。该方法是用来处理Bean的。<br>
+首先通过delegate的parseBeanDefaultElement方法传入节点信息，获取该bean 对应的name和alias。<br>
+然后通过BeanDefinitionReaderUtils中的registerBeanDefinitions方法对其进行容器注册，也就是将Bean实例 注册到容器中进行管理。最后发送注册事件。</p>
+<pre><code class="language-java">
+protected void processBeanDefinition(Element ele,BeanDefinitionParserDelegate delegate){
+        // 该对象持有beanDefinition的name和alias ，可以使用该对象完成beanDefinition向容器注册
+        BeanDefinitionHolder bHolder=delegate.parseBeanDefinitionElement(ele);
+        if(bHolder!=null){
+            bHolder  =  delegate.decorateBeanDefinitionElement(ele , bHolder);
+            try{
+                // 注册最终被修饰bean实例 ，下文注册beanDefinition到容器会讲解该方法
+                BeanDefinitionReaderUtils.registerBeanDefinition(bHolder ,getReaderContext().getRegister());
+           }catch(BeanDefinitionStoreException ex){
+                getReaderContext.error(&quot;Faild to register bean definition with me &quot; +
+                    bHolder.getBeanName() +&quot;&quot; ,ele ,ex);
+            );
+
+            // 发送注册事件
+           getReaderContext().fireComponentRegistered(new BeanComponentDefinition(bHolder));
+        }
+    }
+}
+
+
+</code></pre>
+<p>到此完成了BeanDefinition的加载工作</p>
+<h4 id="将beandefinition注册到容器">将BeanDefinition注册到容器</h4>
+<p>在加载Bean之后，就需要将其注册到容器中进行管理。如图所示，Bean会被解析成BeanDefinition并于BeanName、Alias一同封装到BeanDefinitionHolder类中。<br>
+之后beanFactory.registerBeanDefinitions(beanName ,bHolder.getBeanDefinition())方法;</p>
+<p>注册到DefaultListableBeanFactory.beanDefinitionMap中。如果客户端需要获取bean对象，<br>
+Spring容器会根据注册的BeanDefinition信息进行实例化。</p>
+<pre><code class="language-java">
+        public static registerBeanDefinition(BeanDefinitionHolder dfHolder, BeanDefinitionRegistry beanFactory)throws BeansException {
+           // 注册BeanDefinition ！！！
+            String beanName = bdHolder.getBeanName();
+            beanFactory.registerBeanDefinition(beanName, bdHolder.getBeanDefinition());
+            //如果有别名也注册进去， register aliases for bean name ， if any
+                String[] aliases = bdHolder.getAliases();
+                if (aliases != null){
+                    for (int i = 0 ; i &lt; aliases.length ; i++){
+                        beanFactory.registerAlias(beanName, aliases[i]);
+                    }   
+                }
+        }
+</code></pre>
+<p>DefaultListableBeanFactory实现了上面调用BeanDefinitionRegistry接口的registerBeanDefinition(beanName ,bHolder.getBeanDefinition()) 方法。<br>
+如下如所示，这一部分的主要逻辑是向DefaultListableBeanFactory对象的beanDefinitionMap存放beanDefinition，<br>
+也就是说beanDefinition都存放在beanDefinitionMap中进行管理。<br>
+当容器进行bean初始化时，在bean的生命周期分析里必然会在这个beanDefinitionMap中获取beanDefinition实例</p>
+<pre><code class="language-java">
+public void registerBeanDefinition(String beanName ,BeanDefinition beanDefinition) throws BeanDefinitionStoreException{
+    
+        if(beanDefinition instanceof AbstractBeanDefinition){
+            try{
+            ((AbstractBeanDefinition) beanDefinition).validate();
+           }catch(BeanDefinitionValidationException ex){
+                throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(),beanName,
+                , &quot;Validation of bean definition failed&quot; ,ex); 
+          }
+       }
+        // beanDefinitionMap是个ConcurrentHashMap类型数据，用于存放beanDefinition，它的key 是beanName
+        Object oldBeanDefinition =  this.beanDefinitionMap.get(beanName);
+        if(oldBeanDefinition != null){
+            if(!this.allowBeanDefinitionOverriding()){
+                throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(),beanName,
+                &quot;Cannot register bean definition[&quot; + beanDefinition +&quot;]&quot; +beanName + &quot; there's already [&quot; + oldBeanDefinition +&quot;] bound&quot; )
+          }
+            else{
+                if (logger.IsInfoEnabled()){
+                    logger.info(&quot;Overriding bean definition for bean &quot; + beanName + &quot;: replacing [&quot; + oldBeanDefinition +&quot;] with&quot; + beanDefinition +&quot;]&quot; );
+           }
+        }
+      }else{
+            this.beanDefinitionNames.add(beanName);
+        }
+        //将获取到的BeanDefinition 放入Map 中，容器操作使用bean时，通过这个HashMap找到具体的BeanDefinition
+        this.beanDefinitionMap.put(beanName, BeanDefinition);
+        removeSingleton(beanName);
+    }
+
+
+</code></pre>
+<h2 id="springioc依赖查找">SpringIOC依赖查找</h2>
+<p>总所周知，Spring IOC是用来创建和管理Bean实例的，Spring IOC容器针对Bean创建实例以后，会被其他类使用，当一个实例调用另一个实例的时候，就会对调用的实例产生依赖，<br>
+虽然这个依赖的实例由Spring IOC容器创建并管理，但如果要使用这个Bean实例需要通过某种途径，其中一种就成为依赖查询。依赖查询的种类很多，这里介绍最简单的两种查询方式：<br>
+根据Bean名称查询，根据Bean类型查询。</p>
+<h3 id="根据bean名称查找">根据Bean名称查找</h3>
+<p>由于getBean(Class)最终会调用resolveNameBean 方法完成Bean的查找，因此源码分析围绕resolveNameBean展开，如下图所示，将resolveNameBean方法两张图，后面我们会针对图中的步骤<br>
+逐步展开</p>
+<pre><code class="language-java">  private &lt;T&gt; NameBeanHolder&lt;T&gt; resolveNameBean(ResolvableType requestType,Object[]args,boolean nonUniqueAsNull) throws BeansException {
+
+    // 根据类型查找，不会实例化bean 
+       String[] candidateNames = getBeanNameForType(requestType);
+        // 多种类型  如何过滤
+        
+        if(candidateNames.length &gt;0 ){
+            List&lt;String&gt; autoWireCandidates = new ArrayList&lt;String&gt;(candidateNames.length);
+            for(String beanName : autoWireCandidates){
+                //如果容器中定义了beanDefinition.autowireCandidate = false(默认为true) 则剔除
+                //①没有定义该beanDefinition 或②beanDefinition.autowireCandidate = true 时合法
+                // 什么场景下出现：没有定义BeanDefinition，但根据类型查找该beanName 
+                if(!containsBeanDefinition(beanName) || getBeanDefinition(beanName).isAutowireCandidate()){
+                    autowireCandidate.add(beanName);                    
+                }       
+            }
+            
+            if(!autowireCandidates.isEmpty()){
+                candidateNames = StringUtils.toStringArray(autowireCandidates);
+            }
+        }
+        // 单个candidateNames，则调用getBean(beanName) 实例化该Bean
+        if (candidateNames.length == 1 ){
+            String beanName = candidateNames[0];
+            return new NameBeanHolder&lt;&gt;(beanName ,(T)getBean(beanName,requestType.toClass(),args))
+        // 多个candidateNames，先尝试是否标注Primary属性，在尝试类上的@primary注解
+        }else{
+            Map&lt;String ,Object&gt;  candidates = new LinkedHashMap&lt;String,Object&gt;(candidateNames.length);
+            for(String beanName:candidateNames){
+                if(containsSingleton(beanName) &amp;&amp; args == null){
+                   Object beanInstance = getBean(beanName);
+                  candidates.put(beanName, beanInstance instanceof NullBean ? null : beanInstance);
+                  
+            }else{
+                    candidates.put(beanName ,getType(beanName))
+          }
+      }
+            //4.a 查找Primary Bean ，即beanDefinition.primary = true
+            String candidateName = determinePrimaryCandidate(candidates,requiredType.toClass);
+            // 比较bean的优先级 @javax.annotation.Priority
+            if(candidateName == null){
+                determineHighestPriorityCandidate(candidates,requiredType.toClass);
+        }
+            //4.b 过滤只要一个符合条件，getBean(candidateName) 实例化
+        if (candidateName != null ){
+            Object beanInstance = candidates.get(candidateName);
+            if (beanInstance == null || beanInstance instanceof Class){
+                beanInstance = getBean(candidateName,requestType.class ,args);
+           }
+            return new NamedBeanHolder&lt;&gt;(candidateName, (T)beanInstance);
+        }
+        //4.c  多个bean ，抛出NoUniqueDefinitionException异常
+        if (!nonUniqueAsNull){
+            throws new NoUniqueDefinitionException(requestType,candidates.keySet());
+        }
+    }
+}
+
+</code></pre>
+<p>我们根据resolveNamedBean代码注释中的步骤解释如下：<br>
+1.根据Bean类型查找Spring Ioc容器中所有符合条件的Bean名称，可能是以和或者多个。getBeanNameForType只会读取BeanDefinition信息，这里并没有对bean实例化。<br>
+2.查找完类型会将其放到candidateNames中，这里过滤条件时没有定义Bean对应的BeanDefinition或者BeanDefinition的autowireCandidate为true的情况下。<br>
+如果满足上诉情况就将其加入到autowireCandidates<br>
+3.如果容器中只注册了一个这种类型的Bean，也就是candidateNames长度为1的时候，直接实例化该Bean后返回即可。<br>
+4.当Spring IOC 容器注册多个Bean的时候需要完成一下几个步骤：<br>
+5.查找primary Bean，即beanDefinition.primary = true.如果有多个，则抛出NoUniqueDefinitionException异常<br>
+6.比较Bean的优先级。Spring 默认的比较器是AnnotationAwareOrderComparator，比较Bean上@javax.annitation.Priority 的优先级，<br>
+值越小，优先级越高。同样的如果最高级别的多个，则抛出NoUniqueDefinitionException异常<br>
+7.多个Bean，则抛出NoUniqueDefinitionException异常。</p>
+<h3 id="根据bean类型查找">根据Bean类型查找</h3>
+<p>与获取单个Bean实例类型过程相似的是，获取集合bean类型实例有多个candidateNames是不用过滤，全部返回即可，如下图所示，getBeanOfType同样调用getBeanNameForType获取所有bean类型匹配的beanNames，<br>
+然后调用getBean(beanName)实例化所有的Bean.</p>
+<pre><code class="language-java">
+    @Override
+    public &lt;T&gt; Map&lt;String, T&gt; getBeanOfType(@Nullable Class&lt;T&gt; type) throws BeanException {
+            
+        return getBeanOfType(type ,true ,true);
+    }
+
+    public &lt;T&gt; Map&lt;String, T&gt; getBeanOfType(@Nullable Class&lt;T&gt; type ,boolean includeNonSingles,boolean allowEagarInit) throws  BeanException {
+       String[] beanNames = getBeanNameForType(type,includeNonSingles,allowEagarInit);
+        Map&lt;String ,T&gt; result = new LinkedHashMap&lt;String, T&gt;(beanNames.length);
+        for(String beanName : beanNames){
+           Object beanInstance = getBean(beanName);
+           if(!(beanInstance instanceof NullBean)){
+               result.put(beanName, (T)beanInstance);
+            }
+        }
+        return result;
+    }
+
+</code></pre>
+<p>获取集合Bean类型<br>
+如果需要获取集合Bean类型需要使用getBeanNameForType方法，Sprin内部根据类型匹配所有的beanNames。<br>
+getBeanNameForType不会初始化Bean，根据其BeanDefinition 或者FactoryBean#getObjectType获取其类型</p>
+<pre><code class="language-java">    
+    public String[] getBeanNamesForType(@Nullable Class&lt;T&gt; type ,boolean includeNonSingletons ,boolean allowEagerInit){
+    //1.查询结果不使用缓存
+    //2.configurationFrozen表示是否冻结BeanDefinition,不允许修改，因此查询结果可能有误
+    //一旦调用refresh 方法，则configurationFrozen = true，也就是容器启动过程中会走if语句
+    // type = null,查找所有bean
+    // !allowEagarInit 表示不允许提前初始化FactoryBean
+    if(!isCOnfigurationFrozen || type == null !allowEagarInit) {
+       return doGetBeanNamesForType(ResolvableType.forRawClass(type) ,includeNonSingletons,allowEagarInit);
+    }
+    //2.允许使用缓存，此容器已经启动完成，bean已加载，BeanDefinition不允许被修改
+     Map&lt;Class&lt;?&gt;,String[]&gt; cache = includeNonSingletons ?this.allBeanNamesByType:this.singletonsBeanNamesByType;
+    String[] resolvedBeanNames = cache.get(type);
+    if(resolvedBeanNames != null){
+        return resolvedBeanNames;
+     }
+      resolvedBeanNames =  doGetBeanNamesForType(ResolvableType.forRawClass(type) ,includeNonSingletons,true);
+    if(ClassUtils.isCacheSafe){
+        cache.put(type,resolvedBeanNames);
+    } 
+    return resolvedBeanNames;
+}
+
+
+</code></pre>
+<p>如上图所示，方法getBeanNamesForType中调用了doGetBeanNamesForType方法。</p>
+<p>参数type表示要查找的类型，includeNonSingletons表示是否包含非单例bean，allowEagarInit表示是否提前部分初始化<br>
+FactoryBean。</p>
+<p>1、查询结果不使用缓存，则需要满足以下场景：</p>
+<ul>
+<li>
+<p>configurationFrozen = false ，表示Spring容器在初始化阶段，可以对BeanDefinition进行调整，当然缓存结果<br>
+毫无意义。在refresh后会设置为true，表示可以对结果进行缓存。</p>
+</li>
+<li>
+<p>type =null?</p>
+</li>
+<li>
+<p>allowEagerInit = false;表示不允许实例化FactoryBean来获取Bean类型，那就只能通过FactoryBean上的<br>
+泛型来获取其类型了，也可能导致查询结果不准确。</p>
+</li>
+</ul>
+<p>2、允许使用缓存，当getBeanNamesForType方法根据类型查找匹配beanNames结果时，这个匹配过程并不十分准确。<br>
+因为方法不会通过提前实例化Bean的方法获取其类型，只会根据BeanDefinition或者FactoryBean#getObjectType<br>
+获取其类型。如果不实例化对象，有些场景可能并不能获取对象类型。因此这个使用缓存。在容器启动完成只会Bean已经加载完毕<br>
+BeanDefinition就不允许修改。</p>
+<h3 id="依赖查找中的经典异常bean找不到bean不是唯一的">依赖查找中的经典异常：Bean找不到？Bean不是唯一的？</h3>
+<p>上节课我们通过源码方式介绍了：获取单个Bean类型实例，获取集合Bean类型实例；获取集合Bean类型名称。<br>
+本节课，会给大家依赖查找中经典异常问题的讨论：Bean找不到的情况以及Bean不是唯一的情况。<br>
+看看这种情况如何处理。今天主要介绍Spring 依赖查找，有如何内容：</p>
+<ul>
+<li>BeansException的子接口</li>
+<li>NoSuchBeanDefinitionException不存在查找的Bean</li>
+<li>NoUniqueDefinitionException 容器中存在多个同类型的Bean</li>
+</ul>
+<h4 id="beansexception">BeansException</h4>
+<p>如图一所示，通常来说在操作Bean的时候会出现异常，这些异常都来自BeansException的子接口。<br>
+例如查找的Bean不存在于Ioc容器，类型用来查找时IOC容器存在多个Bean实例；</p>
+<p>当Bean对应的类型非具体类时；当Bean初始化过程出现异常；当BeanDefinition配置元数据时出现异常。这些异常都会在不同的场景中出现。</p>
+<table>
+<thead>
+<tr>
+<th>异常类型</th>
+<th>触发条件(举例)</th>
+<th>场景举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NoSuchBeanDefinitionException</td>
+<td>当查找的Bean不在IOC容器时</td>
+<td>BeanFactory#getBean</td>
+</tr>
+<tr>
+<td>NoUniqueDefinitionException</td>
+<td>依赖查找时IOC容器中存在多个Bean实例</td>
+<td>BeanFactory#getBean</td>
+</tr>
+<tr>
+<td>BeanInstantiationException</td>
+<td>当Bean所对应的类型非具体类时</td>
+<td>BeanFactory#getBean</td>
+</tr>
+<tr>
+<td>BeanCreationException</td>
+<td>当Bean初始化过程中</td>
+<td>Bean初始化方法执行异常时</td>
+</tr>
+<tr>
+<td>BeanDefinitionStoreException</td>
+<td>当BeanDefinition配置元数据非法时</td>
+<td>XML配置资源无法打开时</td>
+</tr>
+</tbody>
+</table>
+<p>这里我们着重讨论NoSuchBeanDefinitionException 和NoUniqueDefinitionException 两种异常的使用场景</p>
+<h3 id="源码剖析spring-ioc容器bean初始化流程">源码剖析：Spring IOC容器Bean初始化流程？</h3>
+<p>通过SpringIOC容器初始化Bean的流程，在之前的章节中介绍了SpringIOC容器时如何从配置文件中读取Bean信息，并且将其转换为BeanDefinition，并且注册到SpringIOC<br>
+容器中进行统一管理的。今天讲的是，在SpringIOC容器中的Bean实例是如何被创建出来的，也就是解决如何从SpringIOC取出Bean进行使用。</p>
+<p>创建Bean的时序图</p>
+<figure data-type="image" tabindex="2"><img src="../framework/images/Bean%E5%88%9B%E5%BB%BA%E6%97%B6%E5%BA%8F%E5%9B%BE.png" alt="创建Bean时许图" loading="lazy"></figure>
+<p>由于一个Bean的创建经历了若干个类，调用了很多方法，为了将这个过程理解清楚，这里根据图1的时序图给大家展开描述。<br>
+这里涉及到几个主要调用的类，我们会根据重点，按照图上红色数字标号进行讲解。</p>
+<p>如图一所示，按照红色标号的顺序如下：</p>
+<p>1.首先通过ClassPathXmlApplicationContext获取要创建的Bean，这里的方法是getBean。</p>
+<p>2.在AbstractBeanFactory中会通过调用doGetBean方法完成获取Bean的操作。</p>
+<p>3.此时DefaultSingletonBeanResigstry会执行getSingleton通过单例的方式返回Bean。</p>
+<p>4.在获取Bean以后会通过createBean方法调用AbstractAutowireCapableBeanFactory中的方法对Bean进行初始化。<br>
+这里重要的三个方式分别是：doCreateBean、createBeanInstance、instantiateBeanBean。从图上可以看出Bean初始化都是在这个类中完成的。</p>
+<p>5.紧接着通过instantiate通过调用SimpleInstantiationStrategy中的instantiateWithMethodInjection做初始化的操作。</p>
+<p>6.CglibSubclassingInstantiationStrategy作为CGLIB代理实现策略类，通过CglibSubclassCreator.instantiate方法进行初始化，并且返回<br>
+AbstractAutowireCapableBeanFactory。此时AbstractAutowireCapableBeanFactory会接着populateBean和ApplyPropertyValues方法对Bean进行填充，以及设置属性值。</p>
+<p>7.期间会通过调用beanDefinitionValueResolver中的resolveValueIfNecessary方法完成对BeanDefinition中的值填充。</p>
+<h3 id="springioc依赖查注入">SpringIOC依赖查注入</h3>
+<p>依赖注入的方式：构造器注入，set注入</p>
+<p>SpringIOC 依赖注入也称为自动转载，当两个类存在依赖关系，通过配置Bean元素的autowire属性自动装配<bean>标签的方式获取依赖类的实例。<br>
+这里介绍两种常见的依赖注入方式:</p>
+<ul>
+<li>
+<p>根据Bean名称注入</p>
+<p>根据Bean名称注入，使用byName标签，此选项将检查容器并根据名字查找与属性完全一致的bean,并将其与属性自动装配。</p>
+</li>
+<li>
+<p>根据Bean类型注入</p>
+<p>根据Bean类型注入，使用byType标签，如果容器中存在一个与指定属性类型相同的Bean,那么将其与该属性自动装配；<br>
+如果存在多个该类型Bean,那么抛出异常，并指出不能使用byType方式进行自动状态；<br>
+如果没有找到向匹配的Bean，则什么事情都不会发生。</p>
+</li>
+</ul>
+<h3 id="源码剖析autowire注解依赖注入的原理">源码剖析：@Autowire注解依赖注入的原理</h3>
+<h4 id="autowire的定义">@Autowire的定义</h4>
+<pre><code>通常来说，我么会使用@Autowire进行依赖注入的操作，如图1所示通过@Autowire注解的源码定看出，它被标注可以作用于：构造函数（Constructor）、方法（Method）、参数（Parameter）、字段（Field）
+注解（Annotation），也就是针对这些描述都可以使用@Autowire的方式实现自动的依赖注入。
+</code></pre>
+<pre><code class="language-java">
+
+@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Autowired {
+
+	/**
+	 * Declares whether the annotated dependency is required.
+	 * &lt;p&gt;Defaults to {@code true}.
+	 */
+	boolean required() default true;
+
+}
+
+
+
+</code></pre>
+<h4 id="autowire的工作原理">@Autowire的工作原理</h4>
+<p>@Autowire注解是由AutowireAnnotationBeanProcessor实现的，如图2所示，查看该类的源码会发现它实现了MergedBeanDefinitionPostProcessor接口。</p>
+<pre><code class="language-java">
+public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBeanPostProcessorAdapter
+		implements MergedBeanDefinitionPostProcessor, PriorityOrdered, BeanFactoryAware {
+
+
+</code></pre>
+<p>如图所示，同时AutowiredAnnotationBeanPostProcessor实现了MergedBeanDefinitionPostProcessor中的postProcessMergedBeanDefinition方法，<br>
+@Autowired注解正是通过这个方法实现注入类型类型的预解析，将需要依赖注入的属性信息封装到InjectionMetadata类中。</p>
+<pre><code class="language-java">
+	@Override
+	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class&lt;?&gt; beanType, String beanName) {
+		InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);
+		metadata.checkConfigMembers(beanDefinition);
+	}
+
+
+</code></pre>
+<p>如下图所示，InjectionMetadata类中包含了需要注入的元素(injectElements)及元素注入的目标类(tagetClass)</p>
+<pre><code class="language-java">    
+public class InjectionMetadate{
+    private static final Log logger = LogFactory.getLog(InjectionMetadata.class);
+
+    private final Class&lt;?&gt; targetClass;
+
+    private final Collection&lt;InjectedElement&gt; injectedElements;
+
+    @Nullable
+    private volatile Set&lt;InjectedElement&gt; checkedElements;
+}
+
+</code></pre>
+<p>既然AutowiredAnnotationBeanPostProcessor是实现Autowire主力类，那么如何执行它实现依赖注入呢？<br>
+Spring容器在启动的时候会执行AbstractApplicationContext类的refresh方法，refresh方法中<br>
+registerBeanPostProcessor(beanFactory)完成了对AutowireAnnotationBeanPostProcessor的注册，当执行finishBeanFactoryInitialization(beanFactory)方法<br>
+对非延迟初始化的单例bean进行初始化时，会执行AbstractAutowireCapableBeanFactory类的doCreateBean方法。</p>
+<pre><code class="language-java">    public void refresh() throws BeansException, IllegalStateException {
+        synchronized(this.startupShutdownMonitor) {
+            this.prepareRefresh();
+            ConfigurableListableBeanFactory beanFactory = this.obtainFreshBeanFactory();
+            this.prepareBeanFactory(beanFactory);
+
+            try {
+                this.postProcessBeanFactory(beanFactory);
+                this.invokeBeanFactoryPostProcessors(beanFactory);
+                this.registerBeanPostProcessors(beanFactory);
+                this.initMessageSource();
+                this.initApplicationEventMulticaster();
+                this.onRefresh();
+                this.registerListeners();
+                this.finishBeanFactoryInitialization(beanFactory);
+                this.finishRefresh();
+            } catch (BeansException var9) {
+                if (this.logger.isWarnEnabled()) {
+                    this.logger.warn(&quot;Exception encountered during context initialization - cancelling refresh attempt: &quot; + var9);
+                }
+
+                this.destroyBeans();
+                this.cancelRefresh(var9);
+                throw var9;
+            } finally {
+                this.resetCommonCaches();
+            }
+
+        }
+    }
+
+</code></pre>
+<p>如图6所示doCreateBean方法中回去调用applyMergedBeanDefinitionPostProcessor方法</p>
+<pre><code class="language-java">
+ synchronized(mbd.postProcessingLock){
+    
+    if(!md.postProcessed){
+      try {
+          applyMergedBeanDefinitionPostProcessors(mbd,beanType,beanName);
+          
+         }catch{
+           throw new BeanCreationException(
+                   mbd.getResourceDescription(),beanName,&quot;Post-processing of merge bean definition failed&quot;,ex);
+         }
+      mbd.postProcessed = true;
+     }
+ }
+
+</code></pre>
+<p>如图所示，查看postProcessMergedBeanDefinition方法具体的实现类，会发现调用的是<br>
+AutowireAnnotationBeanPostProcessor类postProcessMergedBeanDefinition方法，这个方法中完成了对注入元素<br>
+注解的预解析。</p>
+<p>最后还是吧眼光移回doCreateBean方法中会遍历所有注册过的BeanPostProcessor接口实现类的实例，如果实例属于<br>
+InstantiationAwareBeanPostProcessor类型的，则会执行实例类的postProcessPropertyValues方法</p>
+<pre><code class="language-java">
+    if(hasInstAwareBpps || needsDepCheck){
+        PropertyDecriptore[] filteredPds = filterPropertyDescriptorForDependencyCheck(bw,mbd.allowCaching);
+        if (hasInstAwareBpps) {
+            for (BeanPostProcessor bp : getBeanPostProcessors()) {
+                if(bo instanceof InstantiationAwareBeanPostProcessor) {
+                    InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp
+                    pvs = ibp.postProcessPropertyValues(pvs,filtredPds,bw.getWrappedInstance(),beanName);
+                    if (pvs == null){
+                        return ;    
+                    }
+                }       
+            }
+            if(needsDepCheck){
+                checkDependcies(beanName,mbd,filteredPds,pvs);
+            }
+        }
+        
+        applyPropertyValues(beanName,mbd,bw,pvs);
+    }
+
+</code></pre>
+<p>如下图所示，进入到postProcessPropertyValues方法内部。由于AutowiredAnnotationBeanPostProcessor继承了InstantiationAwarePostBeanPostProcessorAdapter<br>
+,而AutowiredAnnotationBeanPostProcessor间接实现了InstantiationAwareBeanPostProcessor接口，所以这里会执行到<br>
+AutowiredAnnotationBeanPostProcessor类的postProcessPropertyValues方法。其中会调用metadata.inject(bean ,beanName,pvs)代码进行注入操作。</p>
+<pre><code class="language-java">
+public void  inject(Object target ,String beanName ,PropertyValues pvs) throws Throwable {
+          Collection&lt;InjectedElement&gt; elementsToInterate = this.checkedElements != null? this.checkElements:this.injectedElements);
+          if(!elementsToInterate.isEmpty()){
+              boolean debug =  logger.isDebugEnabled();
+              for (InjectedElement element : elementsToInterate) {
+                    if(debug) {
+                        logger.debug(&quot;Processing injected element of bean &quot; + beanName +&quot;:&quot; +element)
+                }           
+              }
+              element.inject(target,beanName,pvs);
+        }        
+          
+}
+</code></pre>
+<p>上面两种方式的注入过程都差不多，根据需要注入的元素的描述信息，按类型或者名称查找需要的依赖值，如果依赖没有找到实例先实例化依赖，然后使用反射进行赋值。<br>
+下图是field注入的场景，</p>
+<pre><code class="language-java">
+ if (value != null) {
+     ReflectionUtils.makeAccessible(field);
+     field.setValue(bean ,value);
+ }
+
+</code></pre>
+<p>field 注入</p>
+<pre><code class="language-java">
+if (arguments != null){
+     try{
+        ReflectionUtils.makeAccessible(field);
+        method.invoke(bean ,arguments);
+    }catch(InvocationTargetException ex){
+         throw ex.getTargetException();
+    }
+}
+</code></pre>
+<h3 id="精选面试题autowire和resource区别">精选面试题：@Autowire和@Resource区别</h3>
+<h4 id="resource的注入方式">@Resource的注入方式</h4>
+<p>上一节课介绍的是@Autowire的注入方式，在对@Resource和@Autowire做区别之前先介绍一下@Resource的常用注入属性name和type，这里根据组合分为4种情况：</p>
+<ul>
+<li>指定name和type：通过name找到唯一bean，找不到抛出异常；如果type和字段类型不一致，也会抛出异常。</li>
+<li>指定name：通过name找到唯一的bean，找不到则抛出异常</li>
+<li>指定type：通过type找唯一的Bean，如果不唯一，则抛出异常：NoSuchBeanDefinitionException。</li>
+<li>不指定name和type：通过字段名作为key去查找；找不到则通过字段类型去查找，如果不唯一，则抛出异常：NoSuchBeanDefinitionException</li>
+</ul>
+<p>@Resource装配的顺序如下：</p>
+<p>1.如果同时指定了name和type吗，则会从Spring上下文种找到唯一匹配的bean进行装配，找不到则抛出异常。<br>
+2.如果指定了name，则从Spring上下文种查找名称(id)匹配的bean进行装配，找不到则抛出异常<br>
+3.如果指定了type，则从Spring上下文种找到指定类型匹配的唯一Bean进行装配，找不到或者找到多个都抛出异常<br>
+4.如果既没指定name，也没有指定type，则自动按照byName方式进行装配，如果没有匹配，则回退一个原始类型进行匹配，如果匹配则自动装配。</p>
+<p>@Resource与@Autowire区别<br>
+通过对@Resource的介绍发现实现自动装配的方式与@Autowire大同小异，那么到底他们之间有什么区别呢？我们从以下几个方面来看：</p>
+<ul>
+<li>@Autowire是Spring定义的注解 ，而@Resource是JSR-250定义的注解</li>
+<li>@Autowire默认按照ByType自动装配，而@Resource默认byName自动装配</li>
+<li>@Autowire只包含一个参数：required，表示是否开启自动装配,默认是true。而@Resource包含七个参数，其中最重要的参数是name和type。</li>
+<li>@Autowire如果使用byName，需要使用@Qualified一起配合。而@Resource如果指定name,则用byName自动装配，如果指定了byType，则用byType自动装配。</li>
+<li>@Autowire能够用在构造器，方法，参数，成员变量和注解上。而@Resource能用在类、成员变量、方法上。</li>
+</ul>
+<p>另外他们的装配顺序不同</p>
+<p>@Autowire装配顺序，按照类型查找Bean，如果没有找到直接抛出异常，如果找到了，判断是否找到一个bean，如果是只有一个bean进行自动装配。<br>
+如果存在多个bean的情况判断是否配置了Qualifier，如果配置了那么按照Qualifier参数查找bean,如果找到进行自动装配，否则抛出异常。<br>
+如果没有配置Qualifier按照名称查找bean，找到了就自动装配，否则抛出异常。</p>
+<figure data-type="image" tabindex="3"><img src="../framework/images/spring-autowire.png" alt="Autowired自动装配" loading="lazy"></figure>
+<p>@Resource同时指定了name和type装配顺序如下图所示</p>
+<p>如果指定了name和type的情况，回去查找name和type唯一的bean如果没有找到抛出异常，如果找到了自动装配。</p>
+<figure data-type="image" tabindex="4"><img src="../framework/images/spring-resource-name-type.png" alt="Resource装配" loading="lazy"></figure>
+<p>当Resource指定了name的情况，会查找name唯一匹配的bean，如果没有找到抛出异常，如果找到了自动装配。</p>
+<figure data-type="image" tabindex="5"><img src="../framework/images/spring-resource-name.png" alt="Resource装配" loading="lazy"></figure>
+<p>当Resource指定了type的情况，会查找type唯一匹配的bean，如果没有找到抛出异常，如果找到了自动装配。</p>
+<figure data-type="image" tabindex="6"><img src="../framework/images/spring-resource-type.png" alt="Resource装配" loading="lazy"></figure>
+<p>当Resource既没指定name又没指定type时，首先按照名称查找bean，如果没有找到在按照类型查找bean，如果没有找到或者找到多个就抛出异常，如果找到一个就进行自动装配。</p>
+<figure data-type="image" tabindex="7"><img src="../framework/images/spring-resource-noname-notype.png" alt="Resource装配" loading="lazy"></figure>
+<h3 id="spring-ioc依赖来源有哪些">Spring IOC依赖来源有哪些？</h3>
+<p>前面两节课介绍了Spring IOC的依赖查找和依赖注入的两种方式，实际上针对这两种方式都对应了依赖来源。今天针对SpringIOC的依赖展开介绍，包括如下内容：</p>
+<ul>
+<li>自定义Bean作为依赖项</li>
+<li>容器内建Bean对象作为依赖来源</li>
+<li>容器内建依赖作为依赖来源</li>
+</ul>
+<p>容器内建的Bean对象并不是我们创建的而是Spring内部实例化产生的，说白了就是Spring内部自己需要使用从而创建的Bean。同时也可以通过beanFactory.getBean()的方式进行依赖查找。</p>
+<ul>
+<li>Environment对象，在外部化配置和Profiles场景使用</li>
+<li>java.util.Properties对象，被用到Java系统属性场景。</li>
+<li>Java.util.Map对象，可以使用到操作系统环境变量的场景</li>
+<li>MessageSource对象，作为国际化文案</li>
+<li>LifecycleProcessor对象，用来处理LifecycleBean处理器</li>
+<li>ApplicationEventMulticaster对象，用来处理Spring时间广播器</li>
+</ul>
+<p>容器内建依赖作为依赖项</p>
+<p>容器内建依赖也称作为非Bean对象，为什么这么说呢？因为这类对象并不是Spring 的Bean，比如说Bean Factory就是这类对象，<br>
+但是这类对象必须时Spring启动必须的组件，也就是基础组件。基于以上原因容器内建依赖是不能通过beanFactory.getBean()的方式依赖查找出来的。</p>
+<p>对于容器内建依赖具有一下特征：无生命周期管理，无法实现延迟初始化Bean，无法通过依赖查找。此类对象包括：<br>
+beanFactory、ResourceLoader、ApplicationEventPublisher、ApplicationContext从名字上看都是系统级别的对象。<br>
+如果一定要对这些变量注册，可以使用ConfigurableListableBeanFactory种的registerResolvableDependency方法。</p>
+<h3 id="精选面试题value是如何将外部化配置注入到spring-bean中">精选面试题：@Value是如何将外部化配置注入到spring bean中？</h3>
+<p>前两节课介绍了SpringIOC依赖查找和依赖注入的两种方式，实际上针对这两种方式都对应了依赖来源。今天给大家讲解@Value如何将外部化配置<br>
+注入到Spring Bean中，包括如下内容：</p>
+<ul>
+<li>@Value获取配置的介绍</li>
+<li>基于配置文件注入</li>
+<li>基于非配置文件注入</li>
+<li>默认值注入</li>
+</ul>
+<h4 id="value获取配置的简介">@Value获取配置的简介</h4>
+<p>@Value 是一种获取外部配置的方式，是SpringBoot中的一种用法，在SpringBoot允许将配置文件外部化，这样能够在不同的环境下<br>
+使用相同的代码。可以使用properties文件，yml文件环境变量和命令行参数来外部化配置。使用@Value注解，可以直接将属性值注入到beans中。<br>
+然后通过Spring的Environment抽象或者通过@ConfigurationProperties绑定到结构化对象来访问，这里我们介绍3种文件注入的方式，<br>
+分别是基于配置文件注入，基于非配置文件注入，默认值注入。</p>
+<h4 id="基于配置文件注入">基于配置文件注入</h4>
+<pre><code>基于配置文件注入，顾名思义起源头来自于配置文件。这些配置文件注入applcation.properties或者自定义*.properties.
+例如：application.properties配置文件种定义属性值的形式如下；
+user.name=admin
+假设存在自定义配置文件my.properties,配置文件中定义了如下属性
+user.password=123456 
+如果需要做在类中使用这两个配置值如何做呢，看如下编码：
+</code></pre>
+<pre><code class="language-java">    @PropertySource(&quot;classpath:my.properties&quot;)
+    @RestController
+    public class ValueController{
+    
+     /**
+      *
+       *获取application.properties中的配置属性
+       */
+     @Value(&quot;$(user.name)&quot;)
+     private String name;
+    /**
+     *
+     *获取my.properties中的配置属性
+     */
+    @Value(&quot;$(user.password)&quot;)
+    private String password;
+}
+
+</code></pre>
+<pre><code>从上面代码可以看出从application.properties配置中获取user.name的信息填充到变量name中，
+在从自定义配置文件中获取my.properties中user.properties填充到password变量中。
+
+值得注意的是，如果自定义my.properties文件，需要在某个类中通过PropertySource引入改配置文件额，而application.properties中的属性会自动被加载。
+
+
+通过@Value注入单个舒心的同时，也可以注入数组和列表形式。如果存在一下配置：
+tools=car,train,airplane
+
+那么可以通过如下代码进行注入：
+</code></pre>
+<pre><code class="language-java">
+    /**
+     * 
+     * 注入数组，自动根据&quot;,&quot;分割
+     */
+    @Value(&quot;${tools}&quot;)
+    private String[] tools;
+    /**
+     *
+     * 注入列表，自动根据&quot;,&quot;分割
+     */
+    @Value(&quot;${tools}&quot;)
+    private List&lt;String&gt; tools;
+</code></pre>
+<pre><code>Spring默认情况下会以&quot;,&quot;进行分割，将配置文件中的tool包含内容切割城&quot;car&quot;，&quot;train&quot;，&quot;airplane&quot;组成的数组或者列表保存到数组或者列表中。
+</code></pre>
+<h4 id="基于非配置文件注入">基于非配置文件注入</h4>
+<pre><code>  基于非配置文件注入，需要用到SPEl(Spring Expression Language)即Spring表达式语言对@Value进行修饰而传递配置信息
+
+  下面就来看几个应用场景
+
+  注入普通字符串，相当于直接给属性默认值，代码如下：
+</code></pre>
+<pre><code class="language-java">
+    /**
+     *注入普通字符串，代码如下：
+     */
+    @Value(&quot;测试&quot;)
+    private String wechatSubscription;
+
+    /**
+     *注入普通字符串，代码如下：
+     */
+    @Value(&quot;#{systemProperties['os.name']}&quot;)
+    private String systemPropertiesName;
+
+    /**
+     *注入表达式结果，代码如下：
+     */
+    @Value(&quot;#{T(java.lang.math).random()*100}&quot;)
+    private String systemPropertiesName;
+    /**
+     *注入其它Bean属性:注入config对象属性tool，代码如下：
+     */
+    @Value(&quot;#{config.tool}&quot;)
+    private String systemPropertiesName;
+    
+    /**
+     *注入列表形式（自动根据&quot;｜&quot;分割），代码如下：
+     */
+    @Value(&quot;#{'${word}'}.split('\\|')&quot;)
+    private List&lt;String&gt; numList;
+
+
+    /**
+     *注入URL资源，代码如下：
+     */
+    @Value(&quot;http://www.baidu.com&quot;)
+    private List&lt;String&gt; numList;
+
+</code></pre>
+<h4 id="默认值注入">默认值注入</h4>
+<pre><code>说了配置文件和非配置文件的#Value注入，这里再加入默认值的注入方式，顾名思义就是在配置为空或者没有设置具体值的时候，使用默认值填充目标对象。
+这里我们整理了集中情况，大家参考。
+</code></pre>
+<pre><code class="language-java"> /**
+  *如果属性中为配置ip，则使用默认值，代码如下：
+  */
+
+ @Value(&quot;${ip:127.0.0.1}&quot;)
+ private String ip;
+
+/**
+ *如果系统中未获取到port的值，则使用8888，代码如下：
+ * 其中${}中直接使用：对未定义或者未空的值进行默认值设置，而#{}则需要使用&quot;？：&quot;对未设置的属性进行默认值设置。
+ */
+
+@Value(&quot;#{systemProperties['port']？:8888}&quot;)
+private String port;
+
+ 
+</code></pre>
+<h3 id="精选面试题spring-ioc如何解决循环依赖问题">精选面试题：spring IOC如何解决循环依赖问题？</h3>
+<h4 id="什么是循环依赖">什么是循环依赖</h4>
+<pre><code>SpringIOC中循环依赖其实就是循环引用，两个或者两个以上的Bean互相持有对方，最终形成闭环。如图所示，如A依赖于B，
+B依赖于C，C又依赖于A。这种一个场景，初始化A的时候需要出初始化B的初始化，而完成B的初始化又需要完成初始化C的初始化，
+最后C又依赖于A，如此这般A永远无法完成初始化操作。这种对象相互依赖形成闭关的关系称为循环依赖。
+</code></pre>
+<figure data-type="image" tabindex="8"><img src="../framework/images/xunhuanyilai.png" alt="循环依赖" loading="lazy"></figure>
+<pre><code>在SpringIOC的使用场景中有两类循环依赖是无解的：
+</code></pre>
+<ul>
+<li>构造器循环依赖：构造器要调用构造函数new出一个对象来，而参数有依赖另外一个对象。创建类A依赖于类B，new的时候去创建类B发现类B不存在就会抛出BeanCurrentlyCreationException异常</li>
+<li>prototype原型bean的初始化过程中不论是通过构造器参数循环依赖还是通过set方式产生循环依赖也会抛出异常.</li>
+</ul>
+<p>然而针对singleton bean的循环依赖的场景可以通过三级缓存的方式解决,下面就根据该解决方案展开说明.</p>
+<h4 id="spring-ioc处理循环依赖的思路">spring ioc处理循环依赖的思路</h4>
+<p>再整理spring ioc处理singleton bean循环依赖的思路之前先来复习一下bean的生命周期,其包括三个步骤:</p>
+<ul>
+<li>实例化,执行bean的构造方法,bean中的依赖对象还未赋值.</li>
+<li>设置属性,给bean中依赖的对象赋值,若被依赖的对象尚未初始化,则先进行该对象的生命周期(递归).</li>
+<li>初始化:执行bean的初始化方法,回调方法等.</li>
+</ul>
+<p>解决循环依赖的思路就藏在这三个步骤中,在实例化于设置属性两个不走之间引入缓存机制,将已经建好的实例但是并没有设置属性的bean放入缓存中,缓存中是没有属性设置的实例对象,假设A对象和B对象相互依赖,<br>
+A对象的创建需要引用B对象,而B对象的创建也需要A对象.在创建A对象的时候可以将其放入缓存中,当B对象创建的时候直接从缓存里引用A对象,<br>
+(此时的A对象只完成了实例化,并没有经行设置属性的操作,因此不是完成的A对象,我们称之为半成品A对象),当B对象利用这个半成品的A对象完成实例创建以后(三个步骤都完成),在被A对象引用进去,则A对象也完成了创建.</p>
+<p>上文提到的缓存在这里做个解释,我们将其分为三级,每级缓存都起到不同的作用,如下表格所示</p>
+<table>
+<thead>
+<tr>
+<th>源码</th>
+<th>级别</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>singletonObjects</td>
+<td>一级缓存</td>
+<td>用于存放完全初始化好的bean,从该缓存中读取的bean可以直接使用</td>
+</tr>
+<tr>
+<td>earlySingletonObjects</td>
+<td>二级缓存</td>
+<td>存放原始的bean对象(尚未填充属性),用于解决循环依赖</td>
+</tr>
+<tr>
+<td>singletonFactories</td>
+<td>三级缓存</td>
+<td>存放bean的工厂对象,用于解决循环依赖</td>
+</tr>
+</tbody>
+</table>
+<p>解决循环依赖的整个过程是:</p>
+<p>先从一级缓存里取出bean实例,如果没有对应的bean实例,二级缓存里取,如果二级缓存里也没有bean实例,singletonFactories<br>
+三级缓存里获取.由于三级缓存存放着产生bean实例的工厂类,因此也可以通过该工厂类产生bean实例.</p>
+<p>这里可以调用工厂类调用的getObjects方法返回早期暴露对象引用,也就是我们所说的半成品bean,也可以成为earlySingletonObjects.<br>
+并且将这个半成品的bean放到二级缓存里,在三级缓存里删除该bean.什么时候这个半成品填充了属性之后,就被移动到一级缓存中.<br>
+也就是被称为可以使用完成初始化实例bean了,处理循环依赖的过程宣告完毕,下面通过一个例子让大家更好的理解这个思路.</p>
+<h4 id="处理循环依赖举例">处理循环依赖举例</h4>
+<p>根据上面的思路,这里假设A和B互相依赖,如图所示,在A创建实例的时候使用getBean方法,通过createBeanInstance方法对A进行实例化.此时的A只是被实例化出来了,<br>
+也把创建B实例的工厂类通过addSingletonFactory方法添加到三级缓存中.上面的思路中提到了这个放到三级缓存中的工厂类使用用来生成bean实例用的.</p>
+<p>接着往下,当通过populateBean填充实例A的属性的时候发现,A依赖B.此时开始通过getBean方法创建B的实例,依旧通过createBeanInstance方法对bean进行实例化,<br>
+也就是把创建B实例的工厂类通过addSingletonFactory方法添加到三级缓存.在使用populateBean方法填充B的属性时,发现B依赖A,此时通过getBean方法对A进行实例化.</p>
+<p>这个时候就出现了循环依赖的情况了,getBean方法先从一级缓存中获取A实例,发现没有,再去二级缓存中找,还是找不到,没办法,只能到三级缓存中A实例创建工厂取创建A实例.前面<br>
+三个步骤中A已经将工厂类通过addSingletonFactory方法存放到三级缓存中,于是调用A的工厂类创建A的实例,并且将其放到二级缓存中返回给B用来填充B的属性,当B完成属性填充<br>
+以后产生了B的实例,返回给populateBean(A)使用,此时A获取了B实例(完成属性填充的B的实例).</p>
+<p>所以,A也可以完成属性填充从而产生A的初始化以后的实例并且将其放入到一级缓存中.由于B之前使用的时A的实例是没有做属性填充的,也就是半成品A的实例,<br>
+因此此时充一级缓存中获取成品A实例完成B对象的初始化.</p>
+<h3 id="jdk动态代理和cglib动态代理">JDK动态代理和CGLIB动态代理</h3>
+<h4 id="aop的基本概念">AOP的基本概念</h4>
+<p>AOP(Aspect Orient Programming),直译过来就是面向切面编程.AOP是一种编程思想,是面向对象编程(OOP)的一种补充.面向对象编程将程序抽象成各个层次的对象,<br>
+而面向切面编程是将程序抽象晨光各个切面.</p>
+<p>如图一所示,切面实现了横切关注点,也就是跨多个应用对象的逻辑,假设业务服务1,2,3各自实现业务不仅相同,但是有些系统级别的应用是可以抽象的,例如蓝色箭头中标注的<br>
+日志,安全,事务.</p>
+<p>所谓切面,相当于应用对象的横切点,可以黄其抽象为单独的模块.其1中的切面就是日志,安全,事务,换句话说可以将日志,安全,事务抽象成独立的模块.</p>
+<h4 id="为什么要使用aop">为什么要使用AOP</h4>
+<p>在实际开发过程中,业务代码中会不断重复的代码,例如:记录日志,判断权限等.遇到这种场景就可以将这些业务无关的代码进行抽象成一个方法.这种问题就可以利用AOP来解决.</p>
+<p>AOP可以保证开发者不修改源代码的前提下,为业务组件添加通用功能.其本质是通过AOP框架将通用代码植入到业务组件方法中.</p>
+<p>按照AOP框架修改源代码的时机,可以将其分为两类:</p>
+<p>静态AOP实现,AOP框架在编译阶段对程序源代码进行修改,生成静态AOP代理类(生成的*.class文件已经被改掉了,需要使用特定的编译器),比如AspectJ.</p>
+<p>动态AOP实现,AOP框架在运行阶段对动态生成代理对象(在内存中以JDK动态代理和CGLIB动态代理生成AOP代理类),比如Spring AOP.</p>
+<p>如图所示,这里列出了AOP的几大类别,其中国以动态AOP的两个类别使用最为广泛,他们就是JDK动态代理和CGLIB动态代理.接下来就让我们一起来看看他们是如何实现AOP的吧.</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>机制</th>
+<th>原理</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>静态AOP</td>
+<td>静态织入</td>
+<td>在编译起，切面直接以字节码的形式编译到目标字节码文件中</td>
+<td>对系统无性能影响</td>
+<td>灵活度不够</td>
+</tr>
+<tr>
+<td>动态AOP</td>
+<td>JDK动态代理</td>
+<td>在运行期，目标类加载后，为接口动态生成代理类，将切面织入到代理类中</td>
+<td>相对于静态AOP更加灵活</td>
+<td>切入的关注点需要实现接口，对系统有一点性能影响</td>
+</tr>
+<tr>
+<td>动态字节码生成</td>
+<td>CGLIB</td>
+<td>在运行期目标类加载后，动态生成目标类的子类，将切面逻辑加入到子类中</td>
+<td>没有接口也可以织入</td>
+<td>扩展类的实例用final修饰时，则无法进行织入</td>
+</tr>
+<tr>
+<td>自定义类加载器</td>
+<td></td>
+<td>在运行期目标类加载前，将切面逻辑驾到目标字节码里</td>
+<td>可以对绝大部分类进行织入</td>
+<td>代码中如果使用其它类加载器，则这些类将不会被织入</td>
+</tr>
+<tr>
+<td>字节码转换</td>
+<td></td>
+<td>在运行期，所有类加载器加载字节码前进行拦截</td>
+<td>可以对所有类进行织入</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="jdk动态代理">JDK动态代理</h4>
+<p>AOP框架有很多，Spring中的AOP是通过动态代理来实现的。这里就介绍JDK动态代理的实现原理。JDK动态代理是在运行期，目标类加载后，为接口动态生成代理类，将切面织入代理类类中。</p>
+<p>这里通过一个例子类讲解JDK动态代理的实现原理。如下图所示，定义Service接口，其中有一个help方法。用ServiceImpl去实现Service接口，<br>
+在help方法中实现打印买书的输出。这个ServiceImpl就是我们要代理的目标类。</p>
+<pre><code class="language-java">public interface Service {
+
+    public void help();
+}
+
+
+public class ServiceImpl implements Service {
+    @Override
+    public void help() {
+        System.out.println(&quot;买书&quot;)
+    }
+}
+</code></pre>
+<p>接下来实现代理类，如图所示，dynamicProxy作为动态代理类实现了invocationHandler接口，其中定义了Service的接口作为<br>
+代理类dynamicProxy构造方法的输入参数，在Override的invoke方法中通过参数Method来代理要执行的代理类中的方法，<br>
+method.invoke的输入参数为目标类Service。</p>
+<p>method.invoke是用来执行代理类中的help方法，如果这个假设成立的话，在这个方法执行前面执行的<br>
+System.out.println(&quot;买书之前&quot;)，会在买书方法之前执行，同理System.out.println(&quot;买书之后&quot;)会在买书方法之后执行</p>
+<pre><code class="language-java">public class DynamicProxy implements InvocationHandler{
+    //代理的真实对象
+    private Object service;
+    
+    //构造方法，给代理的真是对象赋值
+    public DynamicProxy(Object service){
+        this.service = service;
+    }
+    
+    public Object invoke(Object object, Method method ,Object[] args) throws  Throwable{
+        
+        //真是方法执行之前
+        System.out.println(&quot;买书之前&quot;);
+        //调用真是方法
+        method.invoke(service, args);
+        //真是方法执行之后
+        System.out.println(&quot;买书之后&quot;);
+        return  null;
+    }
+    
+    
+}
+
+</code></pre>
+<p>回过头我们测试一些安JDK的代理类是否工作，如图所示，在main函数中通过proxy的newProxyInstance方法传入ClassLoader的类加载器，同时传入Service的接口，<br>
+以及代理类DynamicProxy(以InvocationHandler的形式)。然后执行代理类的help方法。</p>
+<pre><code class="language-java">
+public class {
+    
+    public static void main(String[] args) {
+        //要代理的对象
+        Service service = new ServiceImpl();
+        //要代理哪个真实对象，就将该对象传进去，最后是通过该真实对象来调用其方法
+        InventoryHandler handler = new DynamicProxy(service);
+        // 添加一下的几段代码，就可以将代理生成的字节码保存起来
+        try {
+            Service serviceProxy = Proxy.newProxyInstance(service.getClass().getClassLoader(),service.getClass().getInterface(),handler);
+            service.help();
+        }catch (NoSuchFieldException e){
+            e.printStackTrace();
+        }catch(IllegalAccessException e){
+            e.printStackTrace();
+        }
+    }    
+    
+}
+
+</code></pre>
+<h4 id="cglib动态代理">CGLIB动态代理</h4>
+<p>CGLIB(Code Generation Library)是一个开源项目，高性能高质量的Code生成类库，它可以在运行期扩展java类与实现Java接口。其原理是在运行期间，通过字节码的方式<br>
+在目表类的子类中织入对应的代码完成代理。</p>
+<p>还是通过一个例子来看，依旧定义一个Biz的目标类，里面有一个help方法打印买书，我们要对这个方法进行织入，在这个方法的前后打印买书之前和买书之后的打印语句。<br>
+定义一个BizTntercepter作为代理类，实现MethodIntercepter的接口，并且Override intercept方法。</p>
+<p>介绍一下方法的参数，Object是生成的子类对象，Method是要代理的目标类的方法，object[]是参数，MethodProxy子类生成代理方法。通过methodProxy.invokeSuper方法执行生成子类的代理方法，<br>
+第一个输出的是目标类生成的子类，第二个输出的是参数，该方法就是调用目标类biz中的help方法。</p>
+<p>最后就是执行测试类的方法，在main函数中new一个enhandcer，setSuperclass执行目标类，通过setCallBack方法指定代理类，最后通过使用create方法生成Biz的实例，并且执行对应的help方法。</p>
+<pre><code class="language-java">
+public class Biz{
+    /**
+     *  目标类
+     * @author zxy
+     * @date 2021/9/15 10:22
+     */
+    public void help(){
+        System.out.println(&quot;买书&quot;);
+    }
+}
+
+
+/**
+ * 代理类
+ * @author zxy
+ * @date 2021/9/15 10:24
+ */
+public class BizInterceptor implements MethodInterceptor{
+    //Object 是生成类的子类对象，Method是要代理目标类的方法，Object[]是参数，MethodProxy子类生成的代理方法
+    @Override
+    public Object intercept(Object o ,Method method ,Object[] object ,MethodProxy methodProxy) throws Throwable {
+        System.out.println(&quot;买书之前&quot;);
+        methodProxy.invokeSuper(o,object);
+        System.out.println(&quot;买书之后&quot;);
+        return null;
+    }
+    
+    
+}
+
+
+public BizCglibClient{
+    
+    public static void main(String[] args){
+        EnHancer enHancer = new EnHancer();
+        enHancer.setSuperClass(Biz.class);
+        enHancer.setCallback(new BizInterceptor());
+        Biz biz = enHancer.create();
+        biz.help();
+    }
+}
+
+</code></pre>
+<h4 id="jdk动态代理和cglib动态代理区别">JDK动态代理和CGLIB动态代理区别</h4>
+<p>1.介绍完两种代理模式，这里稍微总结一下两者的区别。</p>
+<ul>
+<li>JDK动态代理只能对实现了接口的类生成代理，而不能针对类</li>
+<li>CGLIB动态代理是针对类实现代理，主要是对指定的类生成的子类，覆盖其中的方法（继承）</li>
+</ul>
+<p>2.Spring AOP选择JDK还是CGLIB的依据</p>
+<ul>
+<li>当Bean实现接口时，Spring就会用JDK的动态代理</li>
+<li>当Bean没有实现接口时，Spring使用Cglib来实现</li>
+<li>默认是JDK代理，可以强制使用CGLIB(在Spring配置中加入&lt;aop:aspectj-autoproxy proxy-target-class=&quot;true&quot; /&gt;)</li>
+</ul>
+<p>3.JDK动态代理和CGLIB性能对比</p>
+<p>使用CGLIB实现动态代理，CGLIB底层采用ASM字节码生成框架，使用字节码技术生成代理类，在JDK1.6之前使用Java反射效率要高，<br>
+唯一需要注意的是，CGLIB不能对声明final方法进行代理，因为CGLIB原理是动态生成代理类的子类。</p>
+<h3 id="aspect-join-points-pointcuts和advice语法">Aspect、Join Points、Pointcuts和Advice语法</h3>
+<h4 id="spring-aop核心概念综述">Spring AOP核心概念综述</h4>
+<p>Aspect、JoinPoints、Pointcuts、以及Advice这些都属于AOP的核心概念，SpringAOP是通过这些概念的组合完成代码植入工作的。</p>
+<p>如图一所示，这张图将SpringAOP的概念进行了总体描述，先从右的箭头说起，这个箭头包含了一些小方块，我们称之为JoinPoints，它是可以用来进行增强的方法点，<br>
+例如上节课中Service类中的help方法，说白了就是对什么方法进行增强。</p>
+<p>看完了JoinPoints之后，再往上看，有一个向下的箭头，上面标注着Pointcut,我们称之为切入点。切入点是告诉我们在方法的什么位置进行增强，<br>
+比如在方法执行之前增强，还是执行之后增强，或者两者皆有。Advice是最上面的方块，它表示需要增强的功能，上节课的例子中在“买书之前”或者“买书之后”的打印语句。</p>
+<p>这里的“买书之前”和“买书之后”就是增强功能，再例如我们如果编写日志也可以放在也放在增强方法里面完成。最后Advice和Pointcut的组合就是切面Aspect。</p>
+<figure data-type="image" tabindex="9"><img src="../framework/images/spring-aop.png" alt="SpringAOP" loading="lazy"></figure>
+<h3 id="_源码分析spring-aop-jdk动态代理实现原理">_源码分析：Spring AOP JDK动态代理实现原理</h3>
+<h4 id="invoke实现aop中具体的逻辑">invoke：实现AOP中具体的逻辑</h4>
+<p>从前面的课程我们知道，JDK中AOP的实现是基于java.lang.reflect包中的Proxy和InvocationHandler两个接口来实现的。<br>
+对于InvocationHandler的创建，我们需要重写三个方法：</p>
+<ul>
+<li>构造函数：将目标代理对象传入。</li>
+<li>invoke：实现AOP中具体的逻辑。</li>
+<li>getProxy：获取产生的代理类。</li>
+</ul>
+<p>而在Spring框架中，JDK方式也实现了上诉过程，在源码分析上面我们也将其分为invoke和getProxy两大部分给大家介绍。</p>
+<p>JDK动态代理中是通过proxyFactory.getProxy()获取代理的，如下面代码所示，通过createAopProxy()生成对应的proxyFactory<br>
+然后在调用其中的getProxy方法。</p>
+<pre><code class="language-java">
+public Object getProxy(ClassLoader classLoader){
+    return createAopProxy().getProxy(classLoader);
+}
+</code></pre>
+<p>createAopProxy()中决定的实现类为JdkDynamicAopProxy。如下面的代码所示，它实现了AopProxy和InvocationHandler。<br>
+由于我们会实现InvocationHandler，并且Override其中的invoke方法，然后通过InvocationHandler的getProxy方法<br>
+获取代理类，通过对代理类调用process方法执行AOP的相关操作。</p>
+<p>那么首先来看看Override的invoke方法的源码，如图所示，在invoke方法中我们需要关注红框标注的部分</p>
+<ul>
+<li>在获取目标类以后，通过目标类获取要执行方法的拦截器链，这里的变量为chain。</li>
+<li>如果chain为空说明没有在方法上拦截，那么直接调用切点方法就行了。</li>
+<li>如果chain不为空说明方法上有拦截，于是将拦截器封装在ReflectiveMethodInvocation，并执行，这部分也是AOP需要关注点。</li>
+</ul>
+<h3 id="精选面试题spring-aop和aspectj-aop存在哪些区别">精选面试题：Spring AOP和AspectJ AOP存在哪些区别？</h3>
+<h4 id="aop的基本概念-2">AOP的基本概念</h4>
+<p>AOP，它是面向对象编程的一种补充，主要应用于处理一些具有横切性质的系统级服务，如日志收集，事务管理安全检查缓存，对象池管理等等。</p>
+<p>AOP实现的关键在于AOP框架自动创建AOP代理，AOP代理则可分为静态代理和东岱代理两大类，其中静态代理是指用AOP框架提供的命令指令进行编译，<br>
+从而在编译阶段就可生成AOP代理类，因此也称为编译时增强；而动态代理则在运行时借助JDK动态代理，CGLIB等再内存中临时生成AOP动态代理类，因此也被称为运行时增强。</p>
+<p>面向切面编程是一种编程范式，旨在通过允许横切关注点的分离，提高模块化。AOP提供切面来讲跨域对象关注点模块化。</p>
+<p>AOP要实现的是在我们写代码的基础上进行一定的包装，如在方法执行前或者方法执行后或者在执行出现异常后这些地方进行拦截处理或叫做增强处理。</p>
+<p>AOP的几个要素：</p>
+<ul>
+<li>Pointcut：是一个一个基于正则表达式，有点绕，就是说他本身是一个表达式，但是它是基于正则表达式语法的。通常一个Pointcut，会选取程序中的某些我们感兴趣的执行点，或者谁程序执行点的集合。</li>
+<li>JoinPoints：通过Pointcut选取出来的集合中的具体的一个执行点，我们就叫JoinPoints。</li>
+<li>Advice：在选取出来的JoinPoints上要执行的操作、逻辑</li>
+<li>Aspect：就是我们关注的模块化，这个关注点可能会横切多个对象和模块，事务管理是横切关注点的很好的例子。它是一个抽象的概念。从软件的角度来说是指应用程序在不同模块的某一个领域或方面。由Pointcut和Advice组成。</li>
+<li>Weaving：把切面应用到目标对象来创建新的Advised对象的过程。</li>
+</ul>
+<h4 id="springaop和aspectj的区别">SpringAOP和AspectJ的区别</h4>
+<p>相信作为Java开发者我们都熟悉Spring这个框架，在spring框架中有一个主要的功能就是AOP，提到AOP就往往会想到AspectJ，下面对AOP和AspectJ做一个简单的比较：</p>
+<p>(1)SpringAOP</p>
+<ul>
+<li>基于动态代理来实现，默认如果使用了接口，用JDK提供的动态代理实现，如果是方法则使用CGLIB实现</li>
+<li>SpringAOP需要依赖IOC容器来管理，并且只能作用于Spring容器，使用纯Java代码实现</li>
+<li>在性能上，由于SpringAOP是基于动态来实现的，在容器启动时需要生成代理实例，在方法调用上也会增加栈的深度，使得SpringAOP的性能没有AspectJ好。</li>
+</ul>
+<p>(2)AspectJ<br>
+AspectJ来自Eclipse基金会，其实现机制属于静态织入，通过修改代码来实现，有如下几个织入的时机：</p>
+<ul>
+<li>编译期织入：如类A使用了AspectJ添加了一个属性，类B引用了它，这个场景就需要编译期的时候就进行织入，否则就没办法编译类B。</li>
+<li>编译后织入：也就是已经生成了.class文件或者已经打包成jar包了，这个时候我们需要增强处理的话，就要用编译后织入。</li>
+<li>类加载后织入：指的是在加载类的时候进行织入，要实现这个时期的织入，有几种方法：<br>
+1.自定义类加载器干这个，这个应该是最容易想到的办法，在被织入类加载到JVM之前对它进行加载，这样就可以在加载的时候定义行为了。<br>
+2.在JVM启动的时候指定AspectJ提供的agent-javaagent:.....jar。</li>
+</ul>
+<p>AspectJ可以做SpringAOP做不了的事情，它是AOP编程的完全解决方案，SpringAOP则致力于解决企业级开发中最普遍的AOP(方法织入)，而不是成为像AspectJ一样的AOP方案。<br>
+因为AspectJ在运行之前就完成了织入，所以说它生成的类没有额外运行时开销的</p>
+<h4 id="springaop和aspectj对照表">SpringAOP和AspectJ对照表</h4>
+<table>
+<thead>
+<tr>
+<th>SpringAop</th>
+<th>AspectJ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>在纯Java中实现</td>
+<td>使用Java编程语言的扩展实现</td>
+</tr>
+<tr>
+<td>不需要单独的编译过程</td>
+<td>除非设置LTW，否则需要AspectJ编译器（ajc）</td>
+</tr>
+<tr>
+<td>只能使用运行时织入</td>
+<td>运行时织入不可用，支持编译时、编译后和加载时织入</td>
+</tr>
+<tr>
+<td>功能不强，进支持方法级织入</td>
+<td>更强大，可以编织字段方法构造函数，静态初始值，设定值，最终类方法等</td>
+</tr>
+<tr>
+<td>只能再由Spring容器管理的bean上实现</td>
+<td>可以在所有域对象上实现</td>
+</tr>
+<tr>
+<td>仅支持方法执行切入点</td>
+<td>支持所有切入点</td>
+</tr>
+<tr>
+<td>代理是由目标对象创建的，切面切面应用在这些代理上</td>
+<td>在执行应用程序之前，各方面直接在代码中织入</td>
+</tr>
+<tr>
+<td>比AspectJ慢多了</td>
+<td>更好的性能</td>
+</tr>
+<tr>
+<td>易于学习容易</td>
+<td>比SpringAOP来说更复杂</td>
+</tr>
+</tbody>
+</table>
+<h3 id="引入logback框架进行日志打印">引入logback框架进行日志打印</h3>
+<h4 id="logback介绍">logback介绍</h4>
+<p>logback是一个Java领域的日志框架。它被认为是Log4J的继承人，logback和log4J属于同一个作者，看上去logback是log4J的升级版。<br>
+logback分为三个模块，logback-core，logback-classic和logback-access，其中logback-core是核心其他两个模块依赖core，这个<br>
+logback-classic是log4J的改善版本，并且原生实现了SELF4J门面。模块logback-access可以集成于Servlet容器。比如tomcat和Jetty。<br>
+你可以基于logback-core自己创建其他模块。</p>
+<p>如图一所示，在项目的包引用中，需要三个jar包分别是self4j-api，logback-core，logback-classic。</p>
+<h4 id="logback的配置介绍">logback的配置介绍</h4>
+<p>由于logback针对整个系统的日志进行定义，因此需要有一个文件这些定义进行配置，这就是logback的配置文件，这里我们以logback.xml文件为例给大家介绍。</p>
+<p>(1)根节点<configuration><br>
+<configuration>元素包含下面三个属性：<br>
+scan：此属性设置为true时，配置文件发生改变，将会被重新加载<br>
+scanPeriod：配置文件修改间隔，当scan为true时此属性生效， “60 seconds”表示配置文件每个60s检查一次是否被修改。<br>
+debug:当此属性设置为true时，将打印出logback内部日志信息。实时查看logback运行状态。默认值为false。<br>
+(2)子节点<property><br>
+该节点是configuration的子节点，用来定义变量值，它有两个属性name和value通过<property>定义的值会被插入到logger上下文中，可以<br>
+使用“${}”来使用变量。</p>
+<p>name：变量的名称<br>
+value：变量定义的值</p>
+<p>(3)子节点<appender><br>
+同样appender节点也是configuration的子节点，logback将写入日志事件的任务委托给一个名为appender的组件。<br>
+它有两个属性name和class。name指定appender名称，class指定类的全限定名用于实例化。<br>
+<appender>元素可以保函零个挥着一个<layout>元素，零个或者多个<encoder>元素，零个或者多个<filter><br>
+除了这些公共元素之外，<appender>元素可以包含任意与appender类的JavaBean属性相一致的元素，常见结构如下</p>
+<pre><code class="language-java">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configuration debug=&quot;false&quot;&gt;
+&lt;!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径--&gt;
+&lt;property name=&quot;LOG_HOME&quot; value=&quot;/data/logs&quot;/&gt;
+&lt;!-- 控制台输出 --&gt;
+&lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+&lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;
+&lt;!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--&gt;
+&lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg %n&lt;/pattern&gt;
+&lt;/encoder&gt;
+&lt;/appender&gt;
+
+&lt;!-- 按照每天生成日志文件 --&gt;
+&lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+&lt;file&gt;${LOG_HOME}/mrb-store.log&lt;/file&gt;
+&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
+&lt;fileNamePattern&gt;${LOG_HOME}/mrb-store.log.%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;
+&lt;maxHistory&gt;15&lt;/maxHistory&gt;
+&lt;/rollingPolicy&gt;
+&lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;
+&lt;!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--&gt;
+&lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n&lt;/pattern&gt;
+&lt;/encoder&gt;
+&lt;/appender&gt;
+
+&lt;!-- 应用的日志(错误级别)文件 --&gt;
+&lt;appender name=&quot;ERROR&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+&lt;file&gt;${LOG_HOME}/mrb-store-error.log&lt;/file&gt;
+&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
+&lt;fileNamePattern&gt;${LOG_HOME}/mrb-store-error-%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;
+&lt;maxHistory&gt;15&lt;/maxHistory&gt;
+&lt;/rollingPolicy&gt;
+&lt;encoder&gt;
+&lt;pattern&gt;%date %level [%thread] %logger{40}[%file-%M %line] %msg%n
+&lt;/pattern&gt;
+&lt;/encoder&gt;
+
+&lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;
+&lt;level&gt;ERROR&lt;/level&gt;
+&lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;&lt;!-- 只接收错误级别的日志 --&gt;
+&lt;onMismatch&gt;DENY&lt;/onMismatch&gt;
+&lt;/filter&gt;
+&lt;/appender&gt;
+
+&lt;!-- 数据库相关操作日志 --&gt;
+&lt;appender name=&quot;MYSQL_LOG&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+&lt;file&gt;${LOG_HOME}/mrb-store-sql.log&lt;/file&gt;
+&lt;encoder&gt;
+&lt;pattern&gt;%date %level [%thread] %logger{40}[%file-%M %line] %msg%n&lt;/pattern&gt;
+&lt;/encoder&gt;
+&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
+&lt;fileNamePattern&gt;${LOG_HOME}/mrb-store-sql-%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;
+&lt;maxHistory&gt;15&lt;/maxHistory&gt;
+&lt;/rollingPolicy&gt;
+&lt;/appender&gt;
+
+&lt;logger name=&quot;com.mrb.store.mapper&quot; level=&quot;debug&quot; additivity=&quot;false&quot;&gt;
+&lt;appender-ref ref=&quot;MYSQL_LOG&quot;/&gt;
+&lt;/logger&gt;
+
+&lt;!-- 屏蔽swagger打印的debug info日志 --&gt;
+&lt;logger name=&quot;springfox.documentation.spring.web&quot; level=&quot;WARN&quot;/&gt;
+
+&lt;springProfile name=&quot;dev&quot;&gt;
+&lt;root level=&quot;INFO&quot;&gt;
+&lt;appender-ref ref=&quot;STDOUT&quot;/&gt;
+&lt;appender-ref ref=&quot;FILE&quot;/&gt;
+&lt;appender-ref ref=&quot;ERROR&quot;/&gt;
+&lt;/root&gt;
+&lt;/springProfile&gt;
+
+&lt;springProfile name=&quot;test,audit,prod&quot;&gt;
+&lt;root level=&quot;INFO&quot;&gt;
+&lt;appender-ref ref=&quot;FILE&quot;/&gt;
+&lt;appender-ref ref=&quot;ERROR&quot;/&gt;
+&lt;/root&gt;
+&lt;/springProfile&gt;
+
+&lt;/configuration&gt;
+</code></pre>
+<p>(4)RollingFileAppender(轮转日志)<br>
+RollingFileAppender是一类appender其功能比较强大，因此被广泛应用。它将日志输出到log.txt，在满足了特定的条件之后，将日志输出到另一个文件。</p>
+<p>与RollingFileAppender进行交互的有两个重要的子组件，第一个是RollingPolicy,它负责日志轮转的记录策略。另一个是TriggeringPolicy.<br>
+它负责日志轮转的记录时机，如图4所示。</p>
+<p><file>:被写入的文件名，可以是相对目录，也可以是绝对目录，如果上级不存在会自动创建，没有默认值。<br>
+<append>:如果是true，日志被追加到文件结尾，如果是false，情况现存文件，默认是true。<br>
+<encoder>:记录事件进行格式化。包含两个功能，一是把日志信息转换成字节数组，二是把字节数组写入到输入流。<br>
+PatternLayoutEncoder是唯一有用且默认的encoder，有一个<pattern>节点，用来设置日志的输入格式。使用“%”加转换符的方式<br>
+，如果要输出%，则必须对“\”对“%”进行定义。<br>
+<prudent>:当为true时，不支持FilxedWindowRollingPolicy。支持TimeBasedRollingPolicy，但是有两个限制，1.不支持文件压缩，2.不能设置为file属性，必须留空。<br>
+<rollingPolicy>：当发生滚动时，决定RollingFileAppender的行为涉及文件的移动和重命名，属性class定义具体的滚动策略类。<br>
+(5).日志过滤器<br>
+Filter作为appender的子节点，如图所示，<br>
+<filter>将日志信息过滤，常用levelFilter-等级过滤器来过滤日志信息，有三个元素<br>
+<level>INFO</level> :指定特定等级<br>
+<onMatch>ACCEPT</onMatch>：如果匹配则接受输出<br>
+<onMismatch>DENY&lt;/onMismatch:如果不匹配则过滤掉</p>
+<p>(6)logger子节点<br>
+其用来设置某一个包或者具体的某一个类的日志打印级别，以及指定<appender>.<br>
+<logger>仅有一个name属性，一个可选的level和一个可选的addtivity属性。<br>
+可以包括零个或者多个<appender-ref>元素，标识这个appender将会添加到这个logger<br>
+name:用来指定受此logger约束的某一个包或者具体的类，<br>
+level:用来打印日志级别，大小写无关，TRACK，DEBUG，INFO，WARN，ERROR，ALL，OFF还有一个特殊的值InHERITEN或者同义词NULL。<br>
+addtivity：是否向上级logger传递打印信息。默认是true。</p>
+<p>logger节点可以包含零个或者多个<appender-ref>元素，标识这个appender将会添加到这个logger。</p>
+<p>(7)Root节点<br>
+它也是一个logger节点元素，不过它是一个根logger，也就是所有logger的上级节点，只有一个level属性，因为name已经被命名为“root”，且已经是最上级了。</p>
+<p>level：用来设置打印级别，大小写无关：TRACE，DEBUG，INFO，WARN，ERROR，ALL，OFF。不能设置为INHERITED或者同义词NULL，默认是DEBUG。</p>
+<figure data-type="image" tabindex="10"><img src="../framework/images/logback.png" alt="SpringAOP" loading="lazy"></figure>
+<h3 id="aspect注解是怎么运作起来的">@Aspect注解是怎么运作起来的</h3>
+<h4 id="aspect执行过程">@Aspect执行过程</h4>
+<p>@Aspect切面类注解属于Spring2.0以后定义的标签注解，在配置文件ApplicationContext.xml中以<br>
+aop:aspect-autoproxy的方式开启。其原理是通过代码追踪，在AopNamespaceHandler中找到了对这个标签的解析器<br>
+AspectJAutoProxyBeanDefinitionParser类。<br>
+先看看AspectJAutoProxyBeanDefinitionParser中的parse方法如何对@AspectJ标签进行解析工作的，如下图所示，<br>
+parse方法里面对调用registerAspectJAnnotationAutoProxyCreatorIfNecessary</p>
+<p>方法对解析上下文以及搭上注释的元素进行注册。顺势看注册方法紫红调用AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary<br>
+方法创建BeanDefinition，并且把BeanDefinition注册组件里。</p>
+<pre><code class="language-java">public  BeanDefinition parse(Element element ,ParserContext parserContext){
+        
+    AopNamespace.registerAspectJAnnotationAutoProxyCreatorIfNecessary(parserContext,element)
+        
+}
+
+public static registerAspectJAnnotationAutoProxyCreatorIfNecessary(ParserContext parserContext , Element element){
+        BeanDefinition BeanDefinition = AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(parserContext,element);
+        useClassProxyIfNecessary(parserContext.getRegistry() , sourceElemet) ;
+        registerComponentIfNecessary(beanDefinition ,parserContext);
+}
+
+
+
+</code></pre>
+<p>从前面的课程知道BeanDefinition是Spring容器对Bean进行存储和管理的模式，接着看registerAspectJAnnotationAutoProxyCreatorIfNecessary<br>
+是符合生成BeanDefinition的。如图所示，registerAspectJAnnotationAutoProxyCreatorIfNecessary方法直接调用getResource<br>
+registerOrEscalateApcAsRequired方法产生BeanDefinition。其主要操作就是建立RootBeanDefinition的根，<br>
+然后设置其源，角色以及对BeanDefinition的注册。</p>
+<pre><code class="language-java">
+public static BeanDefinition registerAspectJAnnotationAutoProxyCreatorIfNecessary(BeanDefinitionRegistry registry ,Object source){
+    return registerOrEscalateApcAsRequired(AnnotationAwareAspectJAutoProxyCreator.class ,registry.source);
+}
+
+private static registerOrEscalateApcAsRequired(Class&lt;?&gt; cls ,BeanDefinitionRegistry registry,Object source){
+    Assert.nonNull(register ,&quot;BeanDefinitionRegistry must not be null&quot;);
+    if(registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)){
+       BeanDefinition apcDefinition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN);
+       if(cls.getName().equals(apcDefinition.getBeanClassName())){
+         int currentPriority =  findPriorityForClass(apsDefinition.getBeanClassName())
+         int requiredPriority = findPriorityForClass(cls)
+        if(currentPriority &lt; requiredPriority){
+            apcDefinition.setBeanClassName(cls.getName())
+         }
+        }
+       return null;
+    }
+    //封装一个代理
+    RootBeanDefinition beanDefinition = new RootBeanDefinition(cls);
+    beanDefinition.setSource(source);
+    beanDefinition.getPropertyValues().add(&quot;order&quot;,ORDER.HIGHEST_PRECEDENCE);
+    beanDefinition.serRole(BeanDefinition.ROLE_INFRASTEUCTURE);
+    registry.register(AUTO_PROXY_CREATOR_BEAN_NAME ,beanDefinition);
+    return beanDefinition;
+}
+
+</code></pre>
+<p>经过以上处理AnnotationAwareAspectJAutoProxyCreator类就被创建处理了，而这个类的功能就是完成AOP增强的，它集成了父类AbstractAutoProxyCreator，同时其父类实现了BeanPostProcessor接口，它在实现改接口后，<br>
+Spring加载Bean时会在其实例话前调用其postProcessBeforeInstantiation方法，接下来看这个方法，如图三所示，postProcessBeforeInstantiation方法中，先添加目标Bean，然后获取有@Aspect注解类中的增强方法，<br>
+最后拦截器specificInterceptors对源目标类创建代理增强。</p>
+<pre><code class="language-java">public Object postProcessBeforeInstantiation(Class&lt;?&gt; beanClass ,String beanName) throws Exception {
+   Object cacheKey = getCacheKey(beanClass , beanName);
+   if(beanName == null || !this.targetSourceBeans.constains(beanName)){
+       if(this.adviseBeans.constains(cacheKey)){
+           return null;
+        }
+       if(isInfrastructrue(beanClass) || shouldSkip(beanClass,beanName)){
+           this.adviseBeans.put(cacheKey, Boolean.FALSE);
+        }
+    }
+   if(beanName != null){
+      TargetSource targetSource =   getCustomTargetSource(beanClass, beanName);
+      if(targetSource != null){
+          //获取存在与aspect注解类中的增强方法；
+        Object[] specificInterceptords = getadvicesAndAdvisorsForBean(beanClass, beanName, targetSource);
+        // 根据增强器创建代理
+        Object proxy =  createProxy(beanClass ,beanName ,specificInterceptors,targetSource);
+        this.proxy.put(createKey,proxy.getCLass());
+        return proxy;
+        }
+    }
+        return null;
+}
+
+
+</code></pre>
+<p>按照上面的代码描述是由getadvicesAndAdvisorsForBean来生成拦截器的，它包括如下工作：<br>
+获取beanFactory中所有的@Aspect注解的类</p>
+<p>对标记类进行增强提取，提取之前需求对切入信息（before，after，around等）进行增强，其中<br>
+before增强被为AspectJmethodBeforeAdvice<br>
+afrer增强为AspectJAfterAdvice<br>
+around增强为AspectJAfterThrowingAdvice增强器<br>
+增强器封装后，被代理接口调用时，会触发增强器中的方法。</p>
+<p>接下来看看postProcessBeforeInstantiation中出现的createProxy方法，它是用来创建拦截器代理的。如图所示，<br>
+在createProxy方法中会被接受拦截器specificInterceptors和目标源。方法体中创建代理工厂，接下来就是通过buildAdvicetors方法生成<br>
+advisors也就是增强的方法，对其进行遍历，并且加入到代理工厂中。然后要设置要代理的类，通过proxyFactory中getProxy方法获取代理类信息</p>
+<pre><code class="language-java">
+public Object createProxy(Class&lt;?&gt; beanClass ,String beanName ,Object[] specificInterceptors ,TargetSource targetSource){
+        //创建道理工厂
+        ProxyFactory proxyFactory=new ProxyFactory();
+        proxyFactory.copyFrom(this);
+        //决定对应给定的bean是否应该使用targetClass而不是他的接口代理，主要看xml中的配置：
+        //检查proxyTargetClass设置以及preserverTargetClass属性
+        if(!proxyFactory.isProxyTargetClass()){
+        if(!shouldProxyTargetClass(beanClass,beanName)){
+        //类CGLIB代理
+        proxyFactory.setProxyTargetClass(true);
+        }else{
+        //添加代理接口，动态代理
+        evaluateProxyInterfaces(beanClass,proxyFactory);
+        }
+        }
+        Adisor[]adisors=buildAdvisors(beanName,specificInterceptors);
+        for(Advisor advisor:adisors){
+        //加入增强器，AspectJmethodBeforeAdvice等
+        proxyFactory.addAdvisor(advisor);
+
+        }
+        //设置要代理的类
+        proxyFactory.setProxyTargetClass(targetSource);
+        customeieProxyFactory(proxyFactory);
+        proxyFactory.setFrozen(this.freezeProxy);
+        if(advisorsPreFiltered){
+        proxyFactory.setPreFiltered(true);
+        }
+        return proxyFactory.getProxy(getProxyClassLoader())
+
+
+        }
+
+</code></pre>
+<p>在createProxy方法最后会调用getProxy方法，createAopProxy().getProxy(classLoader);在被调用的getProxy方法实现JDK动态代理，这个在上周JDK代理的源码中提到过，该方法对代理类进行实例化并且返回。</p>
+<pre><code class="language-java">public Object getProxy(ClassLoader classLoader){
+    return createProxy().getProxy(classLoader);
+        }
+        
+public getProxy(ClassLoader classLoader){
+    if(logger.isDebugEnabled()){
+        logger.debug(&quot;&quot;)
+        }
+   CLass&lt;?&gt;[] proxiedInterfaces =  AopProxyUtils.comoleteProxiedInterfaces(this.advised);
+    findDefinitionEqualsAndHashCodeMethods(proxiedInterfaces);
+    return Proxy
+}
+
+</code></pre>
+<p>当返回代理类之后会执行该代理类当invoke方法，最后来看看invoke方法的源码，这个方法在上周JDK动态代理课中讲过，主要是对拦截连进行循环增强，也就是将拦截器一个个串行执行，从而达到对目标方法的增强。</p>
+<pre><code class="language-java">public Object invoke(Object proxy ,Method method ,Object[] args) throws Exception{
+    MethodInvocation invocation =;
+    
+    Object oldProxy = null;
+    
+    boolean setProxyContext = false;
+    TargetSource targetSource =  this.advised.targetSource;
+    Class&lt;?&gt; targetClass = null;
+    try {
+        if(!this.equalsDefined &amp;&amp; AopUtils.isEquealMethod(method)){
+            ---
+        }
+        if(!this.hashCodeDefined &amp;&amp; AOpUtils.isEquealMethod(method)){
+            ---
+        }
+        if(this.advised.opaque &amp;&amp; method.getDeclaryingClass().isInterface() &amp;&amp;){
+            
+        }
+        Object retVal ;
+        target =  targetSource.getTarget();
+        //获取方法拦截器链，其实就是把增强器封装成拦截器的形式串行调用的；
+        List&lt;Object&gt; chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method ,targetClass);
+        }
+        if(chain.isEmpty()){
+            retVal = AOpUtils.invokeJoinPointUseingRefletion(target ,method,args);
+        }else{
+        invocation =  new ReflectiveMethodInvocation(proxy ,target ,method,args,targetClass,chain);
+        retVal = invocation.processd();
+        }
+        CLass&lt;?&gt; retureType = method.getReturnType();
+        if(retVal != null &amp;&amp; retVal == target &amp;&amp; returnType.isInstance(proxy) &amp;&amp; !RawTargetAccess.class.isAssignableFrom(method.getDeclaryingClass())){
+            retVal = proxy ;
+        }
+        else if(retval == null &amp;&amp; returnType != Void.Type &amp;&amp; returnType.isPrimitive() &amp;&amp; returnType.){
+            throws new AopInvocationException(&quot;&quot;);
+        }
+        
+        return retVal;
+}
+
+
+
+</code></pre>
+<h3 id="_代码实战基于spring-aop机制实现全局异常处理">_代码实战：基于Spring AOP机制，实现全局异常处理</h3>
+<h4 id="controlleradvice与exceptionhandler注解">ControllerAdvice与ExceptionHandler注解</h4>
+<p>如果说需要对系统内部异常采取统一的处理，其思路还是通过Spring AOP 去截获异常信息，进行统一处理然后再返回给客户端。在使用Spring AOP编写异常处理类之前先介绍几个注释。</p>
+<p>ControllerAdvice，顾名思义是一个增强的 Controller，增强的概念在SpringAOP中就是我们需要织入方法的具体内容，回到本节内容就是需要进行异常处理的地方。</p>
+<p>使用ControllerAdvice可以实现三个方面的功能：全局异常处理、全局数据绑定和全局数据预处理。在我们的项目中，主要关注全局异常处理的功能。</p>
+<p>如图1所示，在建立的MyGlobalExceptionHandler类上标记了ControllerAdvice注解，表示对Controller的请求进行增强<br>
+。<br>
+在类中的customException方法上面通过一个ExceptionHandler注解，参数使用Exception.class表示对Exception类型的异常进行处理。</p>
+<p>这里可以根据需要定义其他异常，甚至是自定义的异常类。然后通过new ModelAndView初始化出ModelAndView，并且对其进行修改通过addObject方法和setViewName加入一些错误信息，从而通过return 语句将这个ModelAndView返回给Controller的调用者</p>
+<pre><code class="language-java">
+/**
+ * 全局异常处理器
+ */
+@Slf4j
+@RestControllerAdvice
+public class ExceptionHandlerAdvice {
+
+    /**
+     * 基础异常
+     */
+    @ExceptionHandler(BaseException.class)
+    public Response&lt;Void&gt; baseException(BaseException e) {
+        return Response.fail(e.getMessage());
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public Response&lt;Void&gt; handlerNoFoundException(Exception e) {
+        log.error(e.getMessage());
+        return Response.fail(Code.System.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public Response&lt;Void&gt; handleAuthorizationException(AccessDeniedException e) {
+        log.error(e.getMessage());
+        return Response.fail(Code.System.FORBIDDEN);
+    }
+
+    @ExceptionHandler(AccountExpiredException.class)
+    public Response&lt;Void&gt; handleAccountExpiredException(AccountExpiredException e) {
+        log.error(e.getMessage(), e);
+        return Response.fail(e.getMessage());
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public Response&lt;Void&gt; handleUsernameNotFoundException(UsernameNotFoundException e) {
+        log.error(e.getMessage(), e);
+        return Response.fail(e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public Response&lt;Void&gt; handleException(Exception e) {
+        log.error(e.getMessage(), e);
+        return Response.fail(Code.System.ERROR_SERVER);
+    }
+
+    /**
+     * 自定义验证异常
+     */
+    @ExceptionHandler(BindException.class)
+    public Response&lt;Void&gt; validatedBindException(BindException e) {
+        log.error(e.getMessage(), e);
+        String message = e.getAllErrors().get(0).getDefaultMessage();
+        return Response.fail(message);
+    }
+
+    @ExceptionHandler(MrbException.class)
+    public Response&lt;Void&gt; handleAllException(MrbException e, HttpServletRequest req) {
+        log.error(&quot;tips:{} request method:{} uri:{}&quot;, e.getMessage(), req.getMethod(), req.getRequestURI());
+        if (e.getErrorCode() != null &amp;&amp; e.getErrorCode() != Code.System.FAIL) {
+            return Response.fail(e.getErrorCode(), null, e.getErrorCode().getLabel());
+        }
+        return Response.fail(Code.System.FAIL, null, e.getMessage());
+    }
+
+    @ExceptionHandler(HystrixBadRequestException.class)
+    public Response&lt;Void&gt; handleAllException(HystrixBadRequestException e, HttpServletRequest req) {
+        log.error(&quot;tips:{} request method:{} uri:{}&quot;, e.getMessage(), req.getMethod(), req.getRequestURI());
+        MrbException exception = (MrbException) e.getCause();
+        if (exception.getErrorCode() != null &amp;&amp; exception.getErrorCode() != Code.System.FAIL) {
+            return Response.fail(exception.getErrorCode(), null, exception.getErrorCode().getLabel());
+        }
+        return Response.fail(Code.System.FAIL, null, e.getMessage());
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public Response&lt;Void&gt; handleFeignException(HttpRequestMethodNotSupportedException e, HttpServletRequest req) {
+        log.error(&quot;request method:{} uri:{}&quot;, req.getMethod(), req.getRequestURI(), e);
+        return Response.fail(Code.System.ERROR_METHOD, null, e.getMessage());
+    }
+
+    @ExceptionHandler(value = {MismatchedInputException.class, HttpMessageNotReadableException.class})
+    public Response&lt;Void&gt; handleFeignException(Exception e, HttpServletRequest req) {
+        log.error(&quot;request method:{} uri:{}&quot;, req.getMethod(), req.getRequestURI(), e);
+        return Response.fail(Code.System.ERROR_PARAMS, null, Code.System.ERROR_PARAMS.getLabel());
+    }
+
+    @ExceptionHandler(value = {RetryableException.class})
+    public Response&lt;Void&gt; handleRetryableException(RetryableException e, HttpServletRequest req) {
+        log.error(&quot;request method:{} uri:{}&quot;, req.getMethod(), req.getRequestURI(), e);
+        return Response.fail(Code.System.ERROR_PARAMS, null, &quot;请求超时&quot;);
+    }
+
+    /**
+     * 参数校验异常处理
+     *
+     * @param e
+     * @param req
+     * @return Response&lt;java.util.Map &lt; java.lang.String, java.lang.String&gt;&gt;
+     * @author zhangdecheng
+     * @date 2020/9/18 17:40
+     */
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public Response&lt;Map&lt;String, String&gt;&gt; methodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest req) {
+        String errMsg = e.getBindingResult().getFieldErrors()
+                .stream()
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.joining(&quot;, &quot;));
+
+        log.error(&quot;request method:{} uri:{}&quot;, req.getMethod(), req.getRequestURI(), e);
+        return Response.fail(Code.System.ERROR_PARAMS, null, errMsg);
+    }
+
+}
+
+
+</code></pre>
+<p>可以从图2 中下面一个方法handleBusinessException唯一的不同是在ExceptionHandler注解的参数上。这里使用的参数类型是BusinessException.class，是我们自己定义的业务异常类。</p>
+<p>如图3所示，spring/exception目录下面建立BusinessException类，其继承与RuntimeException类。</p>
+<p>这个BusinessException可以在全局异常处理类中被处理，如果在业务代码中也接抛出这个异常，也是可以被GlobalExceptionHandler类中的handleBusinessException方法捕获到并处理的。</p>
+<pre><code class="language-java">
+
+/**
+ * @desc 公共自定义异常
+ */
+@Slf4j
+public class MrbException extends RuntimeException {
+
+    private static final long serialVersionUID = -3361373660274001948L;
+
+    private StatusCode errorCode;
+
+    public MrbException() {
+        super();
+    }
+
+    public MrbException(String errorMsg) {
+        super(errorMsg);
+        this.errorCode = Code.System.FAIL;
+    }
+
+    public MrbException(StatusCode errorCode) {
+        super(errorCode.getLabel());
+        this.errorCode = errorCode;
+    }
+
+    public MrbException(StatusCode errorCode, String msg) {
+        super(msg);
+        this.errorCode = errorCode;
+    }
+
+    public static void throwException(StatusCode errorCode) {
+        throw new MrbException(errorCode);
+    }
+
+    public static void throwException(String errorMsg) {
+        throw new MrbException(errorMsg);
+    }
+
+    public static void throwException(boolean expression, String errorMsg) {
+        if (expression) {
+            throw new MrbException(errorMsg);
+        }
+    }
+
+
+    public static MrbException convert(Integer code, String msg) {
+        StatusCode statusCode = Code.enumValueOf(code);
+        if (statusCode != null) {
+            return new MrbException(statusCode, msg);
+        }
+        return null;
+    }
+
+    public static MrbException convert(Integer code) {
+        StatusCode statusCode = Code.enumValueOf(code);
+        if (statusCode != null) {
+            return new MrbException(statusCode);
+        }
+        return null;
+    }
+
+    public StatusCode getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(StatusCode errorCode) {
+        this.errorCode = errorCode;
+    }
+}
+
+</code></pre>
+<p>4、总结<br>
+本节课在介绍了利用Spring AOP 实现全局异常处理的思路，从ControllerAdvice与ExceptionHandler注解入手，<br>
+我们创建了自己的全局异常处理类GlobalExceptionHandler。到Controller中抛出异常的时候GlobalExceptionHandler中有对应的方法就可以捕获到。<br>
+针对不同的异常类，可以编写不同的异常处理方法。</p>
+<h3 id="基于spring-aop机制拦截处理登陆信息">基于Spring AOP机制拦截处理登陆信息</h3>
+<p>上节课验证了处理异常的代码，通过GlobalExceptionHandler类处理Controller中抛出的异常信息，从而解决页面报错的问题。本节课通过使用Spring AOP的方式拦截登陆信息，并且判断今天的内容：</p>
+<p>添加LoginInterceptor类用来拦截登陆信息</p>
+<p>配置spring-web.xml中的拦截器</p>
+<h4 id="添加logininterceptor类拦截登陆信息">添加LoginInterceptor类拦截登陆信息</h4>
+<p>既然是拦截登陆信息，就需要先建立一个拦截类，用来处理登陆请求之前的判断工作。如图1所示，在/spring/interceptor 目录下面建立LoginInterceptor类，这个类是专门用来拦截登陆请求的。</p>
+<p>该类实现了HandlerInterceptor，并且Override了preHandle方法，也就是在处理登陆请求之前会执行该方法。下面来看下方法中执行的内容。</p>
+<pre><code class="language-java">
+
+@Slf4j
+public class RequestHeaderInterceptor extends HandlerInterceptorAdapter {
+
+
+    final static Response&lt;Void&gt; ERROR_PARAMS = Response.fail(Code.System.ERROR_PARAMS);
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        String appSystem = request.getHeader(&quot;appSystem&quot;);
+        if (StringUtils.isBlank(appSystem)) {
+            ERROR_PARAMS.setMsg(&quot;appSystem 不能为空&quot;);
+            responseJson(ERROR_PARAMS, response);
+            return false;
+        }
+        String clientChannel = request.getHeader(&quot;clientChannel&quot;);
+        if (StringUtils.isBlank(clientChannel)) {
+            ERROR_PARAMS.setMsg(&quot;clientChannel 不能为空&quot;);
+            responseJson(ERROR_PARAMS, response);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
+
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+
+    }
+
+    @Override
+    public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response, Object handler) {
+
+    }
+
+    private void responseJson(Object result, HttpServletResponse res) {
+        try {
+            if (result != null) {
+                res.setHeader(&quot;Pragma&quot;, &quot;No-cache&quot;);
+                res.setHeader(&quot;Cache-Control&quot;, &quot;no-cache&quot;);
+                res.setDateHeader(&quot;Expires&quot;, 0);
+                res.setContentType(&quot;text/json&quot;);
+                res.setCharacterEncoding(&quot;UTF-8&quot;);
+                PrintWriter out = res.getWriter();
+                String json = &quot;&quot;;
+                if (result instanceof String) {
+                    json = (String) result;
+                } else {
+                    json = JsonUtils.obj2json(result);
+                }
+                out.write(json);
+                out.flush();
+            }
+        } catch (Exception e) {
+            log.error(&quot;&quot;, e);
+        }
+    }
+
+}
+</code></pre>
+<p>图1 的preHandle方法中传入了request参数，其类型是HttpServletRequest类型，另外还有response其类型是HttpServletResponse，最后是Object类型的 handler。</p>
+<p>首先，从request中也就是请求中通过getParameter获取参数，这里的参数是phoneNumber也就是手机号。</p>
+<p>然后判断手机号是否为空，再通过getHeader方法获取phoneNumber，看看在请求头中是否存在手机号。如果也不存在，那么打印日志说明请求接口不包含手机号。</p>
+<p>接下来，通过response的getOutputStream获取相应的response 流。通过setHeader方法设置返回的类型content-type和application/json。另外通过指定JSON字符串中的编码格式UTF8，告知相应的编码模式。</p>
+<p>最后通过，outputStream的write方法返回输出的字节流，如果在登陆的时候不存在手机号信息就会返回失败，否则可以登陆继续后面的操作。</p>
+<h4 id="配置spring-webxml中的拦截器">配置spring-web.xml中的拦截器</h4>
+<p>看完了登陆拦截器的代码部分，再回到spring-web.xml配置文件中，来看看配置部分。这里会在interceptors加入一个interceptors（拦截器）。如图2所示，这个拦截器包括以下几个部分：</p>
+<p>Mapping：这里主要指定需要拦截的路径，包含在该配置下的路径会被拦截到，否则拦截器是不会处理的。这里设置的是“/**”，意思是全部路径都会拦截。</p>
+<p>Exclude-mapping：这里配置除了那些路径是不做拦截的。也是与Mapping配置相呼应的一个配置，也就是说拦截器也有例外，在这里配置的路径不做拦截处理。这里配置了三个节点，包括“/consumer/login”、”/demo/**”、”/”。</p>
+<p>Bean：这里是对拦截器进行指定，也就是说上面的规则通过哪个拦截器实现。这里我们配置了“com.ruyuan.little.project.spring.interceptor.LoginInterceptor&quot;，也就是我们刚刚编写的拦截器。</p>
+<h3 id="精选面试题spring-aop的设计模式有哪些">精选面试题：Spring AOP的设计模式有哪些？</h3>
+<h4 id="策略模式在aop中的使用">策略模式在AOP中的使用</h4>
+<p>策略模式，将各种算法封装到具体的类中，作为一个抽象策略类的子类，使得他们可以互换。客户端可以决定使用那种哪种算法</p>
+<p>策略模式角色划分为如下三个部分：<br>
+Strategy策略接口或者抽象策略类，定义策略执行接口<br>
+ConcreteStrategy 具体策略类<br>
+Context 上下文类，支持具有策略类的实例，并且负责调用相关的算法</p>
+<p>策略模式提供了对&quot;&quot;开闭原则&quot;的完美支持，用户可以在不修改原有系统的基础上选择算法（策略），并且可以灵活的增加新的算法（策略）</p>
+<p>策略模式通过Context类提供了管理具体策略类（算法族）的办法。<br>
+结合简单工厂模式和Annotation，策略模式可以方便的在不修改客户端代码的前提下切换算法（策略）。<br>
+在SpringAop中策略模式也起到了重要的作用，还记得SpringAOP的两种动态代理的机制吗？JDK动态代理和CGLIB动态代理这两种代理就是两种AOP的代理的策略。<br>
+AOP中定义了DefaultAOPProxyFactory代理类，这个类分别关联了两种代理：JdkDynamicAopProxy和CglibProxy<br>
+Factory。</p>
+<h4 id="策略模式在aop中的使用-2">策略模式在AOP中的使用</h4>
+<p>策略模式（Strategy Pattern），将各种算法封装到具体的类中，作为一个抽象策略类的子类，使得它们可以互换。客户端可以自行决定使用哪种算法。</p>
+<p>如图1所示，策略模式角色划分为如下三个部分：</p>
+<ul>
+<li>
+<p>Strategy 策略接口或者（抽象策略类），定义策略执行接口</p>
+</li>
+<li>
+<p>ConcreteStrategy 具体策略类</p>
+</li>
+<li>
+<p>Context 上下文类，持有具体策略类的实例，并负责调用相关的算法</p>
+</li>
+</ul>
+<p>策略模式提供了对“开闭原则”的完美支持，用户可以在不修改原有系统的基础上选择算法（策略），并且可以灵活地增加新的算法（策略）。</p>
+<p>策略模式通过Context类提供了管理具体策略类（算法族）的办法。</p>
+<p>结合简单工厂模式和Annotation，策略模式可以方便的在不修改客户端代码的前提下切换算法（策略）。</p>
+<p>在Spring AOP 中策略模式也起到了重要的作用，还接的Spring AOP 的两种动态代理机制吗？JDK动态代理和CGLIB动态代理，这里两种代理就是两种AOP 代理的策略。</p>
+<p>如图2琐事，AOP中定义了DefaultAopProxyFactory的代理类，这个类分别关联了两种代理：JdkDynamicAopProxy（JDK动态代理）和CglibProxyFactory（CGLIB动态代理）。</p>
+<h4 id="模板模式在aop中的使用">模板模式在AOP中的使用</h4>
+<p>模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。<br>
+它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。</p>
+<p>如图3所示，模版模式包括两部分内容：</p>
+<ul>
+<li>
+<p>抽象类（AbstractClass）：实现了模板方法，定义了算法的骨架。</p>
+</li>
+<li>
+<p>具体类（ConcreteClass)：实现抽象类中的抽象方法，已完成完整的算法。</p>
+</li>
+</ul>
+<p>模板方法模板通过把不变的行为搬移到超类，去除了子类中重复的代码。子类实现算法的某些细节，有助于算法的扩展。通过<br>
+一个父类调用子类实现的操作，通过子类扩展增加新的原则。符合“开放-关闭原则”。</p>
+<p>回到Spring AOP中的代理创建的时候用到了AbstractAutoProxyCreator，如图4所示，它位于图的上部定义了一些通用的行为，<br>
+例如：postProcessBeforeInstantiation、getAdvicesAndAdvisorsForBean、CreateProxy等，这些行为是所有代理创建者都需要使用的，因此在父类中进行统一定义。</p>
+<p>AbstractAdvisorAutoProxyCreator，是根据增强器自动代理的创建者，它加入针对增强器特有的方法。<br>
+再往下有三个类都继承了AbstractAdvisorAutoProxyCreator，分别是DefaultAdvisorAutoProxyCreator、AspectJAwareAdvisorAutoProxyCreator和InfrastructureAdvisorAutoProxyCreator，它们又根据自身处理场景扩展了父类的模版方法。</p>
+<h4 id="适配器模式在aop中的使用">适配器模式在AOP中的使用</h4>
+<p>适配器模式（Adapter Pattern），将一个类的接口转换成客户希望的另外一个接口。适配器模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。</p>
+<p>如图5所示，适配器模式包括如下部分：</p>
+<ul>
+<li>
+<p>目标接口， Target</p>
+</li>
+<li>
+<p>具体目标实现，如ConcreteTarget</p>
+</li>
+<li>
+<p>适配器，Adapter</p>
+</li>
+<li>
+<p>待适配类，Adaptee</p>
+</li>
+</ul>
+<p>回到Spring AOP 如图6琐事，其中Advisor使用了AdvisorAdapter适配器，<br>
+该适配器关联另外两个适配器：ThrowsAdviceAdapter和AfterReturningAdviceAdapter，这两个适配会分别依赖ThrowsAdviceInterceptor和AfterRuturningAdviceInterceptor。<br>
+也就是说Advisor增强器通过适配器模式使用了不同接口的Interceptor使用的拦截器中的功能，通过适配器模式做到了代码解耦和复用。</p>
+<h3 id="先来看看原生jdbc如何进行数据库操作">先来看看原生JDBC如何进行数据库操作</h3>
+<p>介绍了日志和异常处理的功能，它们都属系统级别的功能。数据库访问作为另外一个系统级别的功能会在后面的开发过程中用到，因此这周会给大家介绍这方面的内容。整体脉络会根据JDBC、连接池、JDBCTemplate以及MyBatis几部分内容展开，本节课主要介绍JDBC访问数据库的功能，今天的内容：</p>
+<ul>
+<li>
+<p>JDBC 简介</p>
+</li>
+<li>
+<p>上传服务</p>
+</li>
+<li>
+<p>启动服务</p>
+</li>
+</ul>
+<h4 id="jdbc简介">JDBC简介</h4>
+<p>JDBC是Java Database Connectivity的简称，可以理解为Java数据库连接，为Java程序员开发者使用和操作数据库提供了统一编程接口API，有一组<br>
+使用Java语言编写的类和接口组成。</p>
+<p>JDBC整个工作包括如下具体流程：</p>
+<ul>
+<li>
+<p>加载和操作数据库驱动程序。</p>
+</li>
+<li>
+<p>连接数据库，建立连接</p>
+</li>
+<li>
+<p>操作数据库：创建数据库对象(用于执行SQL语句)。这里会涉及到Statement对象或者PrepareStatement对象的创建。以及基于两者进行的执行SQL语句工作，<br>
+从而获得并处理结构，这个结果通常放在ResultSet对象并且返回。</p>
+</li>
+<li>
+<p>释放资源：释放数据库连接资源</p>
+</li>
+</ul>
+<h4 id="配置jdbc访问数据">配置JDBC访问数据</h4>
+<p>对JDBC进行简介以后，接下来就尝试如何配置JDBC的组件和环境。<br>
+由于JDBC的组件包包含在JDK中因此不用额外引用，那么先来看看它的配置文件。<br>
+如图1所示，在jdbc.properties文件中配置JDBC的基本信息，这里包括MySQL的驱动、数据库连接串（url）以及访问数据库的用户名和密码。</p>
+<pre><code class="language-java">jdbc.driverClassName=com.mysql.cj.jdbc.Driver
+jdbc.url =jdbc:mysql://
+jdbc.username =root
+jdbc.password =password
+</code></pre>
+<p>然后创建一个JDBC的访问类，如图2所示，在/spring/dao 目录下面创建JdbcBaseDao的类，<br>
+该类需要对数据库驱动、url地址、用户名和密码进行初始化，这个初始化的工作后续会通过Spring IOC 完成。</p>
+<p>在这个JdbcBaseDao类文件中定义了queryList、queryOne以及update等访问数据库的方法。这里我们以queryList方法为例给大家介绍。</p>
+<p>如图3所示，首先通过DriverManager中的getConnection方法传入url、用户名和密码等信息创建数据库的连接。然后调用数据库连接的prepareStatement方法传入SQL语句用来处理查询操作。queryList方法通过params接受了一个参数的数组，在代码中会通过prepareStatement的setObject方法放入其中。</p>
+<p>prepareStatement将SQL语句以及对应的参数做了分离，从而实现动态SQL提高了运行效率。最后通过prepareStatement的executeQuery方法从数据库中获取查询结果。这个结果返回给了resultSet变量，后面通过while循环读出resultSet变量中的信息，放入到List<T> result中并且返回给调用者。</p>
+<p>上面描述了JDBC访问数据库的整个过程，这里需要注意的是PreparedStatement，它会经常在JDBC的代码中遇到，这里总结一下它的作用：</p>
+<p>1）PreparedStatement 实例包含已编译的 SQL 语句。这就是使语句“准备好”。包含于 PreparedStatement 对象中的 SQL 语句可具有一个或多个 IN 参数。IN参数的值在 SQL 语句创建时未被指定。相反的，该语句为每个 IN 参数保留一个问号（“？”）作为占位符。每个问号的值必须在该语句执行之前，通过适当的setXXX 方法来提供。</p>
+<p>2）由于 PreparedStatement 对象已预编译过，所以其执行速度要快于 Statement 对象。因此，多次执行的 SQL 语句经常创建为 PreparedStatement 对象，以提高效率。</p>
+<p>有了JdbcBaseDao以后，就有了通过JDBC访问数据库的基本类，为了测试访问数据库的功能还需要创建一个Controller类。如图4所示，在/spring/controller目录下面创建JdbcDemoController进行测试，加入GetAll方法编写对应的SQL语句从t_teacher表中获取教师的信息，并且通过JdbcBaseDao中的queryList方法返回结果。</p>
+<h4 id="jdbc的弊端">JDBC的弊端</h4>
+<p>数据库连接，使用时就创建，不使用立即释放，对数据库进行频繁连接开启和关闭，造成数据库资源浪费，影响数据库性能。<br>
+如图2所示，回到JdbcBaseDao类中的queryList方法，在finally代码段中须要定义对resultSet的关闭动作，同时还要对prepareStatement和conn（数据库连接）进行关闭操作，确实是一系列费事且影响数据库性能的操作。<br>
+后续我们可以通过数据库连接池功能提升这部分的使用体验。</p>
+<p>除了数据库连接的问题，JDBC中需要将SQL语句硬编码到java代码中，如果SQL语句修改，需要重新编译java代码。同时向PreparedStatement中设置参数，对占位符号位置和设置参数值，硬编码在java代码中，不利于系统维护。如果能够将SQL语句配置在xml配置文件中，即使SQL变化，不需要对java代码进行重新编译。后面的Mybatis优化会提到这点。</p>
+<p>另外，从resultSet中遍历结果集数据时，将获取表的字段进行硬编码，使用如此冗余的操作增加了代码维护的难度。也可以通过JDBCTemplate和Mybatis的优化解决这个问题。</p>
+<h4 id="基于druid连接池进行数据操作提升系统性能">基于Druid连接池进行数据操作，提升系统性能</h4>
+<p>在介绍JDBC访问数据库时，提到了需要在访问数据库时建立与数据库的连接，在当使用完数据库连接的时候需要做释放连接的操作。<br>
+由于，建立连接和释放连接需要耗费大量的系统资源，对于访问数据库这个经常使用的功能而言是需要进行优化的。</p>
+<p>因此这里需要引入数据库连接池的概念，数据库连接池的基本思想就是为数据库建立一个缓冲池，预先在缓冲池中放入一定数量的连接，<br>
+当需要建立数据库连接时，只需要从缓冲池中取出一个，使用完毕之后在放回去。我们可以通过设定连接池连接数来防止系统无尽的与数据库连接。<br>
+更为重要的是我们可以通过连接池的管理机制监视数据库的连接的数量﹑使用情况，为系统开发﹑测试及性能调整提供依据。</p>
+<p>Druid是Java语言中最好的数据库连接池，在功能、性能、扩展性方面，都超过其他数据库连接池，包括DBCP、C3P0、Proxool、JBoss DataSource。Druid已经在阿里巴巴部署了超过600个应用，经过生产环境大规模部署的严苛考验。</p>
+<p>Druid连接池为监控而生，内置强大的监控功能，监控特性不影响整体性能。<br>
+功能强大，能防SQL注入，内置Loging能诊断Hack应用行为。同时Druid支持所有JDBC兼容的数据库，包括Oracle、MySql、Derby、Postgresql、SQL Server、H2等等。<br>
+Druid针对Oracle和MySql做了特别优化，比如Oracle的PS Cache内存占用优化，MySql的ping检测优化。</p>
+<p>介绍完了Druid连接池，回到项目的代码中，如图1所示要使用Druid首先需要在pom.xml中配置druid的依赖信息。</p>
+<pre><code class="language-java">
+&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+    &lt;artifactId&gt;druid&lt;/artifactId&gt;
+    &lt;version&gt;1.1.12&lt;/version&gt;
+    &lt;type&gt;pom&lt;/type&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+<h4 id="druid连接池还存在哪些问题">Druid连接池还存在哪些问题</h4>
+<p>Druid连接池的代码，除了通过数据库连接池的方式解决连接数据库断开数据的资源使用问题。</p>
+<p>通过数据库连接池的方式，尽量让数据的访问先从连接池中获连接，如果连接池中没有连接的时候，再创建新的连接。</p>
+<p>但是，针对连接数据库、关闭数据库、使用PrepareStatement预编译SQL语句，以及ResultSet承载需要返回的数据库信息都没有进行优化。</p>
+<p>换句话说，作为开发者还是需要重复使用这些代码去访问数据库。</p>
+<p>下一步，我们需要减少上述这些冗余代码的编写，尽量用更加简化的方式访问数据库，减少数据库查询/编辑缓解的代码引入，以及数据集返回时使用的额外对象。</p>
+<p>也就是我们下节课要介绍的JDBCTemplate。</p>
+<h4 id="基于jdbctemplate-模板方式操作数据库解决代码重复问题">基于JDBCTemplate 模板方式操作数据库，解决代码重复问题</h4>
+<p>JDBCTemplate简介<br>
+JDBCTemplate是Spring JDBC抽象框架提供的JDBC模板类，其中JDBCTemplate是core包的核心类，其他模板类都是基于它封装完成的。</p>
+<p>JDBCTemplate类通过模板设计模式帮助消除了冗长的代码，</p>
+<p>只做需要的事：SQL语句的编写，并且帮我们做固定的事：数据库连接的创建及关闭</p>
+<p>如图所示，在pom.xml文件中加入依赖就可以在项目中使用JDBCTemplate了.</p>
+<pre><code class="language-java">
+&lt;dependency&gt;
+    &lt;groupId&gt;.org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;4.3.8.RELEASE&lt;/version&gt;
+    &lt;type&gt;pom&lt;/type&gt;
+&lt;/dependency
+
+</code></pre>
+<p>在实际工作中，JDBCTemplate主要提供以下五类方法访问数据库：</p>
+<ul>
+<li>
+<p>execute方法：可以用于执行任何SQL语句，一般用于执行DDL语句；</p>
+</li>
+<li>
+<p>update方法：用于执行新增、修改、删除等语句；</p>
+</li>
+<li>
+<p>batchUpdate：方法用于执行批处理的update语句；</p>
+</li>
+<li>
+<p>query方法：用于执行查询相关语句；</p>
+</li>
+<li>
+<p>call方法：用于执行存储过程、函数相关语句。</p>
+</li>
+</ul>
+<p>spring下面通过修改项目代码引入JDBCTemplate，看看我们是如何使用它的</p>
+<h4 id="思考一下jdbctemplate操作数据库存在的问题">思考一下JDBCTemplate操作数据库存在的问题</h4>
+<p>通过JDBC、连接池、JDBCTemplate几个阶段的改造以后，我们逐渐解决了数据库连接效率问题（连接池），手动打开关闭数据库连接（JDBCTemplate）。</p>
+<p>但是作为JDBCTemplate还是需要将SQL语句硬编码到java代码中，如果SQL语句修改，需要重新编译java代码。</p>
+<p>而且依旧需要输入SQL语句以及对应的Params作为参数。</p>
+<p>如果能够将数据库对应的实体类与查询语句对应。</p>
+<p>同时针对使用最频繁的查询语句而言，如果针对不同的条件匹配不同的参数就更好了。</p>
+<p>因此我们需要一个更加强大的数据库持久层，同时具备更加灵活的SQL查询方式，不仅能够根据不同的数据库平台调整SQL的语法，也可以根据业务的调整手动调整SQL内容，而不用重新编译程序。</p>
+<p>为了避免JDBCTemplate的这些问题，我们引出Mybatis的数据库访问方式。</p>
+<p>MyBatis 是支持 SQL查询，存储过程和高级映射的优秀持久层框架。</p>
+<p>MyBatis 消除了几乎所有的JDBC代码和参数的手工设置以及结果集的检索。</p>
+<p>MyBatis 使用简单的 XML或注解用于配置和原始映射，将接口和 Java 的POJOs（Plain Ordinary Java Objects，普通的 Java对象）映射成数据库中的记录。</p>
+<h4 id="mybatis运行原理介绍">Mybatis运行原理介绍</h4>
+<figure data-type="image" tabindex="11"><img src="images/mybaits%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86.png" alt="Mybatis运行原理介绍" loading="lazy"></figure>
+<h3 id="springevent事件通知机制底层原理">SpringEvent事件通知机制底层原理</h3>
+<h4 id="springevent简单使用">SpringEvent简单使用</h4>
+<p>如图1 所示，首先注入ApplicationEventPublisher对象，<br>
+sendEvent方法中可以通过ApplicationEventPublisher的publishEvent方法将创建的EventDTO发送出去，<br>
+通常而言在这之前可以编写一些业务逻辑，然后把业务逻辑的相关信息封装到EventDTO发送出去，从而达到通知其他组件或者模块的目的。<br>
+接着，EventListener会监听发送的消息，通过注册listenEvent方法获取以后会处理接收到的EventDTO对象，并且对其进行处理。</p>
+<pre><code class="language-java">
+@Resource
+ApplicationEventPublisher applicationEventPublisher;
+
+//发送事件
+
+public void sendEvent(){
+
+    EventDto eventDto = new EventDto();
+    
+    applicationEventPublisher.pulishEvent(eventDto);
+}
+
+
+
+//监听事件
+@EventListener
+public void listenEvent(EventDto eventDto){
+    System.out.println();
+}
+
+</code></pre>
+<h4 id="spring-event-流程分析">Spring Event 流程分析</h4>
+<p>看完Spring Event简单使用之后，<br>
+可以得知Spring Event 由消息发送者ApplicationEventPublisher，<br>
+消息发送体EventDTO以及消息接收者EventListener组成的.</p>
+<p>将Spring Event的执行流程进行分析，该图从上往下看。</p>
+<ul>
+<li>首先是ApplicationEventPublisher发布event。</li>
+<li>发布消息的动作会调用Multicaster中的multicastEvent方法。</li>
+<li>然后检查是否有监听器监听该消息，如果没有监听整个流程结束，否则进入到下一步。</li>
+<li>接着判断Multicaster是否有线程池，如果没有主线程直接调用。</li>
+<li>如果Multicaster有线程池，那么多线程调用。</li>
+<li>最后执行对应的方法，完成Spring Event的调用。</li>
+</ul>
+<figure data-type="image" tabindex="12"><img src="images/springevent%E6%B5%81%E7%A8%8B.png" alt="springevent流程" loading="lazy"></figure>
+<h4 id="springevent源码分析">SpringEvent源码分析</h4>
+<p>Multicaster广播器主要负责发送事件到各个订阅的Listener方法中，整个流程的核心节点。<br>
+在分析整个Event之前需要对在Spring启动时，如何注入广播器等等工作做一个简单分析。<br>
+Spring的启动注入流程如图3 代码所示如下，我们将特别注意的函数用红色框体标注处理，在后面进行讲解。</p>
+<pre><code class="language-java">	@Override
+	public void refresh() throws BeansException, IllegalStateException {
+		synchronized (this.startupShutdownMonitor) {
+			// Prepare this context for refreshing.
+			prepareRefresh();
+
+			// Tell the subclass to refresh the internal bean factory.
+			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+
+			// Prepare the bean factory for use in this context.
+			prepareBeanFactory(beanFactory);
+
+			try {
+				// Allows post-processing of the bean factory in context subclasses.
+				postProcessBeanFactory(beanFactory);
+
+				// Invoke factory processors registered as beans in the context.
+				invokeBeanFactoryPostProcessors(beanFactory);
+
+				// Register bean processors that intercept bean creation.
+				registerBeanPostProcessors(beanFactory);
+
+				// Initialize message source for this context.
+				initMessageSource();
+
+				// Initialize event multicaster for this context.
+				initApplicationEventMulticaster();
+
+				// Initialize other special beans in specific context subclasses.
+				onRefresh();
+
+				// Check for listener beans and register them.
+				registerListeners();
+
+				// Instantiate all remaining (non-lazy-init) singletons.
+				finishBeanFactoryInitialization(beanFactory);
+
+				// Last step: publish corresponding event.
+				finishRefresh();
+			}
+
+			catch (BeansException ex) {
+				if (logger.isWarnEnabled()) {
+					logger.warn(&quot;Exception encountered during context initialization - &quot; +
+							&quot;cancelling refresh attempt: &quot; + ex);
+				}
+
+				// Destroy already created singletons to avoid dangling resources.
+				destroyBeans();
+
+				// Reset 'active' flag.
+				cancelRefresh(ex);
+
+				// Propagate exception to caller.
+				throw ex;
+			}
+
+			finally {
+				// Reset common introspection caches in Spring's core, since we
+				// might not ever need metadata for singleton beans anymore...
+				resetCommonCaches();
+			}
+		}
+	}
+</code></pre>
+<ul>
+<li>initApplicationEventMulticaster方法：主要对上下文中的对注册事件的广播器进行初始化。</li>
+<li>registerListeners()方法：检查消息监听器并且注册这些监听器。</li>
+<li>finishBeanFactoryInitialization(beanFactory)：初始化含有@EventListener注解的Bean包装到ApplicationListener中，然后将它们注入到Spring IOC容器。这里初始化的Bean指的是所有的非懒加载的Bean</li>
+</ul>
+<p>下面就对这三个方法的源代码进行解读。</p>
+<p>initApplicationEventMulticaster 方法中重要代码<br>
+如图4所示，创建一个简单广播器，传入beanFactory主要用于后期获取BeanFactory中的Listener，然后将广播器单例bean注入到Spring IOC容器中</p>
+<pre><code class="language-java">
+//创建一个简单广播,传入beanFactory主要用于后期获取BeanFactory中的listener
+	this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
+			beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);
+</code></pre>
+<p>registerListeners 是用来检查和注册监听器的，<br>
+如图5所示，此方法主要将容器中所有声明的ApplicationListener的Bean对象加载到广播器中，并且发送在广播器和Bean准备期间所需要发送的事件</p>
+<pre><code class="language-java">
+protected void registerListeners() {
+		// Register statically specified listeners first.
+		for (ApplicationListener&lt;?&gt; listener : getApplicationListeners()) {
+			getApplicationEventMulticaster().addApplicationListener(listener);
+		}
+
+		// Do not initialize FactoryBeans here: We need to leave all regular beans
+		// uninitialized to let post-processors apply to them!
+		String[] listenerBeanNames = getBeanNamesForType(ApplicationListener.class, true, false);
+		for (String listenerBeanName : listenerBeanNames) {
+			getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);
+		}
+
+		// Publish early application events now that we finally have a multicaster...
+		Set&lt;ApplicationEvent&gt; earlyEventsToProcess = this.earlyApplicationEvents;
+		this.earlyApplicationEvents = null;
+		if (earlyEventsToProcess != null) {
+			for (ApplicationEvent earlyEvent : earlyEventsToProcess) {
+				getApplicationEventMulticaster().multicastEvent(earlyEvent);
+			}
+		}
+	}
+</code></pre>
+<p>如图6所示，将容器中初始化好的Spring Bean中包含@EventListener注解的方法和Bean包裹到一个新通用的ApplicationListener子类（即ApplicationListenerMethodAdapter中）</p>
+<p>ApplicationListenerMethodAdapter类，其继承自ApplicationListener实现onApplicationEvent方法，传入参数：String beanName, Class&lt;?&gt; targetClass, Method method（@EventListener的目标方法）。<br>
+如图7所示，它会实现processEvent方法，方法体中的handleResult会将目标方法执行的结果继续当做Event发送出去。</p>
+<pre><code class="language-java">public void processEvent(ApplicationEvent event){
+    Pbject[] args = resolveArguments(event);
+    if(shouldHandler(event,args)){
+        Object result =  doInvoke(args);
+        if(result != null){
+            handleResult(result);
+        }
+        else{
+            logger.trace(&quot;&quot;);
+        }
+    }
+}
+</code></pre>
+<h4 id="spring同步和异步事件的使用场景">Spring同步和异步事件的使用场景</h4>
+<h4 id="spring消息处理机制">Spring消息处理机制</h4>
+<p>Spring事件的监听机制可以理解为是一种观察者模式，有数据发布者（事件源）和数据接受者（监听器）；</p>
+<p>在Java中，事件对象都是继承java.util.EventObject对象，事件监听器都是java.util.EventListener实例.</p>
+<p>其中，java.util.EventObject是事件状态对象的基类，它封装了事件源对象以及和事件相关的信息。所有java的事件类都需要继承该类。</p>
+<p>而java.util.EventListener是一个接口，所有事件监听器都需要实现该接口。</p>
+<p>事件监听器注册在事件源上，当事件源的属性或状态改变的时候，调用相应监听器内的回调方法。</p>
+<p>Source作为事件源不需要实现或继承任何接口或类，它是事件最初发生的地方。因为事件源需要注册事件监听器，所以事件源内需要存放事件监听器的容器。</p>
+<h4 id="spring消息的同步处理">Spring消息的同步处理</h4>
+<p>假设上面的例子中两个方法insertUsers和sendInsertUser需要同步执行，也就是insertUsers方法会先执行，完成数据库的提交以后再执行sendInsertUser方法发送消息。如果insertUsers数据库提交一直没有返回成功的结果，sendInsertUser就需要一直等待。也就是说insertUsers 会阻塞sendInsertUser方法，这就是我们常说的同步执行。为了做到同步执行就需要将监听器加入到主线程的事务中，让这两个方法顺序执行。</p>
+<p>如图5所示，首先在insertUsers方法上面打上@Transcational的注释，标注它是一个事物操作</p>
+<p>然后修改insertUserListener方法，在上面加上@TranscationalEventListener的注释，并且通过phase属性标注TransactionPhase.AFTER_COMMIT，意思是在事物提交以后在执行方法内容。也就是在insert user 数据库事物提交以后，再处理监听到的UserEvent消息，从而保证事务的一致性。</p>
+<pre><code class="language-java">@Transaction(rollbackFor= Exceptions.class)
+public void insertUser(){
+    
+}
+
+@TransactionEventListener(phase = TransactionPhase.AFTER_COMMIT,fallbackException = true)
+public void insertUserListener(){
+
+}
+
+
+</code></pre>
+<h4 id="spring消息的异步处理">Spring消息的异步处理</h4>
+<p>上面聊了同步处理的业务场景，还是这个例子我们接着聊。假设insertUsers和sendInsertUser这两个操作的业务关联性并不大，那么如何处理。例如：insertUsers之后只是发一个通知给用户，说数据入库了。就算是入库不成功，消息发送也不用撤回，毕竟没有然后的业务损失。</p>
+<p>这种场景业务就可以用异步处理来做，也就是说sendInsertUser不用等待insertUsers方法数据库条件完成就可以处理发送的消息了。换句话说这两个方法不是串行执行的而是并行执行的，两个操作的执行是互相不干扰的。</p>
+<p>如图7 所示，异步处理只需要在原方法上加上@Async的注释，同时需要注意的是，需要使用@EnableAsync开启Spring 异步模式</p>
+<pre><code class="language-java">@Transaction(rollbackFor= Exceptions.class)
+public void insertUser(){
+    
+}
+
+@Async
+@TransactionEventListener(phase = TransactionPhase.AFTER_COMMIT,fallbackException = true)
+public void insertUserListener(){
+
+}
+
+
+</code></pre>
+<h3 id="玩转spring-cache中cacheable注解的底层原理">玩转Spring Cache中@Cacheable注解的底层原理</h3>
+<h4 id="cacheable注解的类结构">@Cacheable注解的类结构</h4>
+<p>为了通过@Cacheable进行缓存需要在容器中注入3个bean：CacheOperationSource、BeanFactoryCacheOperationSourceAdvisor、CacheInterceptor。</p>
+<p>如图1 所示，带颜色的部分就是我们需要关注的部分，其中BeanFactoryCacheOperationSourceAdvisor作为bean工厂是用来产生操作缓存源，并且对缓存@Cacheable注解进行增强的，这一点从类的名字上可以看出来。</p>
+<p>CacheInterceptor是缓存的拦截器，是整个过程中处理缓存信息的类，其主要实现的方法是execute，这个方法是从CacheAspectSupoort类中继承过来的。</p>
+<p>最后就是CacheOperationSource，它是处理缓存操作的源头，CacheInterceptor也就是围绕这个缓存源头展开工作。</p>
+<p>CacheOperationSource有一个子类为AnnotationCacheOperationSource，这个类是作为缓存操作的源头，它会关联CacheAnnotationParser接口，使用SpringCacheAnnotationParser对缓存信息进行解析。在图的最左边是缓存操作的几个类，所有的缓存操作CacheOperation是实现了BasicOperation接口，针对@Cacheable缓存注释是继承与CacheOperation类的。</p>
+<h4 id="cacheoperationsource-介绍">CacheOperationSource 介绍</h4>
+<p>介绍完了@Cacheable的类/接口结构再来对其中涉及到的类文件进行表述。<br>
+如图2 所示，@Cacheable作为接口定义，可以被用在方法和类型上面，在接口中还对其属性进行了描述。</p>
+<pre><code class="language-java">public @interface Cacheable{
+    //缓存名称，可以写多个
+    @AliasFor(&quot;cacheNames&quot;)
+    String[] cacheNames() default{};
+    @AliasFor(&quot;value&quot;)
+    String[] values() default{};
+    // 支持Spel，切可以使用#root
+    String key() default &quot;&quot;;
+    //Mutually exclusive ：它和key属性互相排斥，请只使用一个
+    String keyGenerator() defaule &quot;&quot;;
+    String cacheManager() defaule &quot;&quot;;
+    String cacheResolver() defaule &quot;&quot;;
+    
+    // Spel ,切可以使用#Root ，只有true时，才会作用在这个方法上
+    String condition() default &quot;&quot;;
+    // Spel ,切可以使用#Root ，并且可以使用#result拿到方法返回值
+    String unless() default &quot;&quot;;
+    boolean sync() default false;
+    
+    
+}
+
+
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>缓存的名称，可以定义多个（至少需要定义一个）</td>
+</tr>
+<tr>
+<td>cacheNames</td>
+<td>同value属性</td>
+</tr>
+<tr>
+<td>keyGenerator</td>
+<td>key生成器，字符串为：beanName</td>
+</tr>
+<tr>
+<td>key</td>
+<td>缓存的key，可使用SpEL，优先级大于keyGenerator</td>
+</tr>
+<tr>
+<td>cacheManager</td>
+<td>缓存管理器填写beanName</td>
+</tr>
+<tr>
+<td>cacheResolver</td>
+<td>缓存处理器填写beanName</td>
+</tr>
+<tr>
+<td>condition</td>
+<td>缓存条件，若填写了，返回true才会执行此缓存，可使用SpEL</td>
+</tr>
+<tr>
+<td>unless</td>
+<td>否定缓存，false为失效，可以写SpEL</td>
+</tr>
+<tr>
+<td>sync</td>
+<td>true：所有相同的key的同线程顺序执行。默认是false</td>
+</tr>
+<tr>
+<td>allEntries</td>
+<td>是否清空所有缓存内容，缺省为false，如果指定为true，则方法调用后立即清空所有缓存</td>
+</tr>
+<tr>
+<td>beforeInvocation</td>
+<td>是否在方法执行前就清空，缺省为false</td>
+</tr>
+</tbody>
+</table>
+<p>既然有了@Cacheable可以在类型和方法上面标注缓存，就需要有一个对缓存进行操作的类。</p>
+<p>如图4所示，CacheableOperation继承与CacheOperation类，在CacheableOperation通过build方法将缓存操作进行生成。</p>
+<p>有了CacheableOperation之后需要提供一个接口给拦截器使用，也就是说拦截器通过注释获取要缓存的对象以后需要调用缓存操作，此时就有了接口CacheOperationSource，我们称之为缓存属性源。</p>
+<p>如图5 所示，CacheOperationSource通过getCacheOperations方法返回所有缓存操作的CacheOperation集合。</p>
+<p>那么CacheOperationSource 如何与CacheOperation产生关系的呢？</p>
+<p>如图6所示，AbstractFallbackCacheOperationSource会实现CacheOperationSource接口，同时AnnotationCacheOperationSource继承与AbstractFallbackCacheOperationSource，在AnnotationCacheOperationSource中会依赖CacheOperation，调用其中对缓存操作的方法。</p>
+<h4 id="beanfactorycacheoperationsourceadvisor-介绍">BeanFactoryCacheOperationSourceAdvisor 介绍</h4>
+<p>说完了缓存操作源，在来看看它是如何被使用的。BeanFactoryCacheOperationSourceAdvisor 就是来整合缓存和增强器的，根据AOP的思想有了目标，定义切面和连接点以后就需要通过增强器对方法进行增强操作。</p>
+<p>如图7所示，cacheAdvisor方法就是将缓存源和拦截器作为BeanFactoryCacheOperationSourceAdvisor的属性进行绑定。而CacheInterceptor也是处理缓存的主力军后面会给大家讲到。</p>
+<h4 id="cacheinterceptor-介绍">CacheInterceptor 介绍</h4>
+<p>说完缓存操作来源和生成缓存来源、增强器的工厂类以后，再来看看处理缓存的CacheInterceptor，从字面意思可以看出它主要是做缓存拦截器的。<br>
+如图9 所示，它继承与CacheAspectSupport类，并且实现了invoke方法，在这个方法中有执行了execute方法，这个方法来自父类。</p>
+<p>接着看父类的excute方法，如图10 所示，我们将CacheAspectSupport 中的execute方法截取给大家讲解。</p>
+<p>其中红框的部分，首先获取CacheOperationSource也就是缓存操作源，然后通过getCacheOperations方法获取这个操作源中的所有对缓存的操作。保存到operations变量中，最后又调用了一个execute函数传入了CacheOperationContexts这个是缓存操作的上下文，所有的操作都会基于这个上下文进行，而且是多个上下文。</p>
+<h3 id="精选面试题什么情况导致spring事务失效">精选面试题：什么情况导致Spring事务失效？</h3>
+<ul>
+<li>
+<p>没有被Spring管理</p>
+<pre><code>  没有被Spring管理的Bean，如果其中出现了方法需要进行事务处理的情况，此时的事务不会执行。如图1 所示，在OrderServiceImpl类中如果将@Service注释掉，那么此类对应的bean也就不会被Spring IoC容器管理。即便updateOrder上面注释了@Transactional，这个方法也不会执行事务。
+</code></pre>
+</li>
+<li>
+<p>方法不是public</p>
+<p>需要注意的是，@Transactional 只能用于 public 的方法上，否则事务不会失效，如果要用在非 public 方法上，可以开启 AspectJ 代理模式。如图2 所示，saveAll方法上面标注了@Transactional的注释，由于saveAll方法没有标注public，因此saveAll中的内容是不会执行事务的。</p>
+</li>
+<li>
+<p>数据源没有配置事务管理器</p>
+<pre><code>  数据源若没有配置事务管理器，那么下面的方法transactionManager是无法实现事务的。
+</code></pre>
+</li>
+<li>
+<p>事务传播级别选择</p>
+<pre><code>  如果在方法嵌套调用时存在事务传播的场景，在定义事务级别的时候使用了NOT_SUPPORTED 那么对应的方法就不会执行事务。
+</code></pre>
+</li>
+<li>
+<p>事务中出现异常</p>
+<pre><code>  如果在执行的方法中执行的事务，由于异常退出的情况，那么这个事务是无法完成的。如图7 所示，在updateOrder方法中使用了try catch，一旦在方法体中出现异常，此时事务会中断无法执行
+</code></pre>
+</li>
+<li>
+<p>错误定义异常类型</p>
+<pre><code>  在事务中出现异常的时候，需要对异常进行定义才能正确执行事务。如果出现错误的定义，当出现事务中的异常时，还可以继续执行事务。如图8所示，在方法updateOrder中对Exception进行了捕捉，但是在方法上面的Transactional注释中rollbackFor中定义的是SQLException.class ，正确的定义应该是Exception.class。
+</code></pre>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Elasticsearch]]></title>
         <id>https://zuolinlin.github.io/zuo.github.io/post/elasticsearch/</id>
@@ -3693,26 +6820,6 @@ Node节点一般都是部署在每天Mysql机器上的，因为Node节点通过�
 片段重复一定次数，可以在临界中指示片段重复的条件。Loop相当于for语句。</p>
 <p>并行（Par）<br>
 并行处理，片段中的事件可以并行交错。Par相当于多线程。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[navicat]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/navicat/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/navicat/">
-        </link>
-        <updated>2022-03-23T14:23:02.000Z</updated>
-        <content type="html"><![CDATA[<!-- more -->
-<p>使用navicat生成逆向模型</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[git]]></title>
-        <id>https://zuolinlin.github.io/zuo.github.io/post/git/</id>
-        <link href="https://zuolinlin.github.io/zuo.github.io/post/git/">
-        </link>
-        <updated>2022-03-23T14:22:17.000Z</updated>
-        <content type="html"><![CDATA[<p>Git高速下载地址：https://npm.taobao.org/mirrors/git-for-windows/</p>
-<p><a href="hhttps://blog.csdn.net/unique_perfect/article/details/104833391">Git以及Github的使用</a></p>
 ]]></content>
     </entry>
 </feed>

@@ -1,0 +1,854 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>消息中间件 | zuolinlin</title>
+<link rel="shortcut icon" href="https://zuolinlin.github.io/zuo.github.io//favicon.ico?v=1649424467976">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zuolinlin.github.io/zuo.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="消息中间件 | zuolinlin - Atom Feed" href="https://zuolinlin.github.io/zuo.github.io//atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="消息中间件
+目录
+
+
+放大100倍压力，找出你系统的技术挑战
+
+
+消息中间件
+
+消息中间件作用
+Kafka、RabbitMQ 以及 RocketMQ对比
+
+
+
+RocketMQ
+
+RocketMQ架构原理
+
+NameServer
+Broke..." />
+    <meta name="keywords" content="框架" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zuolinlin.github.io/zuo.github.io/">
+  <img class="avatar" src="https://zuolinlin.github.io/zuo.github.io//images/avatar.png?v=1649424467976" alt="">
+  </a>
+  <h1 class="site-title">
+    zuolinlin
+  </h1>
+  <p class="site-description">
+    你要问我如何去二仙桥，我会告诉你走成华大道，可你要问人生，我也说不清。
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              消息中间件
+            </h2>
+            <div class="post-info">
+              <span>
+                2022-04-08
+              </span>
+              <span>
+                40 min read
+              </span>
+              
+                <a href="https://zuolinlin.github.io/zuo.github.io/tag/DTrX5zKuV/" class="post-tag">
+                  # 框架
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://img1.baidu.com/it/u=934011098,1307967052&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPG?w=800&amp;h=450" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="消息中间件">消息中间件</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li>
+<p><a href="#%E6%94%BE%E5%A4%A7100%E5%80%8D%E5%8E%8B%E5%8A%9B%EF%BC%8C%E6%89%BE%E5%87%BA%E4%BD%A0%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%8A%80%E6%9C%AF%E6%8C%91%E6%88%98">放大100倍压力，找出你系统的技术挑战</a></p>
+</li>
+<li>
+<p><a href="#%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6">消息中间件</a></p>
+<ul>
+<li><a href="#%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BD%9C%E7%94%A8">消息中间件作用</a></li>
+<li><a href="#Kafka%E3%80%81RabbitMQ%E4%BB%A5%E5%8F%8ARocketMQ%E5%AF%B9%E6%AF%94">Kafka、RabbitMQ 以及 RocketMQ对比</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#RocketMQ">RocketMQ</a></p>
+<ul>
+<li><a href="#RocketMQ%E6%9E%B6%E6%9E%84%E5%8E%9F%E7%90%86">RocketMQ架构原理</a>
+<ul>
+<li><a href="#NameServer">NameServer</a></li>
+<li><a href="#Broker%E4%B8%BB%E4%BB%8E%E6%9E%B6%E6%9E%84">Broker主从架构</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B">RocketMQ的核心数据模型</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2">RocketMQ的集群部署</a>
+<ul>
+<li><a href="#%E5%B0%8F%E8%A7%84%E6%A8%A1RocketMQ%E7%9A%84%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2">小规模RocketMQ的集群部署</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E9%9B%86%E7%BE%A4%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9B%91%E6%8E%A7">RocketMQ的集群可视化监控</a></li>
+<li><a href="#RocketMQ%E7%94%9F%E4%BA%A7%E5%8F%82%E6%95%B0%E8%B0%83%E6%95%B4">RocketMQ生产参数调整</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E9%9B%86%E7%BE%A4%E5%8E%8B%E6%B5%8B">RocketMQ的集群压测</a></li>
+<li><a href="#RocketMQ%E7%94%9F%E4%BA%A7%E9%9B%86%E7%BE%A4%E7%9A%84%E8%A7%84%E5%88%92">RocketMQ生产集群的规划</a></li>
+</ul>
+</li>
+<li><a href="#RocketMQ%E7%94%9F%E4%BA%A7%E8%80%85%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E6%A8%A1%E5%BC%8F">RocketMQ生产者发送消息模式</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E6%B6%88%E8%B4%B9%E6%A8%A1%E5%BC%8F">RocketMQ的消费模式</a></li>
+<li><a href="#RocketMQ%E7%9A%84%E6%B6%88%E8%B4%B9%E6%A8%A1%E5%BC%8F">RocketMQ的消费模式</a></li>
+</ul>
+</li>
+<li><a href="#RocketMQ%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86">RocketMQ底层原理</a><br>
+- <a href="#%E7%94%9F%E4%BA%A7%E8%80%85%E5%BE%80Broker%E9%9B%86%E7%BE%A4%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91">生产者往Broker集群发送消息的底层逻辑</a><br>
+- <a href="#Broker%E6%8E%A5%E5%8F%97%E6%B6%88%E6%81%AF%E5%90%8E%E5%A6%82%E4%BD%95%E5%9C%A8%E5%AD%98%E5%82%A8%E5%88%B0%E7%A3%81%E7%9B%98%E4%B8%8A%E7%9A%84">Broker接受消息后如何在存储到磁盘上的</a><br>
+- <a href="#%E5%9F%BA%E4%BA%8EDledger%E6%8A%80%E6%9C%AF%E9%83%A8%E7%BD%B2Broker%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%EF%BC%8C%E5%88%B0%E5%BA%95%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5">基于Dledger技术部署Broker高可用集群，到底如何进行数据同步</a><br>
+- <a href="#%E6%B6%88%E8%B4%B9%E8%80%85%E5%88%B0%E5%BA%95%E6%98%AF%E5%9F%BA%E4%BA%8E%E4%BB%80%E4%B9%88%E7%AD%96%E7%95%A5%E9%80%89%E6%8B%A9Master%E6%88%96Slave%E6%8B%89%E5%8F%96%E6%95%B0%E6%8D%AE">消费者到底是基于什么策略选择Master或Slave拉取数据</a><br>
+- <a href="#%E6%B6%88%E8%B4%B9%E8%80%85%E6%98%AF%E5%A6%82%E4%BD%95%E4%BB%8EBroker%E6%8B%89%E5%8F%96%E6%B6%88%E6%81%AF%E8%BF%9B%E8%A1%8C%E5%A4%84%E7%90%86%E4%BB%A5%E5%8F%8AACK%E7%9A%84%EF%BC%9F%E5%A6%82%E6%9E%9C%E6%B6%88%E8%B4%B9%E8%80%85%E6%95%85%E9%9A%9C%E4%BC%9A%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86">消费者是如何从Broker拉取消息进行处理以及ACK的？如果消费者故障会如何处理</a><br>
+- <a href="#RocketMQ%E6%98%AF%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8ENetty%E6%89%A9%E5%B1%95%E5%87%BA%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E6%9E%B6%E6%9E%84%E7%9A%84">RocketMQ 是如何基于Netty扩展出高性能网络通信架构的？</a><br>
+- <a href="#%E5%9F%BA%E4%BA%8Emmap%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84%E5%AE%9E%E7%8E%B0%E7%A3%81%E7%9B%98%E6%96%87%E4%BB%B6%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E8%AF%BB%E5%86%99">基于mmap内存映射实现磁盘文件的高性能读写</a><br>
+- <a href="#%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86">事务消息机制的底层实现原理</a><br>
+- <a href="#Broker%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E9%9B%B6%E4%B8%A2%E5%A4%B1%E6%96%B9%E6%A1%88">Broker保证消息零丢失方案</a><br>
+- <a href="#Consumer%E6%B6%88%E6%81%AF%E9%9B%B6%E4%B8%A2%E5%A4%B1%E6%96%B9%E6%A1%88">Consumer消息零丢失方案</a><br>
+- <a href="#MQ%E6%B6%88%E6%81%AF%E5%B9%82%E7%AD%89%E6%80%A7">MQ消息幂等性</a><br>
+- <a href="#MQ%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97">MQ死信队列</a><br>
+- <a href="#MQ%E6%B6%88%E6%81%AF%E4%B9%B1%E5%BA%8F">MQ消息乱序</a><br>
+- <a href="#MQ%E8%BF%87%E6%BB%A4%E6%9C%BA%E5%88%B6">MQ过滤机制</a><br>
+- <a href="#MQ%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF%E6%9C%BA%E5%88%B6">MQ延迟消息机制</a><br>
+- <a href="#MQ%E6%B6%88%E6%81%AF%E7%A7%AF%E5%8E%8B">MQ消息积压</a><br>
+- <a href="#%E9%87%91%E8%9E%8D%E7%BA%A7%E7%B3%BB%E7%BB%9F%E9%92%88%E5%AF%B9RocketMQ%E9%9B%86%E7%BE%A4%E5%B4%A9%E6%BA%83%E8%AE%BE%E8%AE%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88">金融级系统针对RocketMQ集群崩溃设计高可用方案</a><br>
+- <a href="#MQ%E6%B6%88%E6%81%AF%E9%99%90%E6%B5%81">MQ消息限流</a></li>
+<li><a href="#RocketMQ%E6%BA%90%E7%A0%81">RocketMQ源码</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#RabbitMQ">RabbitMQ</a></p>
+<ul>
+<li><a href="#RabbitMQ%E6%A6%82%E8%BF%B0">RabbitMQ概述</a></li>
+<li><a href="#RabbitMQ%E5%AE%89%E8%A3%85">RabbitMQ安装</a></li>
+<li><a href="#%E6%B6%88%E6%81%AF%E5%88%86%E5%8F%91%E6%A8%A1%E5%BC%8F">消息分发模式</a></li>
+<li><a href="#%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E7%B1%BB%E5%9E%8B">交换机的类型</a></li>
+<li><a href="#SpringBoot%E6%95%B4%E5%90%88RabbitMQ%E6%95%B4%E5%90%88">SpringBoot整合RabbitMQ整合</a></li>
+<li><a href="#TTL%E9%98%9F%E5%88%97%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4">TTL队列过期时间</a></li>
+<li><a href="#%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97">死信队列</a></li>
+<li><a href="#%E5%86%85%E5%AD%98%E5%92%8C%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E7%9B%91%E6%8E%A7">内存和磁盘空间监控</a></li>
+<li><a href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1">分布式事务</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#KafKa">KafKa</a></p>
+<ul>
+<li><a href="#KafKa%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">KafKa源码分析环境搭建</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="消息中间件-2">消息中间件</h1>
+<h2 id="放大100倍压力找出你系统的技术挑战">放大100倍压力，找出你系统的技术挑战</h2>
+<p>思考一：系统的核心链路，有哪些步骤，各个步骤的性能如何，是否有改进空间？</p>
+<pre><code>    下单--预约--核销---退款
+     其余的流程可以走MQ异步处理
+</code></pre>
+<p>思考二：系统中是否有类似后台线程定时补偿的逻辑</p>
+<pre><code>订单长时间未支付，要关闭，
+预约单长时间无人确认接单，自动分单，
+秒杀活动/优惠券设置时间后要自动开始，到点后要自动结束
+</code></pre>
+<p>思考三：系统中有哪些和第三方系统的耦合？</p>
+<pre><code>    耦合微信支付，短信，推送等
+      
+    考虑MQ解耦
+</code></pre>
+<p>思考四：核心链路中是否存在哪些关键步骤可能会失败的情况？万一失败了该怎么办？</p>
+<pre><code> 例如退款失败后怎么办
+</code></pre>
+<p>思考五：平时是否有其他系统需要获取你们的数据的情况？他们是如何获取数据的？</p>
+<pre><code>是直接跑SQL从你们的数据库里查询？或者是调用你们的接口来获取数据？
+是否有这种情况？如果有，对你们有什么影响吗？
+
+可以基于mysql的binlog 日志将数据发送给MQ，别的部门从MQ中消费消息
+</code></pre>
+<p>思考六：你们的系统是否存在流量洪峰的情况，有时候突然之间访问量增大好几倍，是否对你们的系统产生无法承受的压力？</p>
+<h2 id="消息中间件-3">消息中间件</h2>
+<h3 id="消息中间件作用">消息中间件作用</h3>
+<p>解耦<br>
+异步<br>
+消峰</p>
+<h3 id="kafka-rabbitmq以及rocketmq对比">Kafka、RabbitMQ以及RocketMQ对比</h3>
+<p>（1）、Kafka的优势与劣势</p>
+<p>kafka 性能很高，基本发消息给kafka都是毫秒级的性能，可用性也很高，kafka支持集群部署的，其中部分宕机是可以继续运行的</p>
+<p>但是kafka比较为人诟病的一点，似乎是丢数据方能的问题，因为kafka收到消息后会写入一个磁盘缓冲区里，并没有落地到物理磁盘上，</p>
+<p>所以要是机器本身故障，可能会导致磁盘缓冲区数据丢失。</p>
+<p>而且kafka另外一个比较大的缺点，就是功能非常单一，主要支持发送消息给他，然后从里面消费消息，其他的就没有什么额外的高级功能了</p>
+<p>因此，综上所述，基本行业里的标准，是把kafka在用户行为日志的采集和传输上的，比如大数据团队要收集app上用于的一些行为日志，这种日志就是</p>
+<p>kafka收集传输的。</p>
+<p>（2）、RabbitMQ的优势与劣势</p>
+<p>RabbitMQ的优势是可以保证数据不丢失，也可以保证高可用性，即集群部署的时候。部分机器宕机可以继续运行，然后支持部分高级功能<br>
+比如说：死信队列，消息重试之类的</p>
+<p>但是他有个缺点最为人诟病的，就是RabbitMQ吞吐量比较低，一般就是每秒几万级别的，所以遇到特别高特别高的并发的情况下，支撑起来是有点困难的</p>
+<p>还有一个是它进行集群扩展的时候(就是加机器部署)，还是比较麻烦的</p>
+<p>（2）、RocketMQ的优势与劣势</p>
+<p>RocketMQ吞吐量也同样很高，单机可以达到10wQPS以上，而且可以保证高可用，性能很高，而且支持配置，保证数据绝对不丢失，可以部署<br>
+大规模集群，而且支持各种高级性能，比如说：延迟消息，事务消息，消息回溯，死信队列，消息积压等等</p>
+<h2 id="rocketmq">RocketMQ</h2>
+<h3 id="rocketmq架构原理">RocketMQ架构原理</h3>
+<figure data-type="image" tabindex="1"><img src="images/RockerMQjiagou.png" alt="img_1.png" loading="lazy"></figure>
+<p>RocketMQ 这个技术一共包含了四个核心部分</p>
+<pre><code>1.第一块就是他的NameServer，这个东西很重要，他要负责管理集群里所有Broker的信息，让使用MQ的系统能感知到集群里有哪些Broke。
+2.第二块就是Broke集群的本身信息，必须在多台机器上部署这么一个集群，而且还得用主从架构实现数据多副本和高可用。
+3.第三块就是消息生产者
+4.第四块就是消息的消费者
+</code></pre>
+<h4 id="nameserver">NameServer</h4>
+<p>NameServer的设计是采用Peer-to-Peer的模式来做的，可以集群化部署，但是里面任何一台机器都是独立运行的，跟其他机器没有任何通信。</p>
+<p>要部署RocketMQ，就得先部署NameServer，NameServer支持集群化部署，做到高可用。任何一台机器宕机，NameServer可以继续对外提供服务。</p>
+<p>每个Broker启动时都得向所有的NameServer进行注册，也就是说，每个NameServer都有一份集群中所有的Broker信息。</p>
+<p>RocketMQ中的生产者和消费者自己主动区NameServer拉取Broker信息的</p>
+<p>Broker和NameServer之间通过心跳机制（采用的是TCP长连接），Broker会每隔30s给所有的NameServer发送心跳，告诉NameServer自己还活着。</p>
+<p>每次NameServer收到Broker心跳，就可以更新一下它的最近一次心跳时间。</p>
+<p>然后NameServer 会每隔10s运行一个任务，区检查各个Broker的最近一次心跳，如果某个Broker超过120s都没发送心跳，那么就认为这个Broker已经挂掉。</p>
+<p>生产者和消费者会重新获取NameServer最新的路由信息，并缓存在本地</p>
+<h4 id="broker主从架构">Broker主从架构</h4>
+<p>为了保证RocketMQ的数据不丢失而且具备一定的高可用性，所以一般将Broker，部署成Master-Slave模式的，也就时一个Master Broker  对应一个Slave Broker</p>
+<p>RocketMQ的Master-Slave模式采取的是（Pull模式）Slave Broker不停的发送请求到Master Broker 去拉取消息</p>
+<p><strong>写入数据</strong>的时候，肯定是选择<strong>Master Broker</strong> 去写入的</p>
+<p><strong>读取数据</strong>的时候，<strong>有可能是Master Broker获取，有可能是Slave Broker 获取</strong>，一切根据当时的情况来定。</p>
+<p>如果Slave Broker 挂掉了，那么读写的压力都集中在Master Broker上。</p>
+<p>如果Master Broker 挂掉了，在RocketMQ4.5版本之前，Slave Broker无法自定切换为Master Broker,会导致服务不可用。</p>
+<p>RocketMQ 4.5之后的版本，RocketMQ支持一种新的机制，叫Dledger，可实现RocketMQ高可用自动切换的效果。</p>
+<p>(备注:redis 的Master-Slaver 是基于哨兵模式，异曲同工）</p>
+<h4 id="rocketmq的核心数据模型">RocketMQ的核心数据模型</h4>
+<p>MQ的核心数据模型 Topic</p>
+<p>Topic其实就是一个（逻辑上）数据集合的意思，不同的数据，你的放到不同的Topic里面。</p>
+<p>每个Topic分布式存储在Master Broker上，Slave Broker或同步Master Broker 数据。</p>
+<p>生产者跟NameServer建立一个TCP长连接，然后定时的从他那里拉取最新的路由信息，包含集群中有哪些Broker，哪些Topic，每个Topic存储在哪些Broker 上</p>
+<p>然后生产者找到自己要投递的Topic分布在哪些Broker上，根据负载均衡算法，选择出一台Broker出来，然后跟这个Broker页建立一个TCP长连接，然后通过长连接向Broker发送消息即可。</p>
+<p>这里要注意的是生产者一定是投递消息到Master Broker的，然后通过Master Broker会同步数据到他的Slave Broker上</p>
+<p>实现一份数据多个副本，保证Master Broker故障之后，数据不丢失，而且可以把Slave Broker切换为Master Broker提供服务。</p>
+<p>消费者页生产者类似，他们也会从NameServer建立长连接，然后拉取路由消息，找到自己消息的Topic在哪几台Broker上，就可以跟Broker建立长连接，从里面拉取消息了。</p>
+<p>这里唯一要注意的就是消费者系统可能会从Master Broker拉取消息，也可以从Slave Broker拉取消息，都有可能，一切看具体情况。</p>
+<h4 id="rocketmq的集群部署">RocketMQ的集群部署</h4>
+<h5 id="小规模rocketmq的集群部署">小规模RocketMQ的集群部署</h5>
+<h5 id="rocketmq的集群可视化监控">RocketMQ的集群可视化监控</h5>
+<h5 id="rocketmq生产参数调整">RocketMQ生产参数调整</h5>
+<h5 id="rocketmq的集群压测">RocketMQ的集群压测</h5>
+<h5 id="rocketmq生产集群的规划">RocketMQ生产集群的规划</h5>
+<h3 id="rocketmq生产者发送消息模式">RocketMQ生产者发送消息模式</h3>
+<pre><code>同步发送：生产者发送消息出去之后，登台MQ返回通知，程序在接着向下执行
+异步发送：生产者发送消息出去，无需登台MQ返回，直接向下执行，待MQ响应之后，callBack函数，
+        如果发送成功，则调用onSuccess函数
+        如果发送失败，则调用onException函数
+单向发送：生产者发送消息出去之后，代码向下执行，不关注MQ是否返回结果，无论消息发送成功或者发送失败都不管你的事。
+</code></pre>
+<h3 id="rocketmq的消费模式">RocketMQ的消费模式</h3>
+<p>Push消费模式：就是Broker主动把消息发送给你的消费者<br>
+Pull消费模式：就是消费者主动发送请求到Broker去拉取消息</p>
+<h2 id="rocketmq底层原理">RocketMQ底层原理</h2>
+<h3 id="生产者往broker集群发送消息的底层逻辑">生产者往Broker集群发送消息的底层逻辑</h3>
+<p>topic数据分片机制：</p>
+<figure data-type="image" tabindex="2"><img src="images/topicfenpianjizhi.png" alt="img_1.png" loading="lazy"></figure>
+<pre><code>Message Queue 将一个Topic的数据拆分成了很多个数据分片，然后再每个Broker机器上存储一些Message Queue
+</code></pre>
+<p>生产者写入数据的过程：</p>
+<figure data-type="image" tabindex="3"><img src="images/sehngchanzhexierushuju.png" alt="img.png" loading="lazy"></figure>
+<p>Broker故障时：</p>
+<p>Master Broker故障时，此时正在等待其他Slave Broker自动热切换为Master Broker，但是在这个过程中，这一组Broker是没有Master Broker可以写入的。</p>
+<p>通常建议大家打开 Product 中开启一个开关，就是sendLatencyFaultEnable</p>
+<p>一旦打开这个开关，那么他就会有一个自动容错机制，比如某次发现一个Broker无法访问，则自动回避访问这个Broker一段时间，过段时间再去访问他。</p>
+<h3 id="broker接受消息后如何在存储到磁盘上的">Broker接受消息后如何在存储到磁盘上的</h3>
+<pre><code>Broker 数据存储实际才是MQ最核心的环节，他决定了生产者消息写入的吞吐量，决定了消息不能丢失，决定了消费者获取消息的吞吐量，这些都是由他决定的。
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="images/Brokercunchujizhi.png" alt="img.png" loading="lazy"></figure>
+<pre><code>首先，当生产者的消息发送到Broker上的时候，他会把这个消息写入到磁盘上的日志文件，叫做commitLog，直接顺序写入这个文件，（先进入OS Cache Page ，再刷入磁盘）
+这个CommitLog是很多个磁盘文件，每个文件限定差不多1GB
+Broker收到消息之后就直接追加写入这个文件的末尾，如果一个CommitLog写满了1GB，就会重新创建一个CommitLog
+
+在Broker中，对Topic下的每个MessageQueue都会有一系列的ConsumeQueue文件
+
+格式大致为 $HOME/store/consumeQueue/{topic}/{queueId}/{consumeQueueFileName}
+topic：就是指逻辑上的那个Topic
+queueId：值某个那个Topic下的某个MessageQueue
+consumeQueueFileName：MessageQueue对应的consumeQueue文件名称
+
+当你的Broker收到消息写入到CommitLog之后，其实他同时会将这条数据在CommitLog中的物理位置，也就是一个文件的偏移量（offset），写入到这条消息所属的
+MessageQueue对应的consumeQueue文件中去（offset其实的是CommitLog文件消息的地址引用）。
+
+实际上consumeQueue中存储的每条数据不止消息在CommitLog中的offset偏移量，还包含了消息的长度，以及tag，hashCode，一条数据是20个字节，每个consumeQueue保存30W条数据
+大概每个文件是5.72M
+
+所以实际上Topic的每个MessageQueue都对应了Broker机器上的多个ConsumeQueue文件，这些文件保存了这个MessageQueue的所有消息在CommitLog文件中的物理位置，也就是offset偏移量。
+</code></pre>
+<p>为了提升CommitLog文件的写入性能</p>
+<pre><code>先写OS操作系统的Page Cache 和顺序写两个机制来提升写入CommitLog文件的性能
+</code></pre>
+<p>同步刷盘和异步刷盘</p>
+<pre><code>异步刷盘模式下，写入到OS Page Cache 缓存成功后，直接提交ACK给生产者，如果刷盘失败，会导致数据丢失，但是吞吐量很高
+
+同步刷盘模式下，写入到OS Page Cache 缓存成功后，必须强制把这台哦消息刷入到底层的物理磁盘，然后才返回ACK给生产者，此时你才知道消息写入成功，
+这个模式下，保证Master 数据不会丢失，但是吞吐量下降。
+返回ACK后，如果Master挂掉，数据没同步，切换到Slave时，也会出现数据丢失。
+</code></pre>
+<h3 id="基于dledger技术部署broker高可用集群到底如何进行数据同步">基于Dledger技术部署Broker高可用集群，到底如何进行数据同步</h3>
+<figure data-type="image" tabindex="5"><img src="images/Dledger.png" alt="img.png" loading="lazy"></figure>
+<p>Dledger技术实际上首先他自己就有一个CommitLog机制，你把数据交给他，他会写CommitLog磁盘文件里去，这是他能干的第一件事情。</p>
+<p>如果以及Dledger技术来实现Broker高可用架构，实际上就是用Dledger先替换掉原来的Broker，Dledger自己来来管理CommitLog</p>
+<p>那么就是每个Broker上都有一个Dledger组件，</p>
+<p>Dledger是基于Raft协议来进行Leader Broker选举的，会从中选举出一个Leader来</p>
+<p>Raft协议投票原理：</p>
+<pre><code>    比如三台机器，第一轮投票开始，他们都把票投给自己，结果每个人得到的票数一样，第一轮选举失败
+
+    接着每个人进入一个随机休眠，如果是第一个人休息三秒，第二个人休息5秒，四但个人休息4秒
+
+    接着第一个人开始醒过来，继续把票投给自己，然后发送自己的选票给别人，下一个人醒来时，发现自己没有票
+
+    会把票投给那个有票的人，接着第三个人醒来同理
+
+    依靠这个休眠机制一般都能选出一个Leader
+</code></pre>
+<p>Dledger是基于Raft协议进行多副本同步</p>
+<p>Raft协议多副本同步机制：</p>
+<pre><code>    首先Leader Broker上的Dledger收到一条数据之后，会标记uncommitted 状态
+    然后他会通过自己的DledgerServer组件把这个uncommitted数据发送给Following Broker的Dledger
+    接着Follower Broker的DledgerServer收到uncommitted消息之后，必须返回一个ack给Leader Broker的DledgerServer
+    然后如果Leader Broker收到超过半数的Follower Broker返回的ack之后，会将消息标记为committed状态
+    然后Leader Broker上的DledgerServer就会发送commited消息给Follower Broker机器的DledgerServer，让他们也把消息标记为committed状态
+</code></pre>
+<p>如果Leader Broker发生宕机了</p>
+<p>如果Leader Broker 发生宕机了，剩下的两个Follower Broker会重新发起选举，他们还是会采用Raft协议的算法，去选举出来一个新的Leader Broker继续对外提供服务，<br>
+而且会对没有完成数据同步的进行一些恢复性操作，保证数据不会丢失。</p>
+<h3 id="消费者到底是基于什么策略选择master或slave拉取数据">消费者到底是基于什么策略选择Master或Slave拉取数据</h3>
+<p>集群模式：一个消费者组获取一条消息，只会交给组内的一台机器取处理，而不是每台机器都可以获取到这条消息的<br>
+广播模式：那么对于消费者组获取到一条消息，组内的每台机器都可以获取到这条消，但是相对而言，广播模式用的很少，常见基本都是使用集群消费模式<br>
+一个Topic的多个MessageQueue会均匀分摊给消费者组内的多个机器取消费，这里的一个原则就是，<br>
+一个MessageQueue只能被一个消费机器取消费，但是一个消费机器，可以负责多个MessageQueue的消息处理</p>
+<p>Push模式和Pull模式<br>
+实际上这两个模式是一样的，都是消费者机器主动发送请求到Broker机器上取拉取一批消息下来。</p>
+<p>Push消费模式本质底层也是基于这种消费者主动拉取的模式实现的，只不过他的名字叫Push而已，意思是Broker会尽可能的实时的把消息<br>
+交给消费者机器来处理，他的消息实时性会更好。<br>
+一般我们使用RocketMQ的时候，消费者模式通常都是基于Push模式来做的，因为Pull模式的代码写起来更加复杂和繁琐，<br>
+而且Push模式底层本身就是基于消息拉取来做的，只不过实时性更好。</p>
+<p>push模式实现思路：当消费者发送请求到Broker取拉取消息的时候，如果有新消息可以消费那么立马就会返回一批消息到消费机器取处理。<br>
+处理完之后会接着立刻发送请求到Broker机器去拉取下一批消息。</p>
+<p>所以消费机器再push模式下会处理完一批消息，立马发送请求去拉取下一批消息，消息处理的实时性非常好，看起来就跟Broker<br>
+一直不停的推送消息到消费者机器一样。</p>
+<p>push模式下有一个请求挂起和长轮询的机制</p>
+<p>当你的请求发送到Broker，结果他发现没有新的消息给你处理的时候，就会请求线程挂起，默认挂起15s，然后这个期间<br>
+他会有后台线程每隔一会儿就会检查一下是否有新的消息给你，另外如果再这个挂起过程中，如果有新的消息到达了就会主动唤起挂起的线程<br>
+，然后把消息返回给你。</p>
+<p>其实消费消息的时候，本质就是根据你要的消费的MessageQueue以及开始消费的位置，去找对应的ConsumeQueue读取里面对应位置的消息<br>
+再commitLog中的物理offset偏移量，然后到CommitLog中更具offset读取消息数据返回给消费者机器。</p>
+<p>ConsumeQueue 文件同样也是基于 os page cache 来进行优化的</p>
+<p>也就是说，对于Broker机器磁盘上的大量的ConsumeQueue文件，再写入的时候也会优先进入os cache,</p>
+<p>而且os 自己有一个优化机制，就是读取一个磁盘文件的时候，他就会把磁盘文件的一些数据缓存到os cache中。</p>
+<p>CommitLog 是基于os cache + 磁盘一起读取的</p>
+<p>当你去拉取消息的时候，可以轻松从os cache 里读取少量的consumeQueue文件里的offset，这个性能是极高的，<br>
+但是当你去committedLog文件里去读取完整消息的时候，会有两种可能</p>
+<p>第一种可能：如果你读取的是那种刚刚写入commitLog的数据，那么大概率还停留再 os cache,<br>
+此时你可以顺利的直接从 os cache 中读取commitLog中的数据<br>
+第二种可能：你读取的是比较早之前写入的commitLog的数据，哪些数据很早就被刷入磁盘了，已经不在os cache 里了，<br>
+那么此时你读取就只能从磁盘文件里读取了</p>
+<h3 id="消费者是如何从broker拉取消息进行处理以及ack的如果消费者故障会如何处理">消费者是如何从Broker拉取消息进行处理以及ACK的？如果消费者故障会如何处理</h3>
+<p>当消费者处理完这批消息之后，消费者机器就会提交我们的目前一个消费进度到Broker上去，然后Broker就会存储我们的消费进度</p>
+<p>下次这个消费者组只要再次拉取这个ConsumeQueue的消息，就可以从Broker记录的消费位置开始拉取，不用从头开始拉取了。</p>
+<p>如果消费者族中机器宕机或扩展机器，这个时候其实会进入一个rebalance的环节，也就是说重新给各个消费者机器分配他们要处理的MessageQueue</p>
+<h3 id="rocketmq是如何基于netty扩展出高性能网络通信架构的">RocketMQ是如何基于Netty扩展出高性能网络通信架构的</h3>
+<p><img src="images/Reactormoxing.png" alt="img.png" loading="lazy"><br>
+首先作为Broker而言，他会有一个Reactor主线程，而且这个线程负责监听一个网络端口</p>
+<p>假设我么有一个Producer他现在想跟Broker建立TCP长连接，此时Broker上的这个Reactor主线程，他会在端口上监听到这个Producer建立连接的请求</p>
+<p>接着这个Reactor主线程就专门负责这个Producer按照TCP协议规定的一系列步骤和规范，建立好一个长连接</p>
+<p>Producer里面会有一个SocketChannel，Broker里也会有一个SocketChannel，这两个SocketChannel就代表他们两建立好这个长连接</p>
+<p>接着Producer会通过这个SocketChannel去发送消息给Broker。</p>
+<p>Reactor线程池，默认是3个线程</p>
+<p>Reactor主线程建立好每个连接SocketChannel，都会交给这个Reactor线程池里的其中一个线程去监听请求</p>
+<p>基于Worker线程池完成一系列准备工作</p>
+<p>线程池会转交请求给Worker线程池，进行一系列预处理</p>
+<p>Worker线程池默认有8个线程，此时Reactor线程收到的这个请求会交给Worker线程池中的一个线程进行处理，完成ssl加密，编码解码，连接空闲检查，网络连接管理诸如此类的事情。</p>
+<p>预处理之后，请求转交给业务线程池</p>
+<p>比如对于处理发送请求而言，就会把请求转发给SendMessage线程池。SendMessage是可以配置的配置的越高，处理消息的吞吐量越高</p>
+<p>所以最终的效果就是：</p>
+<ul>
+<li>Reactor主线程在端口上监听Producer建立连接的请求，建立长连接</li>
+<li>Reactor线程池并发的监听多个请求是否到达</li>
+<li>Worker线程池求情并发的对多个请求进行预处理</li>
+<li>业务线程池并发的对多个请求进行磁盘读写业务操作</li>
+</ul>
+<p>这样一套网络通信架构，最终实现的效果就是可以高并发、高吞吐的对大量的网络连接发送过来的大量请求数据进行处理，保证Broker实现高吞吐</p>
+<h3 id="基于mmap内存映射实现磁盘文件的高性能读写">基于mmap内存映射实现磁盘文件的高性能读写</h3>
+<p>传统文件IO操作的多次数据拷贝问题</p>
+<p>会先将磁盘文件拷贝到内核IO缓冲区，再将数据拷贝到用户进程的私有空间</p>
+<p>为了读取磁盘文件发生了两次拷贝，对磁盘读写的性能是由影响的</p>
+<p>RocketMQ 是利用mmap技术配合Page Cache技术进行文件读写优化的</p>
+<p>首先RocketMQ底层对CommitLog、ConsumeQueue之类的磁盘文件的读写操作，基本上都是采用mmap的技术来实现的</p>
+<p>基于JDK NIO包下的MappedByteBuffer的map()函数先将磁盘文件映射到内存里来</p>
+<p>MappedByteBuffer的map()底层就是基于mmap技术实现的</p>
+<p>mmap技术在进行文件映射的时候，一般由大小限制，在1.5GB-2GB间</p>
+<p>所以RocketMQ才能让CommitLog单个文件在1GB，ConsumeQueue文件在5.72MB，不会太大</p>
+<p>接下来就可以对这个已经映射到内存的磁盘文件进行读写操作，写的时候他会直接进入Page Cache中，</p>
+<p>然后过一段时间之后，由OS线程异步刷入磁盘中</p>
+<p>你加载的数据块的临近其他数据块也一起加载到Page Cache里去</p>
+<p>Broker针对磁盘文件高性能读写机制的优化：<br>
+1.<strong>内存预加载机制</strong>：Broker会针对磁盘中各种CommitLog、ConsumeQueue文件预先分配好MappedFile，<br>
+也就是提前对一些可能接下来要读写的磁盘文件，提前使用MappedByteBuffer执行map()函数完成映射，这样<br>
+后续读写文件的时候，就可以直接执行了。<br>
+2.<strong>文件预热</strong>：在提前对一些文件完成映射之后，因为映射不会直接将数据加载到内存里来，那么后续在读取<br>
+尤其是CommitLog、ConsumeQueue的时候，其实有可能会频繁的从磁盘文件里加载数据到内存中去。</p>
+<p>所以其实在执行完map()函数之后，会进行madvise()系统调用，就是提前尽可能多的把磁盘文件加载到内存里去。</p>
+<p>通过上述优化，才真正实现了一个效果<br>
+就是写磁盘文件的时候都是进入Page Cache的，保证写入的高性能；同时尽可能的多的通过map+madvise<br>
+的映射后预热机制，把磁盘文件里的数据尽可能多的加载到Page Cache里来，后续对ConsumeQueue、CommitLog进行读取<br>
+的时候，才能尽可能的从内存中读取数据。</p>
+<h3 id="事务消息机制的底层实现原理">事务消息机制的底层实现原理</h3>
+<figure data-type="image" tabindex="6"><img src="images/trancitionmessage.png" alt="img.png" loading="lazy"></figure>
+<pre><code>1.生产者发送half消息，这条half消息会定位到这个Topic的一个MessageQueue，
+通过MessageQueue消息写入CommitLog文件，同时消息的offset会写入到MessageQueue对应的consumeQueue
+
+2.但是此时这个half消息并没有发送到消费端对应的ConsumeQueue中，而是自己内部的RMQ_SYS_TRANS_HALF_TOPIC,
+对于事务消息下的half消息，RocketMQ是写入内部Topic的ConsumeQueue，而不是指定消费端ConsumeQueue
+此时别的系统无法在Topic对应的ConsumeQueue中查看到这套half消息，此时返回half响应给生产者。
+
+3.此时RocketMQ内部会有一个定时任务去扫描RMQ_SYS_TRANS_HALF_TOPIC中的half消息，如果此时你超过了一定时间
+还是half消息，此时会回调生产者系统的接口，让你判断这个half消息是rollback还是commit
+
+4.如果rollback，那么此时就需要对消息进行回滚。他的本质就是用一个OP操作来标记half消息的状态
+RocketMQ内部有一个OP_TOPIC，此时可以写入一条rollback OP记录在这个Topic里，标记某个half消息是rollback
+假设你一直没有执行rollback/commit，RocketMQ会对调生产者系统接口取判断half消息的状态，
+但是他最多就是回调15，如果15次之后，你都没有法告知他half消息的状态，此时就自动把消息标记为rollback
+
+5.如果订单系统提交了commit操作，此时RocketMQ就会在OP_TOPIC里写入一条记录，标记half消息已经是commit状态了。
+接着就需要把放在RMQ_SYS_TRANS_HALF_TOPIC中的half消息吸入人到消费端 Topic 的ConsumeQueue里去，然后下游系统就可以看到这条消息消费了
+</code></pre>
+<p>解决发送消息零丢失的方案:一定要使用事务消息方案</p>
+<h3 id="broker保证消息零丢失方案">Broker保证消息零丢失方案</h3>
+<figure data-type="image" tabindex="7"><img src="images/rocketmq_%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1.png" alt="img.png" loading="lazy"></figure>
+<p>解决方案总结：</p>
+<pre><code>    1.把Broker刷盘策略调整为同步刷盘，那么绝对不会因为机器宕机而丢失数据 
+    2.采用主从架构的Broker集群，那么一条消息写入成功，就意味着多个Broker机器都写入了
+    此时任何一台机器的磁盘故障，数据也不会丢失
+</code></pre>
+<h3 id="consumer消息零丢失方案">Consumer消息零丢失方案</h3>
+<p>在默认的Consumer消费模式下，必须是你处理完一批消息了，才会返回CONSUME_SUCCESS这个标识消息都处理结束了，去提交offset到Broker去。</p>
+<p>在这种情况下，正常来说是不会丢失消息的，即使你一个Customer宕机了，他会把没处理完的消息交给其他Customer去处理</p>
+<p>但是我们要警惕一点，就是我们在代码中不能对消息进行异步处理</p>
+<p>对全链路消息丢失方案的总结：</p>
+<p>发送消息到MQ的零丢失：<br>
+1.同步发送消息+反复多次重试<br>
+2.事务消息机制</p>
+<p>MQ收到消息之后的零丢失：<br>
+同步刷盘策略+主从架构同步机制</p>
+<p>消费消息的零丢失：</p>
+<p>采用RocketMQ的消费者，天然就可以保证你处理完消息之后，才会提交消息的offset到Broker，<br>
+记住千万别采用多线程异步处理消息的方式即可</p>
+<p>消息零丢失，会导致性能下降，MQ的吞吐量下降</p>
+<p>一般我们建议，对于金钱、交易以及核心数据相关的系统和核心链路，可以使用消息零丢失方案</p>
+<h3 id="mq消息幂等性">MQ消息幂等性</h3>
+<p>一般来说，对于MQ的重读消息问题而言，我们往MQ里面重复发送一样的消息其实是可以接受的，因为MQ里由多条重复消息，<br>
+他不会对核心链路造成影响，但是我们关键要保证的，是你从MQ里获取消息进行处理，必须保证消息不能重复处理。</p>
+<p>这样的话，要保证消息的幂等性，我们优先推荐的其实还是业务判断法，直接根据你的数据存储中的记录来判断这个消息是否处理过<br>
+如果处理过了，那就别在处理了。因为我们要知道，基于redis的消息发送状态的方案，在一些极端情况下还是没法完全保证幂等性。</p>
+<h3 id="mq死信队列">MQ死信队列</h3>
+<figure data-type="image" tabindex="8"><img src="images/rocket_%E9%87%8D%E8%AF%95%E9%98%9F%E5%88%97.png" alt="img.png" loading="lazy"></figure>
+<p>对于消息处理异常的，可以返回RECONSUME_LATER状态</p>
+<p>所以实际上，如果我们因为数据库宕机等问题，导致这批消息处理异常的，此时没法处理这批消息，我们就返回一个RECONSUME_LATER状态</p>
+<p>他的意思就是，我现在没法完成这批消息的处理，麻烦你稍后过段时间再次给我这批消息我重试一下！</p>
+<p>RocketMQ会有一个针对你这个CustomerGroup的重试队列，如果你返回了RECONSUME_LATER状态，他会把你的这批消息放到你的这个消费者组的重试队列中去。</p>
+<p>然后过一段时间之后，重试队列的消息再次给我们，我们再次进行处理，默认最多重试16次，每次重试的时间间隔是不一样的，配置如下所示：<br>
+messageDelayLevel:1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h</p>
+<p>如果联系16次还是无法处理消息</p>
+<p><img src="images/rocket_%E7%A7%81%E4%BF%A1%E9%98%9F%E5%88%97.png" alt="img.png" loading="lazy"><br>
+这个时候消息会进入死信队列，后面针对私信队列中的消息进行单独处理就可以了。</p>
+<h3 id="mq消息乱序">MQ消息乱序</h3>
+<p>在使用MQ的时候，出现消息乱序是是非常正常的一个问题，因为我们原本有顺序的消息，<br>
+完全有可能会分到不同的MessageQueue中去，然后不同机器上部署的Customer可能会用混乱的顺序从<br>
+不同的MessageQueue里获取消息然后处理。</p>
+<p>所以要解决消息乱序的问题其实非常简单：</p>
+<p>让同一个业务数据进入到同一个MessageQueue里去<br>
+Customer有序的处理一个订单的binlog，</p>
+<p>对于有序消息的方案中，如果你遇到消息处理失败的场景，就必须返回SUSPEND_CURRENT_QUEUE_A_MOMENT这个状态<br>
+意思是先等一会儿，一会儿再继续处理这批消息，而不能把他放到重试队列中去，然后直接处理下一批。</p>
+<h3 id="mq过滤机制">MQ过滤机制</h3>
+<p>RocketMQ支持比较丰富的数据过滤语法</p>
+<p>1.数值比较，比如: &gt; ,&gt;= ,&lt; ,&lt;= ,BETWEEN ,= ;<br>
+2.字符比较，比如： = ，&lt;&gt;,IN;<br>
+3.IS NULL或者IS NOT NULL;<br>
+4.逻辑符号 AND ,OR , NOT ;<br>
+5.数值，1f127853<br>
+6.字符，比如'abc'必须用单引号包裹起来<br>
+7.NULL,特殊的常量<br>
+8.布尔值 TRUE或者FALSE</p>
+<h3 id="mq延迟消息机制">MQ延迟消息机制</h3>
+<figure data-type="image" tabindex="9"><img src="images/rocket_%E5%AE%9A%E6%97%B6%E6%89%AB%E6%8F%8F%E4%B8%BA%E6%94%AF%E4%BB%98%E7%9A%84%E8%AE%A2%E5%8D%95.png" alt="img.png" loading="lazy"></figure>
+<p>这种方式很不好，导致一个订单要扫描很多遍才发现他超过了30min未支付<br>
+<img src="images/rocket_%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF.png" alt="img.png" loading="lazy"><br>
+因此针对这种场景，MQ里的延迟消息就会出场了，而且在实际项目中，MQ的延迟消息使用往往是很多的。</p>
+<p>所谓延迟消息，意思就是说，我们订单系统在创建一个订单之后，可以发送一条消息到MQ里去，<br>
+我们指定这条消息是延迟消息，比如要等待30分钟之后，才能被订单扫描服务给消费到。</p>
+<p>这种方式就比你用后台线程扫描订单的方式要好多了，一个是对每个订单你只会在他创建的30分钟查询他一次，<br>
+不会反复扫描多次。</p>
+<p>另外就是如果你的订单数量很多，你完全可以让订单扫描的服务多部署几台机器，<br>
+然后对于MQ中的Topic可以多指定一个MessageQueue，这样每个订单扫描服务的机器作为一个Customer都会处理<br>
+一部分订单查询的任务。</p>
+<p>MQ的延迟消息是非常常用并且非常有用的功能。</p>
+<p>其实发送延迟消息的核心，就是设置消息的delayTimeLevel，也就是延迟级别</p>
+<p>RocketMQ默认支持的延迟级别如下：1s,5s,10s,1m,2m,3m,4m,5m,6m,7m,8m,9m,10m,20m,1h,2h</p>
+<p>如果设置为3，意思是延迟10s,你发送出去的消息，会过10s被消费者获取到</p>
+<p>其实Consumer是支持设置从哪里开始消费消息的，常见有两种，一种是从Topic的第一条数据开始消费（CONSUMER_FROM_LAST_OFFSET），<br>
+另一种是从最后一次消费过的消息之后开始消费（CONSUMER_FROM_FIRST_OFFSET）</p>
+<p>一般来说，我们都会选择（CONSUMER_FROM_LAST_OFFSET），这样你刚才就从topic的第一条消息开始消费，但是每次重启，你都是从上一次消费到的位置<br>
+继续往后进行消费的。</p>
+<h3 id="mq消息积压">MQ消息积压</h3>
+<p>高峰期消息积压，消费者无法尽快处理</p>
+<p>增加消费者加大消费的吞吐量</p>
+<h3 id="金融级系统针对rocketmq集群崩溃设计高可用方案">金融级系统针对RocketMQ集群崩溃设计高可用方案</h3>
+<p>对于跟钱相关的问题，针对这种场景，我们通常会在发送MQ那个系统中设计高可用降级方案，这个降级的思路是,<br>
+在你需要发送MQ的地方进行try catch 捕获，如果发现发送消息到MQ有异常，此时就进行重试。</p>
+<p>如果发现连续重试超过一定次数还是失败，说明MQ集群彻底崩溃了，此时你必须把消息写入本地储存或者NoSQL存储中去，但是一定要保证消息写入的顺序。</p>
+<p>只要在这个方案下，即使MQ集群彻底崩溃了，你系统的消息也不会丢失，对于跟金钱相关的系统，广告系统来说，这个高可用的设计方案还是非常有必要的</p>
+<h3 id="mq消息限流">MQ消息限流</h3>
+<p>一般会根据MQ压测的结果来，通过压测看看MQ最多能抗下多少QPS，然后最好限流</p>
+<p>一般来说，限流算法可以采用令牌桶算法：也就是说每秒发放多少个令牌，然后只允许多少个请求通过</p>
+<h2 id="rocketmq源码">RocketMQ源码</h2>
+<h1 id="rabbitmq">RabbitMQ</h1>
+<h2 id="rabbitmq概述">RabbitMQ概述</h2>
+<figure data-type="image" tabindex="10"><img src="images/RabbitMQ%E7%9B%B8%E5%85%B3%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5.png" alt="" loading="lazy"></figure>
+<p>Producer ：生产者，生成消息并把消息发送给 RabbitMQ 。</p>
+<p>Consumer ：消费者，从 RabbitMQ 中接收消息。</p>
+<p>Exchange ：交换器，具有路由的作用，将生产者传递的消息根据不同的路由规则传递到对应的队列中。交换器具有四种不同的类型，每种类型对应不同的路由规则。</p>
+<p>Queue ：队列，实际存储消息的地方，消费者通过订阅队列来获取队列中的消息。</p>
+<p>Binding ：绑定交换器和队列，只有绑定后消息才能被交换器分发到具体的队列中，用一个字符串来代表Binding Key。</p>
+<p>消息是如何由生产者传递到消费者：</p>
+<p>1、生产者 Producer 生成消息 msg ，并指定这条消息的路由键 Routing Key ，然后将消息传递给交换器 Exchange 。</p>
+<p>2、交换器 Exchange 接收到消息后根据 Exchange Type 也就是交换器类型以及交换器和队列的 Binding 绑定关系来判断路由规则并分发消息到具体的队列 Queue 中。</p>
+<p>3、消费者 Consumer 通过订阅具体的队列，一旦队列接收到消息便会将其传递给消费者。</p>
+<p>这里的 Routing Key 和 Binding 我是按照自己的理解解释的，与某些参考资料是有出入的，读者理解就好。</p>
+<p>当然完成上述三个步骤还缺少两个关键的东西：</p>
+<p>Connection ：连接，不论生产者还是消费者想要使用 RabbitMQ 都必须首先建立到RabbitMQ 的 TCP 连接。</p>
+<p>Channel ：信道，建立完TCP 连接后还必须建立一个信道，消息都是在信道中传递和操作的。<br>
+<img src="images/amqp%E4%BF%A1%E9%81%93.png" alt="信道" loading="lazy"></p>
+<p>、上图形象的展示了连接和信道之间的关系，一个连接中可以建立多个信道，而且每个信道之间都是完全隔离的，同时我们需要记住的是创建和销毁 TCP 连接是很消耗资源的，而信道则不是，所以能够通过创建多个信道来隔离环境的不要通过创建多个连接。</p>
+<h2 id="消息分发模式">消息分发模式</h2>
+<ul>
+<li>简单模式</li>
+<li>工作模式</li>
+<li>fanout模式</li>
+<li>direct模式</li>
+<li>topic模式</li>
+<li>RPC模式</li>
+</ul>
+<h2 id="交换机的类型">交换机的类型</h2>
+<p>交换器类型</p>
+<p>交换器具有路由分发消息的作用，其有四种不同的类型，每种类型对应不同的路由规则：</p>
+<p>fanout ：广播，将消息传递给所有该交换器绑定的队列。</p>
+<p>direct ：直连，将消息传递给 Routing Key 与 Binding Key完全一致的队列中，可以有多个队列。</p>
+<p>topic ：模糊匹配，Binding Key 是一个可以用符号 . 分隔单词的字符串，模糊匹配下，符号 * 用于匹配任意一个单词，符号  # 用于匹配零个或多个单词。</p>
+<p>headers ：这个比较特殊，是根据消息中具体内容的 header 属性来作为路由规则的，这种类型对资源消耗太大，一般很少使用，前面三种类型就够了。</p>
+<h2 id="rabbitmq安装">RabbitMQ安装</h2>
+<pre><code>注意：如果docker pull rabbitmq 后面不带management，启动rabbitmq后是无法打开管理界面的，所以我们要下载带management插件的rabbitmq.
+
+docker pull rabbitmq:3.8.6-management
+
+mkdir -p /data/rabbitmq
+
+#机器1运行:
+docker run -d --restart=always --name rabbitmq1 --hostname rabbitmq1 --add-host=&quot;rabbitmq1&quot;:172.18.163.76 --add-host=&quot;rabbitmq2&quot;:172.18.163.77 --add-host=&quot;rabbitmq3&quot;:172.18.163.78 -p 5672:5672 -p 15672:15672 -p 4369:4369 -p 25672:25672 -v /data/rabbitmq/:/var/lib/rabbitmq -e RABBITMQ_DEFAULT_VHOST=mrb_vhost -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_NODENAME=rabbitmq1 -e RABBITMQ_DEFAULT_PASS=dTybUNtvyu90 -e RABBITMQ_ERLANG_COOKIE=dTybUNtvyu90 docker.io/rabbitmq:3.8.6-management
+#进入容器:
+docker exec -it rabbitmq1 bash
+#容器内执行:
+rabbitmqctl stop_app
+rabbitmqctl reset
+rabbitmqctl start_app
+rabbitmqctl set_user_tags admin administrator
+rabbitmqctl set_policy -p mrb_vhost ha &quot;^&quot; '{&quot;ha-mode&quot;:&quot;all&quot;,&quot;ha-sync-mode&quot;:&quot;automatic&quot;}'
+
+#机器2运行:
+docker run -d --restart=always --name rabbitmq2 --hostname rabbitmq2 --add-host=&quot;rabbitmq1&quot;:172.18.163.76 --add-host=&quot;rabbitmq2&quot;:172.18.163.77 --add-host=&quot;rabbitmq3&quot;:172.18.163.78 -p 5672:5672 -p 15672:15672 -p 4369:4369 -p 25672:25672 -v /data/rabbitmq/:/var/lib/rabbitmq -e RABBITMQ_DEFAULT_VHOST=mrb_vhost -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_NODENAME=rabbitmq2 -e RABBITMQ_DEFAULT_PASS=dTybUNtvyu90 -e RABBITMQ_ERLANG_COOKIE=dTybUNtvyu90 docker.io/rabbitmq:3.8.6-management
+#进入容器:
+docker exec -it rabbitmq2 bash
+#容器内执行:
+rabbitmqctl stop_app
+rabbitmqctl reset
+rabbitmqctl join_cluster rabbitmq1@rabbitmq1
+rabbitmqctl start_app
+
+#机器3运行:
+docker run -d --restart=always --name rabbitmq3 --hostname rabbitmq3 --add-host=&quot;rabbitmq1&quot;:172.18.163.76 --add-host=&quot;rabbitmq2&quot;:172.18.163.77 --add-host=&quot;rabbitmq3&quot;:172.18.163.78 -p 5672:5672 -p 15672:15672 -p 4369:4369 -p 25672:25672 -v /data/rabbitmq/:/var/lib/rabbitmq -e RABBITMQ_DEFAULT_VHOST=mrb_vhost -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_NODENAME=rabbitmq2 -e RABBITMQ_DEFAULT_PASS=dTybUNtvyu90 -e RABBITMQ_ERLANG_COOKIE=dTybUNtvyu90 docker.io/rabbitmq:3.8.6-management
+#进入容器:
+docker exec -it rabbitmq3 bash
+#容器内执行:
+rabbitmqctl stop_app
+rabbitmqctl reset
+rabbitmqctl join_cluster rabbitmq1@rabbitmq1
+rabbitmqctl start_app
+</code></pre>
+<h2 id="springboot整合rabbitmq整合">SpringBoot整合RabbitMQ整合</h2>
+<p>生产者</p>
+<pre><code class="language-java">    @Autowired
+    private RabbitTemplate rabbitTemplate;
+     rabbitTemplate.convertAndSend(exchange, routingKey, msg, new CorrelationData(IdUtil.objectId()));
+</code></pre>
+<p>消费者</p>
+<pre><code>队列与交换机的绑定可以在生产者，也可以在消费者，也可以同时绑定，建议在消费者端绑定，因为消费者端先启动
+绑定的方式可以使用配置文件的方式，可以使用注解的方式
+</code></pre>
+<pre><code class="language-java">@Slf4j
+@Component
+@RabbitListener(bindings = @QueueBinding(
+        value = @Queue(value = FanoutQueue.PROJECT_VIEW),
+        exchange = @Exchange(value = FanoutExchange.PROJECT, type = ExchangeTypes.FANOUT)
+))
+public class ProjectViewListener {
+
+</code></pre>
+<h2 id="ttl队列过期时间">TTL队列过期时间</h2>
+<p>概述</p>
+<pre><code>过期时间TTl表示可以对消息设置预期时间，在这个时间内都可以被消费者接受获取，过了时间之后，消息将自动被删除
+目前有两种方式设置：
+第一种方法是通过队列属性设置，队列中所有的消息都有相同的过期时间 
+第二张是对消息进行单独设置，每条消息的TTL可以不同
+</code></pre>
+<p>对队列设置过期时间</p>
+<pre><code class="language-java"> 
+    x-messsage-ttl:设置这个属性单位是毫秒 
+   
+
+</code></pre>
+<p>对消息设置过期时间</p>
+<pre><code class="language-java">MessagePostProcessor messagePostProcessor = new MessagePostProcessor(){
+    
+    @Override
+public Message messagePostProcessor(Message message){
+        message..getMessagePostProcessor.setExpiration(&quot;5000&quot;);
+        message..getMessagePostProcessor.setContentEncoding(&quot;UTF-8&quot;);
+  }
+}
+
+        rabbitTemplate.convertAndSend(exchange, routingKey, msg, new CorrelationData(IdUtil.objectId()),messagePostProcessor);
+</code></pre>
+<p>过期队列，和过期消息的区别</p>
+<pre><code>过期队列，时间到了之后，会将消息进行移除，但是不是直接移除，而是放到一个死信队列里面来。
+过期消息，时间到了之后，会将消息进行移除，不会放在任何一个地方。
+</code></pre>
+<h2 id="死信队列">死信队列</h2>
+<p>概述</p>
+<pre><code>DLX：Dead Letter Exchange，可以称之为死信交换机，也可以称之为死信邮箱，当一个消息在一个队列中变成死信之后，它能被重新发送到另一个交换机中，这个
+交换机就是DLX，绑定DLX的队列称之为私信队列
+DLX交换机是正常的交换机和一般交换机没有区别，它能在任何队列上被指定，实际上就是
+设置某一队列的属性，当这个队列存在死信时，RabbitMQ会自动将这个消息发布到DLX上去，
+进而被路由到另一个队列即死信队列。
+</code></pre>
+<p>消息变成死信的原因：</p>
+<pre><code>消息被拒绝
+消息过期
+消息达到最大长度
+</code></pre>
+<p>设置死信队列：只需要在定义队列的时候设置队列参数：x-dead-letter-exchange，指定交换机即可。</p>
+<h2 id="内存和磁盘空间监控">内存和磁盘空间监控</h2>
+<h1 id="kafka">KafKa</h1>
+<h2 id="kafka源码分析环境搭建">KafKa源码分析环境搭建</h2>
+<p>1.按照jdk<br>
+2.安装scala<br>
+直接下载傻瓜式安装就可以了。<br>
+接着配置SCALA_HOME和PATH两个环境变量<br>
+3.安装Gradle，项目构建<br>
+4.zookeeper是必须是必须适用的</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6">消息中间件</a>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6-2">消息中间件</a>
+<ul>
+<li><a href="#%E6%94%BE%E5%A4%A7100%E5%80%8D%E5%8E%8B%E5%8A%9B%E6%89%BE%E5%87%BA%E4%BD%A0%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%8A%80%E6%9C%AF%E6%8C%91%E6%88%98">放大100倍压力，找出你系统的技术挑战</a></li>
+<li><a href="#%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6-3">消息中间件</a>
+<ul>
+<li><a href="#%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BD%9C%E7%94%A8">消息中间件作用</a></li>
+<li><a href="#kafka-rabbitmq%E4%BB%A5%E5%8F%8Arocketmq%E5%AF%B9%E6%AF%94">Kafka、RabbitMQ以及RocketMQ对比</a></li>
+</ul>
+</li>
+<li><a href="#rocketmq">RocketMQ</a>
+<ul>
+<li><a href="#rocketmq%E6%9E%B6%E6%9E%84%E5%8E%9F%E7%90%86">RocketMQ架构原理</a>
+<ul>
+<li><a href="#nameserver">NameServer</a></li>
+<li><a href="#broker%E4%B8%BB%E4%BB%8E%E6%9E%B6%E6%9E%84">Broker主从架构</a></li>
+<li><a href="#rocketmq%E7%9A%84%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B">RocketMQ的核心数据模型</a></li>
+<li><a href="#rocketmq%E7%9A%84%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2">RocketMQ的集群部署</a>
+<ul>
+<li><a href="#%E5%B0%8F%E8%A7%84%E6%A8%A1rocketmq%E7%9A%84%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2">小规模RocketMQ的集群部署</a></li>
+<li><a href="#rocketmq%E7%9A%84%E9%9B%86%E7%BE%A4%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9B%91%E6%8E%A7">RocketMQ的集群可视化监控</a></li>
+<li><a href="#rocketmq%E7%94%9F%E4%BA%A7%E5%8F%82%E6%95%B0%E8%B0%83%E6%95%B4">RocketMQ生产参数调整</a></li>
+<li><a href="#rocketmq%E7%9A%84%E9%9B%86%E7%BE%A4%E5%8E%8B%E6%B5%8B">RocketMQ的集群压测</a></li>
+<li><a href="#rocketmq%E7%94%9F%E4%BA%A7%E9%9B%86%E7%BE%A4%E7%9A%84%E8%A7%84%E5%88%92">RocketMQ生产集群的规划</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#rocketmq%E7%94%9F%E4%BA%A7%E8%80%85%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E6%A8%A1%E5%BC%8F">RocketMQ生产者发送消息模式</a></li>
+<li><a href="#rocketmq%E7%9A%84%E6%B6%88%E8%B4%B9%E6%A8%A1%E5%BC%8F">RocketMQ的消费模式</a></li>
+</ul>
+</li>
+<li><a href="#rocketmq%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86">RocketMQ底层原理</a>
+<ul>
+<li><a href="#%E7%94%9F%E4%BA%A7%E8%80%85%E5%BE%80broker%E9%9B%86%E7%BE%A4%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91">生产者往Broker集群发送消息的底层逻辑</a></li>
+<li><a href="#broker%E6%8E%A5%E5%8F%97%E6%B6%88%E6%81%AF%E5%90%8E%E5%A6%82%E4%BD%95%E5%9C%A8%E5%AD%98%E5%82%A8%E5%88%B0%E7%A3%81%E7%9B%98%E4%B8%8A%E7%9A%84">Broker接受消息后如何在存储到磁盘上的</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8Edledger%E6%8A%80%E6%9C%AF%E9%83%A8%E7%BD%B2broker%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E5%88%B0%E5%BA%95%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5">基于Dledger技术部署Broker高可用集群，到底如何进行数据同步</a></li>
+<li><a href="#%E6%B6%88%E8%B4%B9%E8%80%85%E5%88%B0%E5%BA%95%E6%98%AF%E5%9F%BA%E4%BA%8E%E4%BB%80%E4%B9%88%E7%AD%96%E7%95%A5%E9%80%89%E6%8B%A9master%E6%88%96slave%E6%8B%89%E5%8F%96%E6%95%B0%E6%8D%AE">消费者到底是基于什么策略选择Master或Slave拉取数据</a></li>
+<li><a href="#%E6%B6%88%E8%B4%B9%E8%80%85%E6%98%AF%E5%A6%82%E4%BD%95%E4%BB%8Ebroker%E6%8B%89%E5%8F%96%E6%B6%88%E6%81%AF%E8%BF%9B%E8%A1%8C%E5%A4%84%E7%90%86%E4%BB%A5%E5%8F%8Aack%E7%9A%84%E5%A6%82%E6%9E%9C%E6%B6%88%E8%B4%B9%E8%80%85%E6%95%85%E9%9A%9C%E4%BC%9A%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86">消费者是如何从Broker拉取消息进行处理以及ACK的？如果消费者故障会如何处理</a></li>
+<li><a href="#rocketmq%E6%98%AF%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8Enetty%E6%89%A9%E5%B1%95%E5%87%BA%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E6%9E%B6%E6%9E%84%E7%9A%84">RocketMQ是如何基于Netty扩展出高性能网络通信架构的</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8Emmap%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84%E5%AE%9E%E7%8E%B0%E7%A3%81%E7%9B%98%E6%96%87%E4%BB%B6%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E8%AF%BB%E5%86%99">基于mmap内存映射实现磁盘文件的高性能读写</a></li>
+<li><a href="#%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86">事务消息机制的底层实现原理</a></li>
+<li><a href="#broker%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E9%9B%B6%E4%B8%A2%E5%A4%B1%E6%96%B9%E6%A1%88">Broker保证消息零丢失方案</a></li>
+<li><a href="#consumer%E6%B6%88%E6%81%AF%E9%9B%B6%E4%B8%A2%E5%A4%B1%E6%96%B9%E6%A1%88">Consumer消息零丢失方案</a></li>
+<li><a href="#mq%E6%B6%88%E6%81%AF%E5%B9%82%E7%AD%89%E6%80%A7">MQ消息幂等性</a></li>
+<li><a href="#mq%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97">MQ死信队列</a></li>
+<li><a href="#mq%E6%B6%88%E6%81%AF%E4%B9%B1%E5%BA%8F">MQ消息乱序</a></li>
+<li><a href="#mq%E8%BF%87%E6%BB%A4%E6%9C%BA%E5%88%B6">MQ过滤机制</a></li>
+<li><a href="#mq%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF%E6%9C%BA%E5%88%B6">MQ延迟消息机制</a></li>
+<li><a href="#mq%E6%B6%88%E6%81%AF%E7%A7%AF%E5%8E%8B">MQ消息积压</a></li>
+<li><a href="#%E9%87%91%E8%9E%8D%E7%BA%A7%E7%B3%BB%E7%BB%9F%E9%92%88%E5%AF%B9rocketmq%E9%9B%86%E7%BE%A4%E5%B4%A9%E6%BA%83%E8%AE%BE%E8%AE%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88">金融级系统针对RocketMQ集群崩溃设计高可用方案</a></li>
+<li><a href="#mq%E6%B6%88%E6%81%AF%E9%99%90%E6%B5%81">MQ消息限流</a></li>
+</ul>
+</li>
+<li><a href="#rocketmq%E6%BA%90%E7%A0%81">RocketMQ源码</a></li>
+</ul>
+</li>
+<li><a href="#rabbitmq">RabbitMQ</a>
+<ul>
+<li><a href="#rabbitmq%E6%A6%82%E8%BF%B0">RabbitMQ概述</a></li>
+<li><a href="#%E6%B6%88%E6%81%AF%E5%88%86%E5%8F%91%E6%A8%A1%E5%BC%8F">消息分发模式</a></li>
+<li><a href="#%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E7%B1%BB%E5%9E%8B">交换机的类型</a></li>
+<li><a href="#rabbitmq%E5%AE%89%E8%A3%85">RabbitMQ安装</a></li>
+<li><a href="#springboot%E6%95%B4%E5%90%88rabbitmq%E6%95%B4%E5%90%88">SpringBoot整合RabbitMQ整合</a></li>
+<li><a href="#ttl%E9%98%9F%E5%88%97%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4">TTL队列过期时间</a></li>
+<li><a href="#%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97">死信队列</a></li>
+<li><a href="#%E5%86%85%E5%AD%98%E5%92%8C%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E7%9B%91%E6%8E%A7">内存和磁盘空间监控</a></li>
+</ul>
+</li>
+<li><a href="#kafka">KafKa</a>
+<ul>
+<li><a href="#kafka%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">KafKa源码分析环境搭建</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zuolinlin.github.io/zuo.github.io/post/spring/">
+              <h3 class="post-title">
+                spring
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">zuozuozuo</a>
+  <a class="rss" href="https://zuolinlin.github.io/zuo.github.io//atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
