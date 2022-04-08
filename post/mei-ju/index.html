@@ -1,0 +1,324 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>枚举 | zuolinlin</title>
+<link rel="shortcut icon" href="https://zuolinlin.github.io/zuo.github.io//favicon.ico?v=1649424757834">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zuolinlin.github.io/zuo.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="枚举 | zuolinlin - Atom Feed" href="https://zuolinlin.github.io/zuo.github.io//atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="Java基础知识
+目录
+
+枚举
+
+简介
+枚举的本质
+枚举的方法
+枚举的特征
+
+基本特征
+枚举可以添加方法
+枚举可以实现接口
+枚举不可以继承
+
+
+枚举的应用
+
+组织常量
+switch状态机
+错误码
+组织枚举
+策略枚举
+枚举实现单粒模式
+
+
+枚..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zuolinlin.github.io/zuo.github.io/">
+  <img class="avatar" src="https://zuolinlin.github.io/zuo.github.io//images/avatar.png?v=1649424757834" alt="">
+  </a>
+  <h1 class="site-title">
+    zuolinlin
+  </h1>
+  <p class="site-description">
+    你要问我如何去二仙桥，我会告诉你走成华大道，可你要问人生，我也说不清。
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              枚举
+            </h2>
+            <div class="post-info">
+              <span>
+                2022-04-08
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.php.cn%2Fupload%2Farticle%2F000%2F000%2F020%2F5dc62d227d4c8676.jpg&amp;refer=http%3A%2F%2Fimg.php.cn&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1652016747&amp;t=29304d0250c58ed3e85f95c760ded708" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="java基础知识">Java基础知识</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#%E6%9E%9A%E4%B8%BE">枚举</a>
+<ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E7%9A%84%E6%9C%AC%E8%B4%A8">枚举的本质</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E7%9A%84%E6%96%B9%E6%B3%95">枚举的方法</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E7%9A%84%E7%89%B9%E5%BE%81">枚举的特征</a>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81">基本特征</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E5%8F%AF%E4%BB%A5%E6%B7%BB%E5%8A%A0%E6%96%B9%E6%B3%95">枚举可以添加方法</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E5%8F%AF%E4%BB%A5%E5%AE%9E%E7%8E%B0%E6%8E%A5%E5%8F%A3">枚举可以实现接口</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E4%B8%8D%E5%8F%AF%E4%BB%A5%E7%BB%A7%E6%89%BF">枚举不可以继承</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E7%9A%84%E5%BA%94%E7%94%A8">枚举的应用</a>
+<ul>
+<li><a href="#%E7%BB%84%E7%BB%87%E5%B8%B8%E9%87%8F">组织常量</a></li>
+<li><a href="#switch%E7%8A%B6%E6%80%81%E6%9C%BA">switch状态机</a></li>
+<li><a href="#%E9%94%99%E8%AF%AF%E7%A0%81">错误码</a></li>
+<li><a href="#%E7%BB%84%E7%BB%87%E6%9E%9A%E4%B8%BE">组织枚举</a></li>
+<li><a href="#%E7%AD%96%E7%95%A5%E6%9E%9A%E4%B8%BE">策略枚举</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E5%AE%9E%E7%8E%B0%E5%8D%95%E7%B2%92%E6%A8%A1%E5%BC%8F">枚举实现单粒模式</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E5%B7%A5%E5%85%B7%E7%B1%BB">枚举工具类</a>
+<ul>
+<li><a href="#EnumSet">EnumSet</a></li>
+<li><a href="#EnumMap">EnumMap</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="目录-2">目录</h1>
+<h2 id="枚举">枚举</h2>
+<h3 id="简介">简介</h3>
+<p>enum 的全称为 enumeration， 是 JDK5 中引入的特性。</p>
+<p>在 Java 中，被 enum 关键字修饰的类型就是枚举类型。形式如下：</p>
+<pre><code class="language-java">enum ColorEn { RED, GREEN, BLUE }
+</code></pre>
+<p>枚举的好处：可以将常量组织起来，统一进行管理。</p>
+<p>枚举的典型应用场景：错误码、状态机等。</p>
+<h3 id="枚举的本质">枚举的本质</h3>
+<p>枚举的本质是 java.lang.Enum 的子类。</p>
+<p>尽管 enum 看起来像是一种新的数据类型，事实上，enum 是一种受限制的类，并且具有自己的方法。枚举这种特殊的类因为被修饰为 final，所以不能继承其他类。</p>
+<p>定义的枚举值，会被默认修饰为 public static final ，从修饰关键字，即可看出枚举值本质上是静态常量。</p>
+<h3 id="枚举的方法">枚举的方法</h3>
+<p>在 enum 中，提供了一些基本方法：</p>
+<p>values()：返回 enum 实例的数组，而且该数组中的元素严格保持在 enum 中声明时的顺序。<br>
+name()：返回实例名。<br>
+ordinal()：返回实例声明时的次序，从 0 开始。<br>
+getDeclaringClass()：返回实例所属的 enum 类型。<br>
+equals() ：判断是否为同一个对象。<br>
+可以使用 == 来比较enum实例。</p>
+<p>此外，java.lang.Enum实现了Comparable和 Serializable 接口，所以也提供 compareTo() 方法。</p>
+<h3 id="枚举的特征">枚举的特征</h3>
+<p>枚举的特性，归结起来就是一句话：</p>
+<pre><code>除了不能继承，基本上可以将 enum 看做一个常规的类。
+</code></pre>
+<h4 id="基本特征">基本特征</h4>
+<p>如果枚举中没有定义方法，也可以在最后一个实例后面加逗号、分号或什么都不加。</p>
+<p>如果枚举中没有定义方法，枚举值默认为从 0 开始的有序数值。以 Color 枚举类型举例，它的枚举常量依次为 RED：0，GREEN：1，BLUE：2</p>
+<h4 id="枚举可以添加方法">枚举可以添加方法</h4>
+<p>1）Java 不允许使用 = 为枚举常量赋值<br>
+2）枚举可以添加普通方法、静态方法、抽象方法、构造方法</p>
+<p>Java 虽然不能直接为实例赋值，但是它有更优秀的解决方案：为 enum 添加方法来间接实现显式赋值。</p>
+<p>创建 enum 时，可以为其添加多种方法，甚至可以为其添加构造方法。</p>
+<p>注意一个细节：如果要为 enum 定义方法，那么必须在 enum 的最后一个实例尾部添加一个分号。此外，在 enum 中，必须先定义实例，不能将字段或方法定义在实例前面。否则，编译器会报错。</p>
+<h4 id="枚举可以实现接口">枚举可以实现接口</h4>
+<pre><code>enum 可以像一般类一样实现接口。
+</code></pre>
+<pre><code class="language-java">
+public interface INumberEnum {
+    int getCode();
+    String getDescription();
+}
+
+public enum ErrorCodeEn2 implements INumberEnum {
+    OK(0, &quot;成功&quot;),
+    ERROR_A(100, &quot;错误A&quot;),
+    ERROR_B(200, &quot;错误B&quot;);
+
+    ErrorCodeEn2(int number, String description) {
+        this.code = number;
+        this.description = description;
+    }
+
+    private int code;
+    private String description;
+
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+}
+</code></pre>
+<h3 id="枚举不可以继承">枚举不可以继承</h3>
+<p>enum 不可以继承另外一个类，当然，也不能继承另一个 enum 。</p>
+<p>因为 enum 实际上都继承自 java.lang.Enum 类，而 Java 不支持多重继承，所以 enum 不能再继承其他类，当然也不能继承另一个 enum。</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">Java基础知识</a>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+</ul>
+</li>
+<li><a href="#%E7%9B%AE%E5%BD%95-2">目录</a>
+<ul>
+<li><a href="#%E6%9E%9A%E4%B8%BE">枚举</a>
+<ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E7%9A%84%E6%9C%AC%E8%B4%A8">枚举的本质</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E7%9A%84%E6%96%B9%E6%B3%95">枚举的方法</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E7%9A%84%E7%89%B9%E5%BE%81">枚举的特征</a>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81">基本特征</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E5%8F%AF%E4%BB%A5%E6%B7%BB%E5%8A%A0%E6%96%B9%E6%B3%95">枚举可以添加方法</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E5%8F%AF%E4%BB%A5%E5%AE%9E%E7%8E%B0%E6%8E%A5%E5%8F%A3">枚举可以实现接口</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E4%B8%8D%E5%8F%AF%E4%BB%A5%E7%BB%A7%E6%89%BF">枚举不可以继承</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zuolinlin.github.io/zuo.github.io/post/xiao-xi-zhong-jian-jian/">
+              <h3 class="post-title">
+                消息中间件
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">zuozuozuo</a>
+  <a class="rss" href="https://zuolinlin.github.io/zuo.github.io//atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
