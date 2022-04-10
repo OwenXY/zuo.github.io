@@ -1,0 +1,424 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CompletableFuture | zuolinlin</title>
+<link rel="shortcut icon" href="https://zuolinlin.github.io/zuo.github.io//favicon.ico?v=1649572386993">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zuolinlin.github.io/zuo.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="CompletableFuture | zuolinlin - Atom Feed" href="https://zuolinlin.github.io/zuo.github.io//atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="CompletableFuture
+基本api
+supplyAsync:开启一个异步任务
+public class _01_supplyAsync {
+    public static void main(String[] args) {..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zuolinlin.github.io/zuo.github.io/">
+  <img class="avatar" src="https://zuolinlin.github.io/zuo.github.io//images/avatar.png?v=1649572386993" alt="">
+  </a>
+  <h1 class="site-title">
+    zuolinlin
+  </h1>
+  <p class="site-description">
+    你要问我如何去二仙桥，我会告诉你走成华大道，可你要问人生，我也说不清。
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="https://zuolinlin.github.io/zuo.github.io/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              CompletableFuture
+            </h2>
+            <div class="post-info">
+              <span>
+                2022-04-10
+              </span>
+              <span>
+                7 min read
+              </span>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg-blog.csdnimg.cn%2F20201215192634795.png%3Fx-oss-process%3Dimage%2Fwatermark%2Ctype_ZmFuZ3poZW5naGVpdGk%2Cshadow_10%2Ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjAzMDM1Nw%3D%3D%2Csize_16%2Ccolor_FFFFFF%2Ct_70&amp;refer=http%3A%2F%2Fimg-blog.csdnimg.cn&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1652164373&amp;t=defa1e7f5704d40e8ffc0c3fc06616a9" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="completablefuture">CompletableFuture</h1>
+<h2 id="基本api">基本api</h2>
+<h1 id="supplyasync开启一个异步任务">supplyAsync:开启一个异步任务</h1>
+<pre><code class="language-java">public class _01_supplyAsync {
+    public static void main(String[] args) {
+        SmallTool.printTimeAndThread(&quot;小白进入餐厅&quot;);
+        SmallTool.printTimeAndThread(&quot;小白点了 番茄炒蛋 + 一碗米饭&quot;);
+
+        CompletableFuture&lt;String&gt; cf1 = CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;厨师炒菜&quot;);
+            SmallTool.sleepMillis(200);
+            SmallTool.printTimeAndThread(&quot;厨师打饭&quot;);
+            SmallTool.sleepMillis(100);
+            return &quot;番茄炒蛋 + 米饭 做好了&quot;;
+        });
+
+        SmallTool.printTimeAndThread(&quot;小白在打王者&quot;);
+        SmallTool.printTimeAndThread(String.format(&quot;%s ,小白开吃&quot;, cf1.join()));
+    }
+}
+</code></pre>
+<h2 id="thencompose连接两个异步任务-将前一个任务的执行结构提交给另一个任务">thenCompose:连接两个异步任务--将前一个任务的执行结构，提交给另一个任务</h2>
+<pre><code class="language-java">public class _02_thenCompose {
+    public static void main(String[] args) {
+        SmallTool.printTimeAndThread(&quot;小白进入餐厅&quot;);
+        SmallTool.printTimeAndThread(&quot;小白点了 番茄炒蛋 + 一碗米饭&quot;);
+
+        CompletableFuture&lt;String&gt; cf1 = CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;厨师炒菜&quot;);
+            SmallTool.sleepMillis(200);
+            return &quot;番茄炒蛋&quot;;
+        }).thenCompose(dish -&gt; CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;服务员打饭&quot;);
+            SmallTool.sleepMillis(100);
+            return dish + &quot; + 米饭&quot;;
+        }));
+
+        SmallTool.printTimeAndThread(&quot;小白在打王者&quot;);
+        SmallTool.printTimeAndThread(String.format(&quot;%s 好了,小白开吃&quot;, cf1.join()));
+    }
+
+    /**
+     * 用 applyAsync 也能实现
+     */
+    private static void applyAsync() {
+        SmallTool.printTimeAndThread(&quot;小白进入餐厅&quot;);
+        SmallTool.printTimeAndThread(&quot;小白点了 番茄炒蛋 + 一碗米饭&quot;);
+
+        CompletableFuture&lt;String&gt; cf1 = CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;厨师炒菜&quot;);
+            SmallTool.sleepMillis(200);
+            CompletableFuture&lt;String&gt; race = CompletableFuture.supplyAsync(() -&gt; {
+                SmallTool.printTimeAndThread(&quot;服务员打饭&quot;);
+                SmallTool.sleepMillis(100);
+                return &quot; + 米饭&quot;;
+            });
+            return &quot;番茄炒蛋&quot; + race.join();
+        });
+
+        SmallTool.printTimeAndThread(&quot;小白在打王者&quot;);
+        SmallTool.printTimeAndThread(String.format(&quot;%s 好了,小白开吃&quot;, cf1.join()));
+    }
+}
+</code></pre>
+<h2 id="thencombine合并两个异步任务-将前一个任务的执行结构提交给另一个任务">thenCombine:合并两个异步任务---将前一个任务的执行结构，提交给另一个任务</h2>
+<pre><code class="language-java">public class _03_thenCombine {
+    public static void main(String[] args) {
+        SmallTool.printTimeAndThread(&quot;小白进入餐厅&quot;);
+        SmallTool.printTimeAndThread(&quot;小白点了 番茄炒蛋 + 一碗米饭&quot;);
+
+        CompletableFuture&lt;String&gt; cf1 = CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;厨师炒菜&quot;);
+            SmallTool.sleepMillis(200);
+            return &quot;番茄炒蛋&quot;;
+        }).thenCombine(CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;服务员蒸饭&quot;);
+            SmallTool.sleepMillis(300);
+            return &quot;米饭&quot;;
+        }), (dish, rice) -&gt; {
+            SmallTool.printTimeAndThread(&quot;服务员打饭&quot;);
+            SmallTool.sleepMillis(100);
+            return String.format(&quot;%s + %s 好了&quot;, dish, rice);
+        });
+
+        SmallTool.printTimeAndThread(&quot;小白在打王者&quot;);
+        SmallTool.printTimeAndThread(String.format(&quot;%s ,小白开吃&quot;, cf1.join()));
+
+    }
+
+
+    /**
+     * 用 applyAsync 也能实现
+     */
+    private static void applyAsync() {
+        SmallTool.printTimeAndThread(&quot;小白进入餐厅&quot;);
+        SmallTool.printTimeAndThread(&quot;小白点了 番茄炒蛋 + 一碗米饭&quot;);
+
+        CompletableFuture&lt;String&gt; cf1 = CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;厨师炒菜&quot;);
+            SmallTool.sleepMillis(200);
+            return &quot;番茄炒蛋&quot;;
+        });
+        CompletableFuture&lt;String&gt; race = CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;服务员蒸饭&quot;);
+            SmallTool.sleepMillis(300);
+            return &quot;米饭&quot;;
+        });
+        SmallTool.printTimeAndThread(&quot;小白在打王者&quot;);
+
+        String result = String.format(&quot;%s + %s 好了&quot;, cf1.join(), race.join());
+        SmallTool.printTimeAndThread(&quot;服务员打饭&quot;);
+        SmallTool.sleepMillis(100);
+
+        SmallTool.printTimeAndThread(String.format(&quot;%s ,小白开吃&quot;, result));
+    }
+}
+
+</code></pre>
+<h2 id="thenapply做任务的异步处理-将前一个任务的执行结构提交给另一个function">thenApply:做任务的异步处理 ---将前一个任务的执行结构，提交给另一个function</h2>
+<pre><code class="language-java">public class _01_thenApply {
+    public static void main(String[] args) {
+        SmallTool.printTimeAndThread(&quot;小白吃好了&quot;);
+        SmallTool.printTimeAndThread(&quot;小白 结账、要求开发票&quot;);
+
+        CompletableFuture&lt;String&gt; invoice = CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;服务员收款 500元&quot;);
+            SmallTool.sleepMillis(100);
+            return &quot;500&quot;;
+        }).thenApplyAsync(money -&gt; {
+            SmallTool.printTimeAndThread(String.format(&quot;服务员开发票 面额 %s元&quot;, money));
+            SmallTool.sleepMillis(200);
+            return String.format(&quot;%s元发票&quot;, money);
+        });
+
+        SmallTool.printTimeAndThread(&quot;小白 接到朋友的电话，想一起打游戏&quot;);
+
+        SmallTool.printTimeAndThread(String.format(&quot;小白拿到%s，准备回家&quot;, invoice.join()));
+    }
+
+
+    private static void one() {
+        SmallTool.printTimeAndThread(&quot;小白吃好了&quot;);
+        SmallTool.printTimeAndThread(&quot;小白 结账、要求开发票&quot;);
+
+        CompletableFuture&lt;String&gt; invoice = CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;服务员收款 500元&quot;);
+            SmallTool.sleepMillis(100);
+            SmallTool.printTimeAndThread(&quot;服务员开发票 面额 500元&quot;);
+            SmallTool.sleepMillis(200);
+            return &quot;500元发票&quot;;
+        });
+
+        SmallTool.printTimeAndThread(&quot;小白 接到朋友的电话，想一起打游戏&quot;);
+
+        SmallTool.printTimeAndThread(String.format(&quot;小白拿到%s，准备回家&quot;, invoice.join()));
+    }
+
+
+    private static void two() {
+        SmallTool.printTimeAndThread(&quot;小白吃好了&quot;);
+        SmallTool.printTimeAndThread(&quot;小白 结账、要求开发票&quot;);
+
+        CompletableFuture&lt;String&gt; invoice = CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;服务员收款 500元&quot;);
+            SmallTool.sleepMillis(100);
+
+            CompletableFuture&lt;String&gt; waiter2 = CompletableFuture.supplyAsync(() -&gt; {
+                SmallTool.printTimeAndThread(&quot;服务员开发票 面额 500元&quot;);
+                SmallTool.sleepMillis(200);
+                return &quot;500元发票&quot;;
+            });
+
+            return waiter2.join();
+        });
+
+        SmallTool.printTimeAndThread(&quot;小白 接到朋友的电话，想一起打游戏&quot;);
+
+        SmallTool.printTimeAndThread(String.format(&quot;小白拿到%s，准备回家&quot;, invoice.join()));
+    }
+}
+
+</code></pre>
+<h2 id="applytoeither用来获取最先完成的任务-哪个任务先执行完就先执行">applyToEither:用来获取最先完成的任务---哪个任务先执行完，就先执行</h2>
+<pre><code class="language-java">
+public class _02_applyToEither {
+    public static void main(String[] args) {
+        SmallTool.printTimeAndThread(&quot;张三走出餐厅，来到公交站&quot;);
+        SmallTool.printTimeAndThread(&quot;等待 700路 或者 800路 公交到来&quot;);
+
+        CompletableFuture&lt;String&gt; bus = CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;700路公交正在赶来&quot;);
+            SmallTool.sleepMillis(100);
+            return &quot;700路到了&quot;;
+        }).applyToEither(CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;800路公交正在赶来&quot;);
+            SmallTool.sleepMillis(200);
+            return &quot;800路到了&quot;;
+        }), firstComeBus -&gt; firstComeBus);
+
+        SmallTool.printTimeAndThread(String.format(&quot;%s,小白坐车回家&quot;, bus.join()));
+    }
+}
+</code></pre>
+<h2 id="exceptionally">exceptionally</h2>
+<pre><code class="language-java">public class _03_exceptionally {
+    public static void main(String[] args) {
+        SmallTool.printTimeAndThread(&quot;张三走出餐厅，来到公交站&quot;);
+        SmallTool.printTimeAndThread(&quot;等待 700路 或者 800路 公交到来&quot;);
+
+        CompletableFuture&lt;String&gt; bus = CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;700路公交正在赶来&quot;);
+            SmallTool.sleepMillis(100);
+            return &quot;700路到了&quot;;
+        }).applyToEither(CompletableFuture.supplyAsync(() -&gt; {
+            SmallTool.printTimeAndThread(&quot;800路公交正在赶来&quot;);
+            SmallTool.sleepMillis(200);
+            return &quot;800路到了&quot;;
+        }), firstComeBus -&gt; {
+            SmallTool.printTimeAndThread(firstComeBus);
+            if (firstComeBus.startsWith(&quot;700&quot;)) {
+                throw new RuntimeException(&quot;撞树了……&quot;);
+            }
+            return firstComeBus;
+        }).exceptionally(e -&gt; {
+            SmallTool.printTimeAndThread(e.getMessage());
+            SmallTool.printTimeAndThread(&quot;小白叫出租车&quot;);
+            return &quot;出租车 叫到了&quot;;
+        });
+
+        SmallTool.printTimeAndThread(String.format(&quot;%s,小白坐车回家&quot;, bus.join()));
+    }
+}
+
+</code></pre>
+<h2 id="allof">allOf</h2>
+<h2 id="join">join</h2>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#completablefuture">CompletableFuture</a>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%ACapi">基本api</a></li>
+</ul>
+</li>
+<li><a href="#supplyasync%E5%BC%80%E5%90%AF%E4%B8%80%E4%B8%AA%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1">supplyAsync:开启一个异步任务</a>
+<ul>
+<li><a href="#thencompose%E8%BF%9E%E6%8E%A5%E4%B8%A4%E4%B8%AA%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1-%E5%B0%86%E5%89%8D%E4%B8%80%E4%B8%AA%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%84%E6%8F%90%E4%BA%A4%E7%BB%99%E5%8F%A6%E4%B8%80%E4%B8%AA%E4%BB%BB%E5%8A%A1">thenCompose:连接两个异步任务--将前一个任务的执行结构，提交给另一个任务</a></li>
+<li><a href="#thencombine%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1-%E5%B0%86%E5%89%8D%E4%B8%80%E4%B8%AA%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%84%E6%8F%90%E4%BA%A4%E7%BB%99%E5%8F%A6%E4%B8%80%E4%B8%AA%E4%BB%BB%E5%8A%A1">thenCombine:合并两个异步任务---将前一个任务的执行结构，提交给另一个任务</a></li>
+<li><a href="#thenapply%E5%81%9A%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86-%E5%B0%86%E5%89%8D%E4%B8%80%E4%B8%AA%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%84%E6%8F%90%E4%BA%A4%E7%BB%99%E5%8F%A6%E4%B8%80%E4%B8%AAfunction">thenApply:做任务的异步处理 ---将前一个任务的执行结构，提交给另一个function</a></li>
+<li><a href="#applytoeither%E7%94%A8%E6%9D%A5%E8%8E%B7%E5%8F%96%E6%9C%80%E5%85%88%E5%AE%8C%E6%88%90%E7%9A%84%E4%BB%BB%E5%8A%A1-%E5%93%AA%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%85%88%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%B0%B1%E5%85%88%E6%89%A7%E8%A1%8C">applyToEither:用来获取最先完成的任务---哪个任务先执行完，就先执行</a></li>
+<li><a href="#exceptionally">exceptionally</a></li>
+<li><a href="#allof">allOf</a></li>
+<li><a href="#join">join</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zuolinlin.github.io/zuo.github.io/post/jvm/">
+              <h3 class="post-title">
+                JVM
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">zuozuozuo</a>
+  <a class="rss" href="https://zuolinlin.github.io/zuo.github.io//atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
