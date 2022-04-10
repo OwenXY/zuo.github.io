@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zuolinlin.github.io/zuo.github.io/</id>
     <title>zuolinlin</title>
-    <updated>2022-04-10T06:33:09.911Z</updated>
+    <updated>2022-04-10T12:20:19.763Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zuolinlin.github.io/zuo.github.io/"/>
     <link rel="self" href="https://zuolinlin.github.io/zuo.github.io/atom.xml"/>
@@ -17,8 +17,26 @@
         </link>
         <updated>2022-04-10T06:32:09.000Z</updated>
         <content type="html"><![CDATA[<h1 id="completablefuture">CompletableFuture</h1>
-<h2 id="基本api">基本api</h2>
-<h1 id="supplyasync开启一个异步任务">supplyAsync:开启一个异步任务</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%ACapi">基本api</a>
+<ul>
+<li><a href="#SupplyAsync">supplyAsync</a></li>
+<li><a href="#ThenCompose">thenCompose</a></li>
+<li><a href="#ThenCombine">thenCombine</a></li>
+<li><a href="#ThenApply">ThenApply</a></li>
+<li><a href="#ApplyToEither%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%EF%BC%9F">ApplyToEither？为什么要垃圾回收？</a></li>
+<li><a href="#Exceptionally">Exceptionally</a></li>
+<li><a href="#AllOf">AllOf</a></li>
+<li><a href="#Join">Join</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="目录-2">目录</h1>
+<h1 id="基本api">基本api</h1>
+<h2 id="supplyasync">SupplyAsync</h2>
+<pre><code>开启一个异步任务
+</code></pre>
 <pre><code class="language-java">public class _01_supplyAsync {
     public static void main(String[] args) {
         SmallTool.printTimeAndThread(&quot;小白进入餐厅&quot;);
@@ -37,7 +55,9 @@
     }
 }
 </code></pre>
-<h2 id="thencompose连接两个异步任务-将前一个任务的执行结构提交给另一个任务">thenCompose:连接两个异步任务--将前一个任务的执行结构，提交给另一个任务</h2>
+<h2 id="thencompose">ThenCompose</h2>
+<pre><code>连接两个异步任务--将前一个任务的执行结构，提交给另一个任务
+</code></pre>
 <pre><code class="language-java">public class _02_thenCompose {
     public static void main(String[] args) {
         SmallTool.printTimeAndThread(&quot;小白进入餐厅&quot;);
@@ -80,7 +100,9 @@
     }
 }
 </code></pre>
-<h2 id="thencombine合并两个异步任务-将前一个任务的执行结构提交给另一个任务">thenCombine:合并两个异步任务---将前一个任务的执行结构，提交给另一个任务</h2>
+<h2 id="thencombine">ThenCombine</h2>
+<pre><code>合并两个异步任务---将前一个任务的执行结构，提交给另一个任务
+</code></pre>
 <pre><code class="language-java">public class _03_thenCombine {
     public static void main(String[] args) {
         SmallTool.printTimeAndThread(&quot;小白进入餐厅&quot;);
@@ -134,7 +156,9 @@
 }
 
 </code></pre>
-<h2 id="thenapply做任务的异步处理-将前一个任务的执行结构提交给另一个function">thenApply:做任务的异步处理 ---将前一个任务的执行结构，提交给另一个function</h2>
+<h2 id="thenapply">ThenApply</h2>
+<pre><code>做任务的异步处理 ---将前一个任务的执行结构，提交给另一个function
+</code></pre>
 <pre><code class="language-java">public class _01_thenApply {
     public static void main(String[] args) {
         SmallTool.printTimeAndThread(&quot;小白吃好了&quot;);
@@ -198,7 +222,9 @@
 }
 
 </code></pre>
-<h2 id="applytoeither用来获取最先完成的任务-哪个任务先执行完就先执行">applyToEither:用来获取最先完成的任务---哪个任务先执行完，就先执行</h2>
+<h2 id="applytoeither">ApplyToEither</h2>
+<pre><code>用来获取最先完成的任务---哪个任务先执行完，就先执行
+</code></pre>
 <pre><code class="language-java">
 public class _02_applyToEither {
     public static void main(String[] args) {
@@ -219,7 +245,7 @@ public class _02_applyToEither {
     }
 }
 </code></pre>
-<h2 id="exceptionally">exceptionally</h2>
+<h2 id="exceptionally">Exceptionally</h2>
 <pre><code class="language-java">public class _03_exceptionally {
     public static void main(String[] args) {
         SmallTool.printTimeAndThread(&quot;张三走出餐厅，来到公交站&quot;);
@@ -250,8 +276,8 @@ public class _02_applyToEither {
 }
 
 </code></pre>
-<h2 id="allof">allOf</h2>
-<h2 id="join">join</h2>
+<h2 id="allof">AllOf</h2>
+<h2 id="join">Join</h2>
 ]]></content>
     </entry>
     <entry>

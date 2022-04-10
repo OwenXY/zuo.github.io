@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>CompletableFuture | zuolinlin</title>
-<link rel="shortcut icon" href="https://zuolinlin.github.io/zuo.github.io//favicon.ico?v=1649572386993">
+<link rel="shortcut icon" href="https://zuolinlin.github.io/zuo.github.io//favicon.ico?v=1649593216389">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://zuolinlin.github.io/zuo.github.io//styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="CompletableFuture | zuolinlin - Atom Feed" href="https://zuolinlin.github.io/zuo.github.io//atom.xml">
@@ -12,10 +12,18 @@
 
 
     <meta name="description" content="CompletableFuture
+目录
+
 基本api
-supplyAsync:开启一个异步任务
-public class _01_supplyAsync {
-    public static void main(String[] args) {..." />
+
+supplyAsync
+thenCompose
+thenCombine
+ThenApply
+ApplyToEither？为什么要垃圾回收？
+Exceptionally
+AllOf
+J..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -25,7 +33,7 @@ public class _01_supplyAsync {
       <div class="main-content">
         <div class="site-header">
   <a href="https://zuolinlin.github.io/zuo.github.io/">
-  <img class="avatar" src="https://zuolinlin.github.io/zuo.github.io//images/avatar.png?v=1649572386993" alt="">
+  <img class="avatar" src="https://zuolinlin.github.io/zuo.github.io//images/avatar.png?v=1649593216389" alt="">
   </a>
   <h1 class="site-title">
     zuolinlin
@@ -95,8 +103,26 @@ public class _01_supplyAsync {
             <div class="post-content-wrapper">
               <div class="post-content">
                 <h1 id="completablefuture">CompletableFuture</h1>
-<h2 id="基本api">基本api</h2>
-<h1 id="supplyasync开启一个异步任务">supplyAsync:开启一个异步任务</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%ACapi">基本api</a>
+<ul>
+<li><a href="#SupplyAsync">supplyAsync</a></li>
+<li><a href="#ThenCompose">thenCompose</a></li>
+<li><a href="#ThenCombine">thenCombine</a></li>
+<li><a href="#ThenApply">ThenApply</a></li>
+<li><a href="#ApplyToEither%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%EF%BC%9F">ApplyToEither？为什么要垃圾回收？</a></li>
+<li><a href="#Exceptionally">Exceptionally</a></li>
+<li><a href="#AllOf">AllOf</a></li>
+<li><a href="#Join">Join</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="目录-2">目录</h1>
+<h1 id="基本api">基本api</h1>
+<h2 id="supplyasync">SupplyAsync</h2>
+<pre><code>开启一个异步任务
+</code></pre>
 <pre><code class="language-java">public class _01_supplyAsync {
     public static void main(String[] args) {
         SmallTool.printTimeAndThread(&quot;小白进入餐厅&quot;);
@@ -115,7 +141,9 @@ public class _01_supplyAsync {
     }
 }
 </code></pre>
-<h2 id="thencompose连接两个异步任务-将前一个任务的执行结构提交给另一个任务">thenCompose:连接两个异步任务--将前一个任务的执行结构，提交给另一个任务</h2>
+<h2 id="thencompose">ThenCompose</h2>
+<pre><code>连接两个异步任务--将前一个任务的执行结构，提交给另一个任务
+</code></pre>
 <pre><code class="language-java">public class _02_thenCompose {
     public static void main(String[] args) {
         SmallTool.printTimeAndThread(&quot;小白进入餐厅&quot;);
@@ -158,7 +186,9 @@ public class _01_supplyAsync {
     }
 }
 </code></pre>
-<h2 id="thencombine合并两个异步任务-将前一个任务的执行结构提交给另一个任务">thenCombine:合并两个异步任务---将前一个任务的执行结构，提交给另一个任务</h2>
+<h2 id="thencombine">ThenCombine</h2>
+<pre><code>合并两个异步任务---将前一个任务的执行结构，提交给另一个任务
+</code></pre>
 <pre><code class="language-java">public class _03_thenCombine {
     public static void main(String[] args) {
         SmallTool.printTimeAndThread(&quot;小白进入餐厅&quot;);
@@ -212,7 +242,9 @@ public class _01_supplyAsync {
 }
 
 </code></pre>
-<h2 id="thenapply做任务的异步处理-将前一个任务的执行结构提交给另一个function">thenApply:做任务的异步处理 ---将前一个任务的执行结构，提交给另一个function</h2>
+<h2 id="thenapply">ThenApply</h2>
+<pre><code>做任务的异步处理 ---将前一个任务的执行结构，提交给另一个function
+</code></pre>
 <pre><code class="language-java">public class _01_thenApply {
     public static void main(String[] args) {
         SmallTool.printTimeAndThread(&quot;小白吃好了&quot;);
@@ -276,7 +308,9 @@ public class _01_supplyAsync {
 }
 
 </code></pre>
-<h2 id="applytoeither用来获取最先完成的任务-哪个任务先执行完就先执行">applyToEither:用来获取最先完成的任务---哪个任务先执行完，就先执行</h2>
+<h2 id="applytoeither">ApplyToEither</h2>
+<pre><code>用来获取最先完成的任务---哪个任务先执行完，就先执行
+</code></pre>
 <pre><code class="language-java">
 public class _02_applyToEither {
     public static void main(String[] args) {
@@ -297,7 +331,7 @@ public class _02_applyToEither {
     }
 }
 </code></pre>
-<h2 id="exceptionally">exceptionally</h2>
+<h2 id="exceptionally">Exceptionally</h2>
 <pre><code class="language-java">public class _03_exceptionally {
     public static void main(String[] args) {
         SmallTool.printTimeAndThread(&quot;张三走出餐厅，来到公交站&quot;);
@@ -328,26 +362,28 @@ public class _02_applyToEither {
 }
 
 </code></pre>
-<h2 id="allof">allOf</h2>
-<h2 id="join">join</h2>
+<h2 id="allof">AllOf</h2>
+<h2 id="join">Join</h2>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
 <li><a href="#completablefuture">CompletableFuture</a>
 <ul>
-<li><a href="#%E5%9F%BA%E6%9C%ACapi">基本api</a></li>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
 </ul>
 </li>
-<li><a href="#supplyasync%E5%BC%80%E5%90%AF%E4%B8%80%E4%B8%AA%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1">supplyAsync:开启一个异步任务</a>
+<li><a href="#%E7%9B%AE%E5%BD%95-2">目录</a></li>
+<li><a href="#%E5%9F%BA%E6%9C%ACapi">基本api</a>
 <ul>
-<li><a href="#thencompose%E8%BF%9E%E6%8E%A5%E4%B8%A4%E4%B8%AA%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1-%E5%B0%86%E5%89%8D%E4%B8%80%E4%B8%AA%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%84%E6%8F%90%E4%BA%A4%E7%BB%99%E5%8F%A6%E4%B8%80%E4%B8%AA%E4%BB%BB%E5%8A%A1">thenCompose:连接两个异步任务--将前一个任务的执行结构，提交给另一个任务</a></li>
-<li><a href="#thencombine%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1-%E5%B0%86%E5%89%8D%E4%B8%80%E4%B8%AA%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%84%E6%8F%90%E4%BA%A4%E7%BB%99%E5%8F%A6%E4%B8%80%E4%B8%AA%E4%BB%BB%E5%8A%A1">thenCombine:合并两个异步任务---将前一个任务的执行结构，提交给另一个任务</a></li>
-<li><a href="#thenapply%E5%81%9A%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86-%E5%B0%86%E5%89%8D%E4%B8%80%E4%B8%AA%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%84%E6%8F%90%E4%BA%A4%E7%BB%99%E5%8F%A6%E4%B8%80%E4%B8%AAfunction">thenApply:做任务的异步处理 ---将前一个任务的执行结构，提交给另一个function</a></li>
-<li><a href="#applytoeither%E7%94%A8%E6%9D%A5%E8%8E%B7%E5%8F%96%E6%9C%80%E5%85%88%E5%AE%8C%E6%88%90%E7%9A%84%E4%BB%BB%E5%8A%A1-%E5%93%AA%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%85%88%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%B0%B1%E5%85%88%E6%89%A7%E8%A1%8C">applyToEither:用来获取最先完成的任务---哪个任务先执行完，就先执行</a></li>
-<li><a href="#exceptionally">exceptionally</a></li>
-<li><a href="#allof">allOf</a></li>
-<li><a href="#join">join</a></li>
+<li><a href="#supplyasync">SupplyAsync</a></li>
+<li><a href="#thencompose">ThenCompose</a></li>
+<li><a href="#thencombine">ThenCombine</a></li>
+<li><a href="#thenapply">ThenApply</a></li>
+<li><a href="#applytoeither">ApplyToEither</a></li>
+<li><a href="#exceptionally">Exceptionally</a></li>
+<li><a href="#allof">AllOf</a></li>
+<li><a href="#join">Join</a></li>
 </ul>
 </li>
 </ul>
